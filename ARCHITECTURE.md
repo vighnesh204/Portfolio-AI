@@ -74,14 +74,18 @@ src/
 ├── sections/                 — page-specific content sections (not full pages)
 │   ├── hero/
 │   │   └── Hero.jsx          — homepage hero: editorial display type + GSAP entrance
-│   └── marquee/
-│       └── Marquee.jsx       — continuous CSS ticker strip immediately after Hero
+│   ├── marquee/
+│   │   └── Marquee.jsx       — continuous CSS ticker immediately after Hero
+│   └── projects/
+│       ├── projects.css      — scoped styles for all project views
+│       ├── ProjectPreview.jsx — editorial two-column project card (homepage + /work)
+│       └── SelectedWork.jsx  — homepage "Selected Work" section rendering featured projects
 │
 ├── pages/                    — one file per route, composes sections
-│   ├── Home.jsx              — renders <OpeningSequence />, <Hero />, <Marquee />
+│   ├── Home.jsx              — OpeningSequence → Hero → Marquee → SelectedWork
+│   ├── Work.jsx              — /work: hero + all projects list with scroll-trigger rows
+│   ├── ProjectDetail.jsx     — /work/:slug: conditional case-study layout
 │   ├── About.jsx
-│   ├── Work.jsx
-│   ├── ProjectDetail.jsx
 │   ├── AiLearning.jsx
 │   ├── AiSeason.jsx
 │   ├── AiNote.jsx
@@ -91,7 +95,7 @@ src/
 │   └── NotFound.jsx
 │
 ├── data/                     — static data files
-│   ├── projects.js           — project list for /work routes
+│   ├── projects.js           — project objects + helpers: getAllProjects, getFeaturedProjects, getProjectBySlug
 │   ├── aiLearning.js         — Namaste AI season/note data
 │   └── transitionColors.js   — route → panel color map
 │
@@ -127,26 +131,33 @@ Initial Load (Browser Entry / Hard Refresh)
     ├── BUILD · LEARN · EXPERIMENT reveal
     └── Overlay lifts up (-100% translateY)
 → Hero (already rendered underneath, seamlessly unveiled)
-→ Marquee (continuous CSS ticker: REACT · JAVASCRIPT · FULL STACK · AI · BUILD · LEARN · EXPERIMENT · REPEAT)
+→ Marquee (continuous CSS ticker: REACT · JAVASCRIPT · FULL STACK · AI …)
+→ SelectedWork (3 featured projects in editorial two-column alternating layout)
 ```
 
 - **Replay Prevention:** In-memory session flag prevents OpeningSequence from replaying on internal SPA navigation (Home → Work → Home).
-- **Reduced Motion:** When `prefers-reduced-motion` is active, OpeningSequence is skipped immediately and Marquee animation pauses.
+- **Reduced Motion:** When `prefers-reduced-motion` is active, OpeningSequence is skipped and Marquee/GSAP animations are disabled.
 
 ---
 
-## Planned Additions (Phase 5+)
+## Project Data Flow
 
-- `src/components/transitions/PageTransition.jsx` — vertical color panel transition (added to RootLayout)
-- `src/components/ui/` — reusable UI primitives
-- `src/animations/` — GSAP helpers (only if multiple pages share the same logic)
+```
+src/data/projects.js                 — single source of truth
+  getAllProjects()         → Work.jsx
+  getFeaturedProjects()   → SelectedWork.jsx
+  getProjectBySlug(slug)  → ProjectDetail.jsx
+```
+
+`ProjectPreview` is a reusable component shared between `SelectedWork` (homepage) and could be reused elsewhere. It receives a `project` object and `index` prop.
+
+`ProjectDetail` renders conditionally — sections only mount when data is present. An invalid slug renders an editorial 404 block instead of crashing.
 
 ---
 
-## Data Flow (Phase 1)
+## Navigation: TransitionLink
 
-Pages are static placeholders.
-No props, no state, no API calls yet.
+All internal project navigation uses `<TransitionLink>` to trigger the existing vertical color-panel page transition. `/work` and `/work/:slug` map to the burnt orange panel color (`#b85c38`) via `transitionColors.js`.
 
 ---
 
@@ -154,6 +165,6 @@ No props, no state, no API calls yet.
 
 - No TypeScript. JavaScript only.
 - No smooth-scroll libraries. Native browser scroll only.
-- Animations will use GSAP (transform + opacity only where possible).
-- Page transitions will use full-height vertical color panels (not grids or tiles).
+- Animations use GSAP (transform + opacity only). All ScrollTrigger instances are cleaned up on component unmount.
+- Page transitions use full-height vertical color panels (not grids or tiles).
 - Gemini AI assistant will require a server-side API route (Phase 3+).

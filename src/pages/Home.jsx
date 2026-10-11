@@ -1,6 +1,7 @@
 import Hero from '../sections/hero/Hero';
 import Marquee from '../sections/marquee/Marquee';
 import OpeningSequence from '../components/opening/OpeningSequence';
+import SelectedWork from '../sections/projects/SelectedWork';
 
 function Home() {
   return (
@@ -8,9 +9,11 @@ function Home() {
       <OpeningSequence />
       <Hero />
       <Marquee />
-      {/* Future sections: Manifesto, Featured Work, Developer DNA, AI Learning, Lab, Journey, Contact CTA */}
+      <SelectedWork />
+      {/* Future sections: Manifesto, Developer DNA, AI Learning, Lab, Journey, Contact CTA */}
     </main>
   );
 }
 
 export default Home;
+
