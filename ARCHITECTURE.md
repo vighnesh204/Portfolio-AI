@@ -21,10 +21,12 @@ It is updated whenever routes, structure, or data flow changes significantly.
 
 ```
 index.html
-  └── src/main.jsx              — mounts React root, renders RouterProvider
-        └── src/router/router.jsx — createBrowserRouter, all routes defined here
-              └── src/layouts/RootLayout.jsx — common layout shell (Outlet)
-                    └── src/pages/*.jsx       — matched page component
+  └── src/main.jsx                    — mounts React root, renders RouterProvider
+        └── src/router/router.jsx      — createBrowserRouter, all routes defined here
+              └── src/layouts/RootLayout.jsx — owns menu state, renders shell
+                    ├── Header.jsx          — fixed top bar (wordmark + MENU trigger)
+                    ├── MenuOverlay.jsx     — GSAP fullscreen menu panel
+                    └── Outlet              — matched page component
 ```
 
 ---
@@ -52,13 +54,31 @@ index.html
 ```
 src/
 ├── router/
-│   └── router.jsx       — createBrowserRouter, all route definitions
+│   └── router.jsx            — createBrowserRouter, all route definitions
 │
 ├── layouts/
-│   └── RootLayout.jsx   — common shell, renders <Outlet />
+│   └── RootLayout.jsx        — menu state, renders Header + MenuOverlay + Outlet
 │
-├── pages/               — one file per route
-│   ├── Home.jsx
+├── components/
+│   ├── layout/
+│   │   ├── Header.jsx        — fixed top bar: VIGHNESH wordmark + MENU button
+│   │   └── MenuOverlay.jsx   — GSAP fullscreen panel menu with staggered nav items
+│   ├── opening/
+│   │   └── OpeningSequence.jsx — short editorial GSAP title sequence on initial load
+│   ├── transitions/
+│   │   └── PageTransition.jsx — GSAP vertical panel overlay (cover/reveal)
+│   └── ui/
+│       ├── CustomCursor.jsx  — lightweight circular custom cursor
+│       └── TransitionLink.jsx — internal link wrapper that fires the panel transition
+│
+├── sections/                 — page-specific content sections (not full pages)
+│   ├── hero/
+│   │   └── Hero.jsx          — homepage hero: editorial display type + GSAP entrance
+│   └── marquee/
+│       └── Marquee.jsx       — continuous CSS ticker strip immediately after Hero
+│
+├── pages/                    — one file per route, composes sections
+│   ├── Home.jsx              — renders <OpeningSequence />, <Hero />, <Marquee />
 │   ├── About.jsx
 │   ├── Work.jsx
 │   ├── ProjectDetail.jsx
@@ -70,26 +90,56 @@ src/
 │   ├── Contact.jsx
 │   └── NotFound.jsx
 │
-├── components/          — shared UI components (Phase 2+)
-│   └── layout/
-│       └── Header.jsx   — stub, not yet rendered
+├── data/                     — static data files
+│   ├── projects.js           — project list for /work routes
+│   ├── aiLearning.js         — Namaste AI season/note data
+│   └── transitionColors.js   — route → panel color map
 │
-├── data/                — static data files (Phase 2+)
-│   ├── projects.js      — project list for /work routes
-│   └── aiLearning.js    — Namaste AI season/note data
-│
-├── main.jsx             — React DOM root, RouterProvider
-└── index.css            — Tailwind CSS import
+├── main.jsx                  — React DOM root, RouterProvider
+└── index.css                 — Tailwind + global design system + all component CSS
 ```
 
 ---
 
-## Planned Additions (Phase 2+)
+## State: Menu Open/Close
 
-- `src/components/layout/Nav.jsx` — fullscreen menu (added to RootLayout)
-- `src/components/transitions/PageTransition.jsx` — vertical panel transition (added to RootLayout)
+Menu state lives in `RootLayout`. No global state manager needed.
+
+```
+RootLayout (useState: isMenuOpen)
+  ├── passes onMenuOpen → Header
+  ├── passes isOpen + onClose → MenuOverlay
+  └── renders Outlet (current page)
+```
+
+When a nav link is clicked, `MenuOverlay` detects the route change via `useLocation` and calls `onClose` automatically.
+
+---
+
+## Homepage Flow: Opening & Marquee
+
+```
+Initial Load (Browser Entry / Hard Refresh)
+→ OpeningSequence (~1.6s GSAP title reveal overlay)
+    ├── VIGHNESH reveal
+    ├── Architectural divider draw
+    ├── PORTFOLIO / 2026 metadata
+    ├── BUILD · LEARN · EXPERIMENT reveal
+    └── Overlay lifts up (-100% translateY)
+→ Hero (already rendered underneath, seamlessly unveiled)
+→ Marquee (continuous CSS ticker: REACT · JAVASCRIPT · FULL STACK · AI · BUILD · LEARN · EXPERIMENT · REPEAT)
+```
+
+- **Replay Prevention:** In-memory session flag prevents OpeningSequence from replaying on internal SPA navigation (Home → Work → Home).
+- **Reduced Motion:** When `prefers-reduced-motion` is active, OpeningSequence is skipped immediately and Marquee animation pauses.
+
+---
+
+## Planned Additions (Phase 5+)
+
+- `src/components/transitions/PageTransition.jsx` — vertical color panel transition (added to RootLayout)
 - `src/components/ui/` — reusable UI primitives
-- `src/animations/` — GSAP reusable animation helpers (if needed)
+- `src/animations/` — GSAP helpers (only if multiple pages share the same logic)
 
 ---
 

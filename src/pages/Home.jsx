@@ -1,10 +1,14 @@
-// Placeholder — Phase 1 Foundation
-// Real design will be implemented in Phase 2.
+import Hero from '../sections/hero/Hero';
+import Marquee from '../sections/marquee/Marquee';
+import OpeningSequence from '../components/opening/OpeningSequence';
 
 function Home() {
   return (
-    <main className="min-h-screen bg-black text-white flex items-center justify-center">
-      <h1 className="text-4xl font-bold tracking-widest">HOME</h1>
+    <main className="home-page">
+      <OpeningSequence />
+      <Hero />
+      <Marquee />
+      {/* Future sections: Manifesto, Featured Work, Developer DNA, AI Learning, Lab, Journey, Contact CTA */}
     </main>
   );
 }
