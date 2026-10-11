@@ -1,0 +1,609 @@
+/* ============================================================
+   SKILLS — Developer DNA Section
+   Visual parity with reference SC.05 — THE TOOLKIT.
+
+   HOVER SYSTEM (exact reference match observed):
+   — Hovered row: solid warm cream/off-white pill fills column width
+   — All row text inverts to dark on hover
+   — Non-hovered rows: unchanged (no dimming)
+   — Transition: ~220ms ease-out on enter, same on leave
+   — No title horizontal translation
+   — No spring/bounce
+   ============================================================ */
+
+/* ─── 1. SECTION WRAPPER ─────────────────────────────────── */
+
+.skills-section {
+  position: relative;
+  width: 100%;
+  padding: clamp(72px, 10vw, 140px) var(--pad) clamp(72px, 10vw, 140px);
+  max-width: var(--container-max);
+  margin: 0 auto;
+  overflow: visible;
+}
+
+/* Hairline top border, scales from left via GSAP */
+.skills-top-line {
+  position: absolute;
+  top: 0;
+  left: var(--pad);
+  right: var(--pad);
+  height: 1px;
+  background: var(--line2);
+  transform-origin: left center;
+}
+
+/* ─── 2. META ROW ────────────────────────────────────────── */
+
+.skills-meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--mono);
+  font-size: clamp(10px, 1.1vw, 12px);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--mut);
+  margin-bottom: clamp(16px, 2.5vw, 28px);
+}
+
+.skills-meta-kicker b {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.skills-meta-count {
+  color: var(--mut);
+}
+
+/* ─── 3. DISPLAY HEADING ─────────────────────────────────── */
+
+.skills-heading-block {
+  margin-bottom: clamp(40px, 6vw, 80px);
+  position: relative;
+}
+
+/* Hollow/outlined heading — reference-exact */
+.skills-display-title {
+  margin: 0;
+  font-family: var(--disp);
+  font-size: clamp(72px, 14vw, 200px);
+  font-weight: 900;
+  line-height: 0.84;
+  letter-spacing: -0.035em;
+  text-transform: uppercase;
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(239, 232, 220, 0.85);
+  text-stroke: 1.5px rgba(239, 232, 220, 0.85);
+  white-space: nowrap;
+  will-change: transform, opacity;
+  user-select: none;
+}
+
+/* Italic serif subtitle — bottom-right of heading */
+.skills-subtitle {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: clamp(15px, 1.6vw, 22px);
+  line-height: 1.3;
+  color: var(--mut);
+  text-align: right;
+  max-width: 30ch;
+  pointer-events: none;
+  /* Initial hidden state — GSAP reveals it */
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.skills-subtitle em {
+  color: var(--ink);
+  font-style: italic;
+}
+
+/* ─── 4. BODY LAYOUT ─────────────────────────────────────── */
+
+.skills-body {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: clamp(32px, 4vw, 56px);
+  align-items: start;
+}
+
+/* ─── 5. TWO-COLUMN SKILL LIST ───────────────────────────── */
+
+.skills-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 clamp(24px, 3vw, 48px);
+}
+
+/* ─── 6. INDIVIDUAL SKILL ROW ────────────────────────────── */
+
+.skill-row {
+  /* Positioning context for the pill background */
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: clamp(13px, 1.6vw, 20px) clamp(10px, 1.2vw, 16px);
+  border-bottom: 1px solid var(--line);
+  cursor: default;
+  /* Ensure pill can extend to row edges */
+  margin: 0 calc(-1 * clamp(10px, 1.2vw, 16px));
+  /* Isolate stacking context */
+  isolation: isolate;
+  outline: none;
+  will-change: transform;
+}
+
+.skill-row:first-child {
+  border-top: 1px solid var(--line);
+}
+
+/* ─── THE CREAM PILL BACKGROUND ──────────────────────────── */
+/* Reference: on hover, a warm off-white/cream pill fills the
+   full row width at ~8px border-radius. CSS transition handles
+   the smooth enter/leave (~220ms ease-out). */
+
+.skill-row-bg {
+  position: absolute;
+  inset: 1px 0;              /* Sit just inside the border lines */
+  background: #ede8e0;       /* Warm cream — matches reference off-white pill */
+  border-radius: 7px;
+  z-index: 0;
+  opacity: 0;
+  transform: scaleX(0.96);
+  transform-origin: center;
+  transition:
+    opacity 220ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 220ms cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+/* Activate pill on hover/focus */
+.skill-row.is-hovered .skill-row-bg {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+/* Persistent Selected State */
+.skill-row.is-selected {
+  border-color: var(--accent);
+  background-color: rgba(255, 91, 31, 0.08);
+}
+
+.skill-row.is-selected .skill-num {
+  color: var(--accent);
+}
+
+.skill-row.is-selected .skill-name {
+  color: var(--ink);
+}
+
+.skill-row.is-selected.is-hovered {
+  border-color: transparent;
+}
+
+/* ─── ROW CONTENT — Z-INDEX ABOVE PILL ───────────────────── */
+
+.skill-num,
+.skill-icon,
+.skill-name,
+.skill-dots,
+.skill-tag,
+.skill-exploring-badge {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Number ── */
+.skill-num {
+  font-family: var(--mono);
+  font-size: clamp(9px, 0.85vw, 11px);
+  letter-spacing: 0.06em;
+  color: var(--faint);
+  min-width: 20px;
+  flex-shrink: 0;
+  line-height: 1;
+  user-select: none;
+  transition: color 220ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.skill-row.is-hovered .skill-num {
+  color: rgba(11, 10, 9, 0.45);   /* Dark muted on cream */
+}
+
+/* ── Icon ── */
+.skill-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.skill-icon .skill-icon-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Subtle icon scale-up on row hover */
+.skill-row.is-hovered .skill-icon {
+  transform: scale(1.08);
+}
+
+/* Concept icon inherits text color for clean monochrome on hover */
+.skill-icon .skill-icon-concept {
+  color: var(--mut);
+  transition: color 220ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.skill-row.is-hovered .skill-icon .skill-icon-concept {
+  color: rgba(11, 10, 9, 0.5);
+}
+
+/* ── Name ── */
+.skill-name {
+  font-family: var(--disp);
+  font-size: clamp(14px, 1.5vw, 19px);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  line-height: 1.1;
+  flex-shrink: 0;
+  transition: color 220ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.skill-row.is-hovered .skill-name {
+  color: #0b0a09;   /* Near-black on cream pill */
+}
+
+/* ── Dotted separator ── */
+.skill-dots {
+  flex: 1;
+  height: 1px;
+  border-bottom: 1px dotted var(--faint);
+  min-width: 12px;
+  opacity: 0.5;
+  align-self: center;
+  transition: opacity 220ms cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 220ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.skill-row.is-hovered .skill-dots {
+  border-color: rgba(11, 10, 9, 0.25);
+  opacity: 0.7;
+}
+
+/* ── Category tag ── */
+.skill-tag {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: clamp(11px, 1.0vw, 13px);
+  color: var(--mut);
+  flex-shrink: 0;
+  white-space: nowrap;
+  line-height: 1;
+  transition: color 220ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.skill-row.is-hovered .skill-tag {
+  color: rgba(11, 10, 9, 0.55);
+}
+
+/* ── Exploring badge ── */
+.skill-exploring-badge {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  border: 1px solid rgba(255, 91, 31, 0.35);
+  border-radius: 100px;
+  padding: 2px 7px;
+  flex-shrink: 0;
+  line-height: 1.5;
+  margin-left: auto;  /* Push right when no dots separator */
+  transition:
+    color 220ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 220ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.skill-row.is-hovered .skill-exploring-badge {
+  color: rgba(11, 10, 9, 0.55);
+  border-color: rgba(11, 10, 9, 0.2);
+}
+
+/* ─── 7. RIGHT INTERACTIVE PANEL ─────────────────────────── */
+
+.skills-panel {
+  position: sticky;
+  top: 100px;
+  background: var(--bg2);
+  border: 1px solid var(--line2);
+  border-radius: 18px;
+  padding: clamp(28px, 3.5vw, 44px);
+  min-height: 260px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Accent glow backdrop */
+.skills-panel::before {
+  content: '';
+  position: absolute;
+  bottom: -40px;
+  right: -30px;
+  width: 220px;
+  height: 220px;
+  background: radial-gradient(circle, rgba(255, 91, 31, 0.18) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.skills-panel-inner {
+  position: relative;
+  z-index: 1;
+}
+
+/* Idle state */
+.skills-panel-idle-title {
+  font-family: var(--disp);
+  font-size: clamp(28px, 3.5vw, 44px);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 0.9;
+  color: var(--ink);
+  text-transform: uppercase;
+  margin-bottom: clamp(12px, 1.5vw, 18px);
+}
+
+.skills-panel-idle-sub {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: clamp(14px, 1.4vw, 18px);
+  color: var(--mut);
+  line-height: 1.4;
+}
+
+.skills-panel-idle-sub em {
+  color: var(--ink);
+  font-style: italic;
+}
+
+/* Active / hover state */
+.skills-panel-detail-cat {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 14px;
+}
+
+.skills-panel-detail-name {
+  font-family: var(--disp);
+  font-size: clamp(24px, 3vw, 38px);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 0.9;
+  color: var(--ink);
+  text-transform: uppercase;
+  margin-bottom: clamp(16px, 2vw, 24px);
+}
+
+.skills-panel-detail-status {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 5px 10px;
+  border-radius: 100px;
+  display: inline-block;
+  line-height: 1.4;
+}
+
+.skills-panel-detail-status.status-strong {
+  background: rgba(63, 201, 185, 0.12);
+  color: var(--accent-teal);
+  border: 1px solid rgba(63, 201, 185, 0.25);
+}
+
+.skills-panel-detail-status.status-comfortable {
+  background: rgba(239, 232, 220, 0.08);
+  color: var(--mut);
+  border: 1px solid var(--line);
+}
+
+.skills-panel-detail-status.status-exploring {
+  background: rgba(255, 91, 31, 0.1);
+  color: var(--accent);
+  border: 1px solid rgba(255, 91, 31, 0.3);
+}
+
+/* ─── REAL PROJECT USAGE LIST ────────────────────────────── */
+
+.skills-panel-usage-section {
+  margin-top: clamp(20px, 2.5vw, 32px);
+  padding-top: clamp(16px, 2vw, 24px);
+  border-top: 1px solid var(--line2);
+}
+
+.skills-panel-usage-label {
+  display: block;
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--mut);
+  margin-bottom: 12px;
+}
+
+.skills-panel-projects-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.skills-panel-project-pill {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--line2);
+  border-radius: 99px;
+  color: var(--ink);
+  text-decoration: none;
+  font-family: var(--disp);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  transition: all 0.22s var(--ease);
+}
+
+.skills-panel-project-pill:hover {
+  background: #ede8e0;
+  border-color: #ede8e0;
+  color: #0b0a09;
+  transform: translateX(4px);
+}
+
+.skills-panel-project-num {
+  font-family: var(--mono);
+  font-size: 10px;
+  opacity: 0.6;
+}
+
+.skills-panel-project-title {
+  flex: 1;
+  margin: 0 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.skills-panel-project-arrow {
+  font-size: 14px;
+  transition: transform 0.2s var(--ease);
+}
+
+.skills-panel-project-pill:hover .skills-panel-project-arrow {
+  transform: translateX(2px);
+}
+
+.skills-panel-empty-state {
+  padding: 8px 0;
+}
+
+.skills-panel-empty-kicker {
+  display: block;
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: var(--mut);
+  margin-bottom: 6px;
+}
+
+.skills-panel-empty-text {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 13px;
+  color: var(--mut);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ─── 8. MOBILE RESPONSIVE ───────────────────────────────── */
+
+@media (max-width: 1024px) {
+  .skills-body {
+    grid-template-columns: 1fr;
+  }
+
+  .skills-panel {
+    position: relative;
+    top: 0;
+    order: -1;
+    margin-bottom: clamp(32px, 5vw, 48px);
+  }
+
+  .skills-display-title {
+    font-size: clamp(60px, 18vw, 120px);
+  }
+
+  .skills-subtitle {
+    position: static;
+    opacity: 1 !important;
+    transform: none !important;
+    text-align: left;
+    margin-top: 14px;
+  }
+}
+
+@media (max-width: 768px) {
+  .skills-columns {
+    grid-template-columns: 1fr;
+  }
+
+  .skill-row:first-child {
+    border-top: 1px solid var(--line);
+  }
+
+  /* Pill hover still works on desktop — disable on touch */
+  @media (hover: none) {
+    .skill-row-bg {
+      display: none;
+    }
+
+    .skill-row.is-hovered .skill-num,
+    .skill-row.is-hovered .skill-name,
+    .skill-row.is-hovered .skill-tag,
+    .skill-row.is-hovered .skill-dots,
+    .skill-row.is-hovered .skill-icon,
+    .skill-row.is-hovered .skill-exploring-badge {
+      color: inherit;
+    }
+  }
+}
+
+@media (max-width: 640px) {
+  .skills-display-title {
+    font-size: clamp(52px, 22vw, 90px);
+  }
+
+  .skill-name {
+    font-size: clamp(14px, 4vw, 17px);
+  }
+}
+
+/* ─── 9. REDUCED MOTION ──────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .skill-row-bg,
+  .skill-num,
+  .skill-name,
+  .skill-icon,
+  .skill-dots,
+  .skill-tag,
+  .skill-exploring-badge {
+    transition: none !important;
+    animation: none !important;
+  }
+
+  .skills-display-title,
+  .skills-subtitle {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

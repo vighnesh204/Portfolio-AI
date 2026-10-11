@@ -23,13 +23,13 @@ const WORDS_PRIMARY = [
 ];
 
 const WORDS_SECONDARY = [
-  'CREATIVE DEVELOPMENT',
-  'PERFORMANCE',
-  'REACT 19',
-  'GSAP MOTION',
-  'FULL STACK',
-  'MODERN WEB',
-  'CONTINUOUS LEARNING',
+  'creative development',
+  'web performance',
+  'interface craft',
+  'clean architecture',
+  'modern react',
+  'continuous learning',
+  'engineering fundamentals',
 ];
 
 // Double buffer for mathematically seamless -50% CSS looping

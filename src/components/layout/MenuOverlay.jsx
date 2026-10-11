@@ -153,9 +153,8 @@ function MenuOverlay({ isOpen, onClose, onNavigate }) {
         {/* Top Bar — Wordmark & Close Button */}
         <div className="menu-topbar">
           <div className="menu-brand">
-            <span className="menu-wordmark">VIGHNESH</span>
-            <span className="menu-brand-dot" aria-hidden="true">.</span>
-          </div>
+              <span className="wordmark-signature menu-wordmark-sig">Vighnesh Borhade.</span>
+            </div>
           <button
             className="menu-close-btn"
             onClick={onClose}

@@ -1,20 +1,12 @@
 // src/data/aiLearning.js
-// Placeholder — replace with real Namaste AI season data in Phase 2.
-// Represents Vighnesh's Namaste AI journey, organised by season.
+// Re-export from modular data architecture in src/data/aiLearning/
 
-const aiLearning = [
-  // {
-  //   season: '1',
-  //   title: '[Season 1 title placeholder]',
-  //   description: '[Season description placeholder]',
-  //   notes: [
-  //     {
-  //       note: 'episode-1',
-  //       title: '[Note title placeholder]',
-  //       content: null,
-  //     },
-  //   ],
-  // },
-];
+import seasons, {
+  getAllSeasons,
+  getSeasonBySlug,
+  getNoteBySlug,
+  getAllNotes,
+} from './aiLearning/index';
 
-export default aiLearning;
+export { getAllSeasons, getSeasonBySlug, getNoteBySlug, getAllNotes };
+export default seasons;

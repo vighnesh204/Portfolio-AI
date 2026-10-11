@@ -8,12 +8,11 @@ function Header({ onMenuOpen, onNavigate }) {
       <TransitionLink
         to="/"
         className="site-header__wordmark"
-        aria-label="Vighnesh — home"
+        aria-label="Vighnesh Borhade — home"
         onNavigate={onNavigate}
         data-cursor="go"
       >
-        <span className="wordmark-main">VIGHNESH</span>
-        <span className="wordmark-dot" aria-hidden="true">.</span>
+        <span className="wordmark-signature">Vighnesh Borhade.</span>
       </TransitionLink>
 
       <div className="site-header__status" aria-hidden="true">

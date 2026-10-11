@@ -1,0 +1,840 @@
+/* ============================================================
+   NAMASTE AI / AI LEARNING — SECTION & COMPONENT STYLES
+   Choreographed Scroll Architecture Based on Reference Certs
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   1. SECTION CONTAINER & PINNED VIEWPORT
+   ------------------------------------------------------------ */
+
+.ai-learning-scroll-section {
+  position: relative;
+  width: 100%;
+  background-color: var(--bg);
+}
+
+.ai-learning-section__top-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: var(--line);
+  z-index: 15;
+}
+
+/* Pinned Viewport Container */
+.ai-learning-pin-container {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+@media (max-width: 1024px) {
+  .ai-learning-pin-container {
+    min-height: auto;
+    padding-top: clamp(64px, 10vh, 100px);
+    padding-bottom: clamp(64px, 10vh, 120px);
+  }
+}
+
+.ai-section-split {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(32px, 5vw, 64px);
+  width: 100%;
+  position: relative;
+}
+
+@media (max-width: 1024px) {
+  .ai-section-split {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3.5rem;
+  }
+}
+
+/* ------------------------------------------------------------
+   2. LEFT COLUMN: EDITORIAL ANCHOR / SIDEBAR
+   ------------------------------------------------------------ */
+
+.ai-section-sidebar {
+  width: 100%;
+  max-width: 360px;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 25;
+}
+
+@media (max-width: 1024px) {
+  .ai-section-sidebar {
+    max-width: 100%;
+  }
+}
+
+.ai-section-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--mut);
+  margin-bottom: 1.25rem;
+}
+
+.ai-section-eyebrow__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--accent);
+  box-shadow: 0 0 8px rgba(255, 91, 31, 0.4);
+}
+
+.ai-section-title {
+  font-family: var(--disp);
+  font-size: clamp(2.8rem, 5.2vw, 4.8rem);
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: -0.035em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin-bottom: 1.5rem;
+  will-change: transform;
+}
+
+.ai-title-line {
+  display: block;
+  white-space: nowrap;
+}
+
+.ai-section-title .char {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+.ai-section-subtitle-block {
+  margin-bottom: 2rem;
+}
+
+.ai-section-subtitle {
+  font-family: var(--sans);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--mut);
+  margin-bottom: 0.35rem;
+}
+
+.ai-section-instruction {
+  font-family: var(--serif);
+  font-size: clamp(1.25rem, 2vw, 1.65rem);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--ink);
+  opacity: 0.9;
+  line-height: 1.3;
+}
+
+/* Counter Line: 01 ────────── 02 */
+.ai-section-counter-row {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  width: 100%;
+  max-width: 240px;
+  margin-bottom: 2.25rem;
+}
+
+.ai-counter-num {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  color: var(--faint);
+  flex-shrink: 0;
+  transition: color 0.3s ease;
+}
+
+.ai-counter-num.is-active {
+  color: var(--ink);
+}
+
+.ai-counter-track {
+  flex: 1;
+  height: 1px;
+  background-color: var(--line2);
+  position: relative;
+  overflow: hidden;
+}
+
+.ai-counter-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.1s linear;
+}
+
+.ai-section-sidebar-cta {
+  padding-top: 0.5rem;
+}
+
+/* ------------------------------------------------------------
+   3. RIGHT COLUMN: CHOREOGRAPHED CARD STAGE
+   ------------------------------------------------------------ */
+
+.ai-cards-stage {
+  flex: 1;
+  min-width: 0;
+  height: 560px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  perspective: 1400px;
+  /* Visual boundary: strictly clips outgoing cards at the stage's left boundary so they never cross into the title zone */
+  clip-path: inset(-40px -100vw -40px 0px);
+  z-index: 10;
+}
+
+@media (max-width: 1024px) {
+  .ai-cards-stage {
+    height: auto;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+    align-items: center;
+    perspective: none;
+    clip-path: none;
+  }
+}
+
+/* ─── Layer 1: Motion Wrapper (Animated by GSAP) ─── */
+.season-card-motion {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  max-width: 410px;
+  height: 520px;
+  will-change: transform, opacity;
+}
+
+@media (max-width: 1024px) {
+  .season-card-motion {
+    position: relative;
+    top: auto;
+    left: auto;
+    width: 100%;
+    max-width: 440px;
+    height: auto;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
+
+/* ------------------------------------------------------------
+   4. SEASON CARD: 3D PERSPECTIVE OBJECT & FLIP
+   ------------------------------------------------------------ */
+
+.season-card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 520px;
+  background: transparent;
+  outline: none;
+  cursor: pointer;
+  border-radius: 26px;
+  user-select: none;
+}
+
+@media (max-width: 1024px) {
+  .season-card {
+    min-height: 500px;
+  }
+}
+
+/* ─── Layer 2: Tilt Wrapper (Controlled by Pointer Move) ─── */
+.season-card__tilt-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 520px;
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+  will-change: transform;
+  border-radius: 26px;
+}
+
+@media (max-width: 1024px) {
+  .season-card__tilt-wrapper {
+    min-height: 500px;
+    transform: none !important;
+  }
+}
+
+/* ─── Layer 3: Flipper Wrapper (Toggles 180deg Flip on Click) ─── */
+.season-card__flipper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 520px;
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  transition: transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+  border-radius: 26px;
+}
+
+@media (max-width: 1024px) {
+  .season-card__flipper {
+    min-height: 500px;
+  }
+}
+
+.season-card.is-flipped .season-card__flipper {
+  transform: rotateY(180deg);
+}
+
+/* Face Shared Properties */
+.season-card__face {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 26px;
+  padding: clamp(24px, 3.2vw, 36px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+/* ─── Front Face: Dark Tactile Surface ─── */
+.season-card__face--front {
+  background-color: #11100e;
+  border: 1px solid var(--line);
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.42);
+  z-index: 2;
+  transform: rotateY(0deg);
+  transition: border-color 0.3s ease, box-shadow 0.4s ease;
+}
+
+.season-card:hover .season-card__face--front {
+  border-color: rgba(239, 232, 220, 0.28);
+  box-shadow: 0 28px 60px rgba(0, 0, 0, 0.55);
+}
+
+/* Moving Surface Glint */
+.season-card__glint {
+  position: absolute;
+  inset: -60%;
+  background: linear-gradient(
+    115deg,
+    transparent 35%,
+    rgba(239, 232, 220, 0.04) 48%,
+    rgba(239, 232, 220, 0.16) 50%,
+    rgba(239, 232, 220, 0.04) 52%,
+    transparent 65%
+  );
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease, transform 0.2s ease-out;
+  transform: translate(0, 0);
+  z-index: 8;
+  border-radius: 26px;
+}
+
+.season-card:hover .season-card__glint {
+  opacity: 1;
+}
+
+/* Ghost Outlined Numeral Watermark */
+.season-card__ghost-num {
+  position: absolute;
+  right: 0.75rem;
+  bottom: 3.75rem;
+  font-family: var(--disp);
+  font-size: clamp(8.5rem, 14vw, 11.5rem);
+  font-weight: 900;
+  line-height: 0.8;
+  letter-spacing: -0.05em;
+  color: transparent;
+  -webkit-text-stroke-width: 1.5px;
+  pointer-events: none;
+  user-select: none;
+  z-index: 1;
+  opacity: 0.85;
+  transition: transform 0.5s var(--ease), opacity 0.4s ease;
+}
+
+.season-card:hover .season-card__ghost-num {
+  transform: scale(1.04) translate(-4px, -4px);
+}
+
+/* Card Top Row */
+.season-card__top-row {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.season-card__circle-badge {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: #0b0a09;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  flex-shrink: 0;
+}
+
+.season-card__circle-badge--dark {
+  background-color: #0b0a09 !important;
+  color: #ffffff;
+}
+
+.season-card__counter-label {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--mut);
+}
+
+.season-card__counter-label--back {
+  color: rgba(11, 10, 9, 0.7);
+  font-weight: 600;
+}
+
+/* Card Body Area */
+.season-card__body-area {
+  position: relative;
+  z-index: 3;
+  padding: 1.25rem 0;
+}
+
+.season-card__title {
+  font-family: var(--disp);
+  font-size: clamp(1.75rem, 2.5vw, 2.35rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin-bottom: 0.6rem;
+}
+
+.season-card__title--back {
+  color: #0b0a09;
+}
+
+.season-card__subtitle {
+  font-family: var(--serif);
+  font-size: clamp(1.15rem, 1.4vw, 1.35rem);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--ink);
+  opacity: 0.85;
+  line-height: 1.35;
+  margin-bottom: 1.25rem;
+  max-width: 320px;
+}
+
+.season-card__subtitle--back {
+  color: #0b0a09;
+  opacity: 0.85;
+  margin-bottom: 1rem;
+}
+
+/* Concept Pills */
+.season-card__concept-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.season-card__pill {
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.6rem;
+  background: rgba(239, 232, 220, 0.04);
+  border: 1px solid var(--line);
+  color: var(--mut);
+  border-radius: 9999px;
+}
+
+/* Card Footer Row */
+.season-card__bottom-row {
+  position: relative;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid var(--line);
+  padding-top: 1.25rem;
+}
+
+.season-card__bottom-row--back {
+  border-top: 1px solid rgba(11, 10, 9, 0.2);
+}
+
+.season-card__meta-tags {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mut);
+}
+
+.season-card__meta-tags--back {
+  color: rgba(11, 10, 9, 0.7);
+  font-weight: 600;
+}
+
+.season-card__tag-divider {
+  color: var(--faint);
+}
+
+.season-card__turn-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink);
+  font-weight: 600;
+  padding: 0.35rem 0.75rem;
+  border: 1px solid var(--line2);
+  border-radius: 9999px;
+  background: rgba(239, 232, 220, 0.04);
+  transition: all 0.25s var(--ease);
+  flex-shrink: 0;
+}
+
+.season-card:hover .season-card__turn-trigger {
+  color: #ffffff;
+  border-color: var(--ink);
+  background: rgba(239, 232, 220, 0.1);
+}
+
+.season-card:hover .season-card__turn-icon {
+  transform: rotate(180deg);
+}
+
+.season-card__turn-icon {
+  display: inline-block;
+  transition: transform 0.4s var(--ease);
+}
+
+.season-card__turn-trigger--back {
+  color: #0b0a09;
+  border-color: rgba(11, 10, 9, 0.35);
+  background: rgba(11, 10, 9, 0.08);
+}
+
+.season-card:hover .season-card__turn-trigger--back {
+  color: #0b0a09;
+  border-color: #0b0a09;
+  background: rgba(11, 10, 9, 0.16);
+}
+
+/* ─── Back Face: Inverted Accent Surface ─── */
+.season-card__face--back {
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  transform: rotateY(180deg);
+  z-index: 1;
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.5);
+  color: #0b0a09;
+}
+
+.season-card__back-notes {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin-bottom: 1.1rem;
+}
+
+.season-card__back-note-line {
+  display: flex;
+  align-items: baseline;
+  gap: 0.65rem;
+  font-size: 0.8125rem;
+  color: #0b0a09;
+  border-bottom: 1px solid rgba(11, 10, 9, 0.12);
+  padding-bottom: 0.35rem;
+}
+
+.season-card__back-note-ep {
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  opacity: 0.8;
+  flex-shrink: 0;
+}
+
+.season-card__back-note-txt {
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.season-card__back-project-box {
+  padding: 0.65rem 0.85rem;
+  background: rgba(11, 10, 9, 0.1);
+  border: 1px solid rgba(11, 10, 9, 0.15);
+  border-radius: 6px;
+  margin-bottom: 1.25rem;
+}
+
+.season-card__back-placeholder-box {
+  padding: 1.25rem 1rem;
+  background: rgba(11, 10, 9, 0.08);
+  border: 1px dashed rgba(11, 10, 9, 0.25);
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+}
+
+.season-card__back-placeholder-text {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: #0b0a09;
+  margin: 0;
+  opacity: 0.9;
+}
+
+.season-card__back-project-sub {
+  display: block;
+  font-family: var(--mono);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  opacity: 0.75;
+  margin-bottom: 0.15rem;
+}
+
+.season-card__back-project-title {
+  display: block;
+  font-family: var(--disp);
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.season-card__explore-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  width: 100%;
+  padding: 0.85rem 1.25rem;
+  background: #0b0a09;
+  color: #ffffff;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  border-radius: 9999px;
+  transition: all 0.25s var(--ease);
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+}
+
+.season-card__explore-btn:hover {
+  background: #ffffff;
+  color: #0b0a09;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+}
+
+/* ------------------------------------------------------------
+   5. EXPLORE LINK / CTA STYLING
+   ------------------------------------------------------------ */
+
+.ai-learning-explore-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--mono);
+  font-size: 0.8125rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink);
+  padding: 0.75rem 1.4rem;
+  border: 1px solid var(--line2);
+  border-radius: 2px;
+  transition: all 0.25s var(--ease);
+}
+
+.ai-learning-explore-link:hover {
+  background-color: var(--ink);
+  color: var(--bg);
+  border-color: var(--ink);
+}
+
+.ai-learning-explore-link svg {
+  transition: transform 0.25s var(--ease);
+}
+
+.ai-learning-explore-link:hover svg {
+  transform: translateX(4px);
+}
+
+/* ------------------------------------------------------------
+   6. EDITORIAL NOTES TABLE (FOR DEDICATED PAGES)
+   ------------------------------------------------------------ */
+
+.editorial-notes-table {
+  width: 100%;
+  margin: 2.5rem 0;
+  border-top: 1px solid var(--line);
+}
+
+.editorial-note-row {
+  display: grid;
+  grid-template-columns: 80px 1fr 180px 100px;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.35rem 0.5rem;
+  border-bottom: 1px solid var(--line);
+  transition: background-color 0.2s ease, padding-left 0.25s var(--ease);
+  text-decoration: none;
+  color: inherit;
+}
+
+.editorial-note-row:hover {
+  background-color: rgba(239, 232, 220, 0.03);
+  padding-left: 0.75rem;
+}
+
+.editorial-note-row__num {
+  font-family: var(--mono);
+  font-size: 0.8125rem;
+  letter-spacing: 0.14em;
+  color: var(--mut);
+}
+
+.editorial-note-row__title {
+  font-family: var(--disp);
+  font-size: clamp(1.05rem, 1.8vw, 1.35rem);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+  transition: color 0.2s ease;
+}
+
+.editorial-note-row:hover .editorial-note-row__title {
+  color: var(--accent);
+}
+
+.editorial-note-row__topic {
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mut);
+}
+
+.editorial-note-row__action {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink);
+  text-align: right;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.35rem;
+  transition: transform 0.2s var(--ease);
+}
+
+.editorial-note-row:hover .editorial-note-row__action {
+  transform: translateX(4px);
+  color: var(--accent);
+}
+
+@media (max-width: 768px) {
+  .editorial-note-row {
+    grid-template-columns: 50px 1fr 40px;
+    gap: 0.75rem;
+    padding: 1rem 0.25rem;
+  }
+  .editorial-note-row__topic {
+    display: none;
+  }
+}
+
+/* ------------------------------------------------------------
+   7. REDUCED MOTION OVERRIDES
+   ------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  .ai-learning-pin-container {
+    min-height: auto !important;
+  }
+
+  .ai-cards-stage {
+    height: auto !important;
+    flex-direction: column !important;
+    gap: 2rem !important;
+  }
+
+  .season-card-motion {
+    position: relative !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+
+  .season-card__tilt-wrapper,
+  .season-card__flipper,
+  .season-card__ghost-num,
+  .season-card__glint {
+    transition: none !important;
+    transform: none !important;
+  }
+
+  .season-card.is-flipped .season-card__flipper {
+    transform: rotateY(180deg) !important;
+  }
+
+  .ai-section-title .char {
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}

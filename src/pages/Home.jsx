@@ -2,6 +2,8 @@ import Hero from '../sections/hero/Hero';
 import Marquee from '../sections/marquee/Marquee';
 import OpeningSequence from '../components/opening/OpeningSequence';
 import SelectedWork from '../sections/projects/SelectedWork';
+import AiLearningSection from '../sections/aiLearning/AiLearningSection';
+import SkillsSection from '../sections/skills/SkillsSection';
 
 function Home() {
   return (
@@ -10,7 +12,9 @@ function Home() {
       <Hero />
       <Marquee />
       <SelectedWork />
-      {/* Future sections: Manifesto, Developer DNA, AI Learning, Lab, Journey, Contact CTA */}
+      <AiLearningSection />
+      <SkillsSection />
+      {/* Future sections: About, Journey, Lab, Contact CTA */}
     </main>
   );
 }

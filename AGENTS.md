@@ -107,6 +107,8 @@ navigation click
 
 GSAP is the primary animation library.
 
+Each major portfolio section should recreate the UNIQUE scroll and interaction behavior of its corresponding reference section instead of using generic repeated animations.
+
 Prefer:
 
 - transform

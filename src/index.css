@@ -39,6 +39,12 @@
   --accent-teal:      #3fc9b9;
   --color-accent-dim: rgba(255, 91, 31, 0.45);
 
+  /* --- Marquee Strip Colors (Reference Exact) --- */
+  --marquee-a-bg:     #ff5a1f;   /* Vibrant safety orange */
+  --marquee-a-text:   #0b0a09;   /* Near-black text */
+  --marquee-b-bg:     #eae6dc;   /* Warm off-white / paper cream */
+  --marquee-b-text:   #0b0a09;   /* Near-black text */
+
   /* --- Typography: Font Stacks --- */
   --disp:  'Archivo', 'DM Sans', system-ui, -apple-system, sans-serif;
   --serif: 'Instrument Serif', Georgia, serif;
@@ -210,7 +216,13 @@ a {
   transform: scale(1);
 }
 
-.custom-cursor.is-open {
+.custom-cursor.is-open,
+.custom-cursor.is-view,
+.custom-cursor.is-try,
+.custom-cursor.is-close,
+.custom-cursor.is-explore,
+.custom-cursor.is-read,
+.custom-cursor.is-flip {
   width: 72px;
   height: 72px;
   margin: -36px 0 0 -36px;
@@ -252,16 +264,19 @@ a {
 .site-header__wordmark {
   display: inline-flex;
   align-items: baseline;
-  font-family: var(--disp);
-  font-size: 1.15rem;
-  font-weight: 800;
-  letter-spacing: -0.02em;
   color: var(--ink);
   transition: color var(--duration-fast) var(--ease);
 }
 
-.site-header__wordmark .wordmark-dot {
-  color: var(--accent);
+/* Editorial italic script signature — Instrument Serif italic */
+.wordmark-signature {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 1.25rem;
+  letter-spacing: 0.01em;
+  color: var(--ink);
+  white-space: nowrap;
 }
 
 .site-header__status {
@@ -456,36 +471,35 @@ a {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: calc(64px + 3vh) 0 calc(20px + 3vh);
+  padding: calc(64px + 1vh) 0 clamp(24px, 3vh, 48px);
   overflow: hidden;
   isolation: isolate;
 }
 
+/* Atmospheric warm glow — centered behind the name */
 .hero-flare {
   position: absolute;
-  left: 0;
-  right: 0;
-  top: 42%;
-  height: 1px;
+  left: 50%;
+  top: 50%;
+  translate: -50% -48%;
+  width: 90vw;
+  height: 55vh;
   z-index: -1;
   pointer-events: none;
-  opacity: 0.45;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 91, 31, 0.3) 25%,
-    #ffffff 50%,
-    rgba(255, 91, 31, 0.3) 75%,
-    transparent
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(180, 80, 20, 0.22) 0%,
+    rgba(20, 55, 40, 0.18) 45%,
+    transparent 70%
   );
-  box-shadow: 0 0 20px 1px rgba(255, 91, 31, 0.4);
+  filter: blur(40px);
 }
 
 .hero-inner {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  gap: clamp(24px, 4vh, 48px);
+  gap: 0;
 }
 
 /* Top Meta Row */
@@ -518,25 +532,36 @@ a {
   box-shadow: 0 0 8px rgba(55, 208, 143, 0.6);
 }
 
-/* Headline */
+/* Headline: Two-line centered dominant name — VIGHNESH / BORHADE */
 .hero-headline {
-  margin: 0;
+  margin: clamp(14px, 2.5vh, 28px) 0 clamp(16px, 3vh, 36px);
   font-family: var(--disp);
-  font-size: clamp(52px, 13.5vw, 210px);
+  /* Refined clamp: dominant but with elegant breathing room matching reference */
+  font-size: clamp(52px, 14.2vw, 208px);
   font-weight: 900;
-  line-height: 0.82;
-  letter-spacing: -0.045em;
+  line-height: 0.92;
+  letter-spacing: -0.035em;
   text-transform: uppercase;
+  text-align: center;
   user-select: none;
 }
 
 .hero-row {
   display: block;
   white-space: nowrap;
+  text-align: center;
 }
 
-.hero-row--2 {
-  text-align: right;
+/* Both name rows share the same centered block display with slight breathing room */
+.hero-row--first {
+  display: block;
+  text-align: center;
+  margin-bottom: clamp(2px, 0.5vh, 8px);
+}
+
+.hero-row--second {
+  display: block;
+  text-align: center;
 }
 
 .hero-clip {
@@ -547,44 +572,32 @@ a {
 
 .hero-char {
   display: inline-block;
-  transition: transform 0.4s var(--ease),
-              color 0.4s var(--ease),
-              -webkit-text-stroke 0.4s var(--ease);
-}
-
-.hero-space {
-  display: inline-block;
-  width: 0.32em;
-}
-
-.hc-outline {
-  color: transparent;
-  -webkit-text-stroke: 1.5px var(--ink);
+  transition: transform 0.35s var(--ease),
+              color 0.35s var(--ease);
 }
 
 .hc-solid {
-  color: var(--ink);
+  color: #f4f1ea;
 }
 
 .hc-accent {
-  color: var(--ink);
+  color: var(--accent);
 }
 
 @media (hover: hover) {
   .hero-char:hover {
-    transform: translateY(-12%) rotate(-2deg) scale(1.04);
+    transform: translateY(-8%) rotate(-2deg) scale(1.03);
     color: var(--accent);
-    -webkit-text-stroke: 0px transparent;
   }
 }
 
-/* Lower Editorial Grid */
+/* Lower Editorial Grid — sits below the name */
 .hero-sub {
   display: grid;
   grid-template-columns: 1fr 1.15fr;
   gap: clamp(24px, 5vw, 84px);
   align-items: flex-end;
-  margin-top: clamp(16px, 3vh, 36px);
+  padding-top: clamp(16px, 2.5vh, 32px);
 }
 
 .hero-sub__left {
@@ -842,22 +855,18 @@ a {
 }
 
 .tape--a {
-  background-color: var(--bg2);
-  color: var(--ink);
-  transform: rotate(-3deg);
+  background-color: var(--marquee-a-bg);
+  color: var(--marquee-a-text);
+  transform: rotate(2.6deg);
   z-index: 2;
-  border-top: 1px solid var(--line2);
-  border-bottom: 1px solid var(--line2);
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.45);
 }
 
 .tape--b {
-  background-color: #050404;
-  color: var(--mut);
-  transform: rotate(2.8deg);
+  background-color: var(--marquee-b-bg);
+  color: var(--marquee-b-text);
+  transform: rotate(-2.6deg);
   z-index: 1;
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
 }
 
 .tape-track {
@@ -898,7 +907,10 @@ a {
   letter-spacing: -0.02em;
   text-transform: uppercase;
   line-height: 1;
-  transition: color 0.25s var(--ease);
+}
+
+.tape--a .tape-word {
+  color: var(--marquee-a-text);
 }
 
 .tape--b .tape-word {
@@ -908,10 +920,7 @@ a {
   letter-spacing: 0;
   text-transform: none;
   font-size: clamp(24px, 3.8vw, 48px);
-}
-
-.tape-item:hover .tape-word {
-  color: var(--accent);
+  color: var(--marquee-b-text);
 }
 
 .tape-separator {
@@ -919,19 +928,14 @@ a {
   vertical-align: middle;
 }
 
-.tape-separator--block {
-  width: 0.32em;
-  height: 0.46em;
-  border-radius: 2px;
-  background-color: var(--accent);
-  opacity: 0.8;
-}
-
+.tape-separator--block,
+.tape-separator--square,
 .tape-separator--dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background-color: var(--line2);
+  width: clamp(8px, 1.1vw, 14px);
+  height: clamp(8px, 1.1vw, 14px);
+  background-color: #0b0a09;
+  border-radius: 2px;
+  opacity: 0.85;
 }
 
 @keyframes tape-scroll-forward {
@@ -988,15 +992,11 @@ a {
 }
 
 .menu-brand {
-  font-family: var(--disp);
-  font-size: 1.15rem;
-  font-weight: 800;
-  letter-spacing: -0.02em;
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-style: italic;
+  font-size: 1.25rem;
+  font-weight: 400;
   color: var(--ink);
-}
-
-.menu-brand-dot {
-  color: var(--accent);
 }
 
 .menu-close-btn {
@@ -1216,13 +1216,19 @@ a {
 @media (max-width: 1024px) {
   .hero-sub {
     grid-template-columns: 1fr;
-    gap: 32px;
+    gap: 28px;
   }
 }
 
 @media (max-width: 768px) {
   .site-header__status {
     display: none;
+  }
+
+  .hero-headline {
+    font-size: clamp(44px, 12.2vw, 108px);
+    line-height: 0.90;
+    letter-spacing: -0.03em;
   }
 
   .hero-sub__left {
@@ -1237,9 +1243,11 @@ a {
 }
 
 @media (max-width: 480px) {
+  /* Ensure VIGHNESH / BORHADE never overflow on 375px */
   .hero-headline {
-    font-size: clamp(40px, 14vw, 68px);
-    line-height: 0.88;
+    font-size: clamp(38px, 11.2vw, 64px);
+    line-height: 0.92;
+    letter-spacing: -0.025em;
   }
 
   .hero-foot {

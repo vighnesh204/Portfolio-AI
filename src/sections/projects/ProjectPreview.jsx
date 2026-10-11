@@ -1,153 +1,155 @@
 import { useEffect, useRef } from 'react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import TransitionLink from '../../components/ui/TransitionLink';
-
-gsap.registerPlugin(ScrollTrigger);
+import {
+  InterviewAiDemo,
+  DevFlowDemo,
+  PortfolioAiDemo,
+  AlgoForgeDemo,
+} from './ProjectDemos';
 
 // ─── ProjectPreview ────────────────────────────────────────────────────────
-// Single editorial project presentation used in SelectedWork and /work.
-//
-// Props:
-//   project   — project object from projects.js
-//   index     — 0-based index (used for alt layout and animation stagger)
-//   showDesc  — whether to show the short description (default: true)
+// Editorial expandable project presentation replicating the reference website's
+// accordion architecture, typography shifts, hover fill, and bespoke live demos.
 // ──────────────────────────────────────────────────────────────────────────
 
-export default function ProjectPreview({ project, index = 0, showDesc = true }) {
-  const featureRef = useRef(null);
-  const contentRef = useRef(null);
-  const mediaRef   = useRef(null);
+export default function ProjectPreview({
+  project,
+  index = 0,
+  isOpen = false,
+  onToggle,
+  onHover,
+}) {
+  const rowRef = useRef(null);
 
-  const isAlt = index % 2 !== 0;
-
-  useEffect(() => {
-    const el = featureRef.current;
-    if (!el) return;
-
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReduced) return;
-
-    const contentEls = contentRef.current?.children;
-    const mediaEl    = mediaRef.current;
-
-    if (!contentEls || !mediaEl) return;
-
-    // Set initial states
-    gsap.set([...contentEls], { opacity: 0, y: 28 });
-    gsap.set(mediaEl, { opacity: 0, y: 20 });
-
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: el,
-        start: 'top 82%',
-        once: true,
-      },
-    });
-
-    tl.to([...contentEls], {
-      opacity: 1,
-      y: 0,
-      duration: 0.65,
-      ease: 'power3.out',
-      stagger: 0.08,
-    }).to(
-      mediaEl,
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.7,
-        ease: 'power3.out',
-      },
-      '-=0.5'
-    );
-
-    return () => {
-      tl.kill();
-      ScrollTrigger.getAll().forEach((st) => {
-        if (st.vars?.trigger === el) st.kill();
-      });
-    };
-  }, []);
+  const renderDemo = () => {
+    switch (project.id) {
+      case 'interview-ai':
+        return <InterviewAiDemo />;
+      case 'dev-flow':
+        return <DevFlowDemo />;
+      case 'portfolio-ai':
+        return <PortfolioAiDemo />;
+      case 'dsa-tracker':
+        return <AlgoForgeDemo />;
+      default:
+        return (
+          <div className="demo-box demo-box--default">
+            <div className="demo-header">
+              <span className="demo-badge">Live Architecture Overview</span>
+            </div>
+            <p className="demo-default-text">{project.description}</p>
+          </div>
+        );
+    }
+  };
 
   return (
     <article
-      ref={featureRef}
-      className={`project-feature${isAlt ? ' project-feature--alt' : ''}`}
+      ref={rowRef}
+      className={`pj ${isOpen ? 'pj--open' : ''}`}
+      style={{ '--pj-index': index, '--pj-accent': project.accentColor || 'var(--ember)' }}
     >
-      <div className="project-feature__inner">
-        {/* ── Content ── */}
-        <div ref={contentRef} className="project-feature__content">
-          {/* Meta row */}
-          <div className="project-feature__meta">
-            <span className="project-feature__number">{project.number}</span>
-            <span className="project-feature__category">{project.category}</span>
-            <span className="project-feature__year">{project.year}</span>
+      {/* ── Accordion Header Button ── */}
+      <button
+        type="button"
+        className="pj-head"
+        aria-expanded={isOpen}
+        aria-controls={`pj-panel-${project.id}`}
+        onClick={onToggle}
+        onPointerEnter={() => onHover && onHover(project)}
+        onPointerLeave={() => onHover && onHover(null)}
+        data-cursor={isOpen ? 'close' : 'view'}
+      >
+        <span className="pj-num">{project.number}</span>
+
+        <span className="pj-title-wrap">
+          <span className="pj-title">{project.title}</span>
+          <small className="pj-category">({project.category})</small>
+        </span>
+
+        <span className="pj-tech-summary">
+          {project.technologies.slice(0, 4).join(' · ')}
+        </span>
+
+        <span className="pj-toggle-icon" aria-hidden="true" />
+      </button>
+
+      {/* ── Expandable Drawer Body ── */}
+      <div
+        className="pj-body"
+        id={`pj-panel-${project.id}`}
+        role="region"
+        aria-labelledby={`pj-title-${project.id}`}
+      >
+        <div className="pj-body-inner">
+          <div className="pj-content">
+            {/* Left Column: Editorial Summary & Actions */}
+            <div className="pj-info">
+              <p className="pj-desc">{project.shortDescription}</p>
+
+              {project.problem && (
+                <div className="pj-note">
+                  <span className="pj-note-label">The Core Problem:</span>
+                  <p className="pj-note-text">{project.problem}</p>
+                </div>
+              )}
+
+              {/* Technology badges */}
+              <div className="pj-tags" aria-label="Key Technologies">
+                {project.technologies.map((tech) => (
+                  <span key={tech} className="pj-tag">
+                    {tech}
+                  </span>
+                ))}
+              </div>
+
+              {/* Action Links */}
+              <div className="pj-actions">
+                <TransitionLink
+                  to={`/work/${project.slug}`}
+                  className="pj-cta-link"
+                  data-cursor="view"
+                  aria-label={`View full ${project.title} case study`}
+                >
+                  View Case Study
+                  <span className="pj-arrow" aria-hidden="true">
+                    ↗
+                  </span>
+                </TransitionLink>
+
+                {project.github && (
+                  <a
+                    href={project.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="pj-secondary-link"
+                    data-cursor="open"
+                  >
+                    GitHub Repository ↗
+                  </a>
+                )}
+
+                {project.live && project.live !== '#' && (
+                  <a
+                    href={project.live}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="pj-secondary-link"
+                    data-cursor="open"
+                  >
+                    Live Demo ↗
+                  </a>
+                )}
+              </div>
+            </div>
+
+            {/* Right Column: Bespoke Interactive Preview */}
+            <div className="pj-demo-col">
+              {renderDemo()}
+            </div>
           </div>
-
-          {/* Title */}
-          <h3 className="project-feature__title">{project.title}</h3>
-
-          {/* Description */}
-          {showDesc && project.shortDescription && (
-            <p className="project-feature__desc">{project.shortDescription}</p>
-          )}
-
-          {/* Tech tags */}
-          {project.technologies && project.technologies.length > 0 && (
-            <div className="project-feature__tags">
-              {project.technologies.slice(0, 5).map((tech) => (
-                <span key={tech} className="project-tag">
-                  {tech}
-                </span>
-              ))}
-            </div>
-          )}
-
-          {/* CTA */}
-          <TransitionLink
-            to={`/work/${project.slug}`}
-            className="project-feature__cta"
-            aria-label={`View ${project.title} project`}
-          >
-            View Project
-            <span className="project-feature__cta-arrow" aria-hidden="true">
-              →
-            </span>
-          </TransitionLink>
         </div>
-
-        {/* ── Media ── */}
-        <TransitionLink
-          to={`/work/${project.slug}`}
-          ref={mediaRef}
-          className="project-feature__media"
-          data-cursor="view"
-          aria-label={`View ${project.title} project`}
-          tabIndex="-1"
-        >
-          {project.image ? (
-            <img
-              src={project.image}
-              alt={`${project.title} — project screenshot`}
-              className="project-feature__img"
-              loading="lazy"
-              decoding="async"
-            />
-          ) : (
-            <div className="project-feature__placeholder" aria-hidden="true">
-              <span className="project-feature__placeholder-label">
-                [Visual Placeholder]
-              </span>
-              <span className="project-feature__placeholder-title">
-                {project.number}
-              </span>
-            </div>
-          )}
-          <div className="project-feature__media-overlay" aria-hidden="true" />
-        </TransitionLink>
       </div>
     </article>
   );
 }
-

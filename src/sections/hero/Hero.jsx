@@ -13,20 +13,21 @@ import TransitionLink from '../../components/ui/TransitionLink';
 //   - Restrained pointer interactions: subtle letter lift, rotate, and accent.
 // ──────────────────────────────────────────────────────────────────────────
 
-const splitLetters = (text, rowClass = '') => {
-  return text.split('').map((char, i) => (
-    char === ' ' ? (
-      <span key={i} className="hero-space">&nbsp;</span>
-    ) : (
+const splitLetters = (word, accentIndex = -1) => {
+  return word.split('').map((char, i) => {
+    // When accentIndex is specified, that character receives the vibrant orange accent color
+    const isAccent = i === accentIndex;
+    const charClass = isAccent ? 'hc-accent' : 'hc-solid';
+    return (
       <span
         key={i}
-        className={`hero-char ${rowClass}`}
+        className={`hero-char ${charClass}`}
         data-cursor="hover"
       >
         {char}
       </span>
-    )
-  ));
+    );
+  });
 };
 
 export default function Hero() {
@@ -91,28 +92,23 @@ export default function Hero() {
           <span className="hero-meta__loc">PUNE, INDIA · 18.52°N 73.85°E</span>
         </div>
 
-        {/* ── Massive Editorial Headline ── */}
+        {/* ── Massive Editorial Headline: Two Centered Lines VIGHNESH / BORHADE ── */}
         <h1
           ref={headlineRef}
           className="hero-headline"
-          aria-label="I build for the web."
+          aria-label="Vighnesh Borhade"
         >
-          <span className="hero-row hero-row--1" aria-hidden="true">
+          <span className="hero-row hero-row--first" aria-hidden="true">
             <span className="hero-clip">
-              {splitLetters('I BUILD', 'hc-outline')}
+              {splitLetters('VIGHNESH')}
             </span>
           </span>
-          <span className="hero-row hero-row--2" aria-hidden="true">
+          <span className="hero-row hero-row--second" aria-hidden="true">
             <span className="hero-clip">
-              {splitLetters('FOR THE', 'hc-solid')}
+              {splitLetters('BORHADE', 3)}
             </span>
           </span>
-          <span className="hero-row hero-row--3" aria-hidden="true">
-            <span className="hero-clip">
-              {splitLetters('WEB.', 'hc-accent')}
-            </span>
-          </span>
-          <span className="sr-only">I build for the web.</span>
+          <span className="sr-only">Vighnesh Borhade — Frontend &amp; Full Stack Developer</span>
         </h1>
 
         {/* ── Lower Editorial Grid ── */}

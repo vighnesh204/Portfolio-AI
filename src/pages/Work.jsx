@@ -1,131 +1,144 @@
-import { useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import '../sections/projects/projects.css';
 import { getAllProjects } from '../data/projects';
-import TransitionLink from '../components/ui/TransitionLink';
+import ProjectPreview from '../sections/projects/ProjectPreview';
+import FloatingPoster from '../sections/projects/FloatingPoster';
 
 gsap.registerPlugin(ScrollTrigger);
 
 // ─── Work Page (/work) ────────────────────────────────────────────────────
-// Full editorial catalog of all projects.
+// Full editorial catalog of all projects, sharing the interactive drawer
+// and scroll-scale typography system established on the homepage.
 // ──────────────────────────────────────────────────────────────────────────
 
-const all = getAllProjects();
+const allProjects = getAllProjects();
 
-function WorkItem({ project, index }) {
-  const itemRef = useRef(null);
+export default function Work() {
+  const [expandedId, setExpandedId] = useState(null);
+  const [hoveredProject, setHoveredProject] = useState(null);
+
+  const heroRef  = useRef(null);
+  const titleRef = useRef(null);
 
   useEffect(() => {
-    const el = itemRef.current;
-    if (!el) return;
+    const el    = heroRef.current;
+    const title = titleRef.current;
+    if (!el || !title) return;
 
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReduced) return;
 
-    gsap.set(el, { opacity: 0, y: 20 });
+    const ctx = gsap.context(() => {
+      // Split characters entrance for hero title
+      const chars = title.querySelectorAll('.ch');
+      if (chars.length > 0) {
+        gsap.fromTo(
+          chars,
+          { yPercent: 110, rotate: 6, opacity: 0 },
+          {
+            yPercent: 0,
+            rotate: 0,
+            opacity: 1,
+            duration: 0.85,
+            ease: 'power3.out',
+            stagger: 0.025,
+            delay: 0.1,
+          }
+        );
+      }
 
-    const st = ScrollTrigger.create({
-      trigger: el,
-      start: 'top 85%',
-      once: true,
-      onEnter: () => {
-        gsap.to(el, {
-          opacity: 1,
-          y: 0,
-          duration: 0.55,
-          ease: 'power3.out',
-          delay: index * 0.04,
-        });
-      },
-    });
+      // Scroll scale scrub
+      gsap.fromTo(
+        title,
+        { scale: 1.06, transformOrigin: 'left bottom' },
+        {
+          scale: 1,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: el,
+            start: 'top top',
+            end: 'bottom top',
+            scrub: 1,
+          },
+        }
+      );
+    }, heroRef);
 
     return () => {
-      st.kill();
+      ctx.revert();
     };
-  }, [index]);
-
-  return (
-    <TransitionLink
-      ref={itemRef}
-      to={`/work/${project.slug}`}
-      className="work-item"
-      data-cursor="view"
-      aria-label={`View ${project.title}`}
-    >
-      <span className="work-item__number">{project.number}</span>
-
-      <div className="work-item__info">
-        <div className="work-item__meta">
-          {project.category}&nbsp;&nbsp;/&nbsp;&nbsp;{project.year}
-        </div>
-        <h2 className="work-item__title">{project.title}</h2>
-        <p className="work-item__desc">{project.shortDescription}</p>
-        <div className="work-item__tags">
-          {project.technologies.slice(0, 4).map((tech) => (
-            <span key={tech} className="project-tag">
-              {tech}
-            </span>
-          ))}
-        </div>
-      </div>
-
-      <span className="work-item__arrow" aria-hidden="true">
-        View →
-      </span>
-    </TransitionLink>
-  );
-}
-
-function Work() {
-  const heroRef = useRef(null);
-
-  useEffect(() => {
-    const el = heroRef.current;
-    if (!el) return;
-
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReduced) return;
-
-    const children = [...el.children];
-    gsap.set(children, { opacity: 0, y: 24 });
-    gsap.to(children, {
-      opacity: 1,
-      y: 0,
-      duration: 0.7,
-      ease: 'power3.out',
-      stagger: 0.1,
-      delay: 0.15,
-    });
   }, []);
+
+  const handleToggle = (id) => {
+    setExpandedId((prev) => (prev === id ? null : id));
+    setHoveredProject(null);
+  };
+
+  const handleHover = (project) => {
+    if (project && project.id === expandedId) {
+      setHoveredProject(null);
+    } else {
+      setHoveredProject(project);
+    }
+  };
+
+  const catalogTitle = 'WORK ARCHIVE';
 
   return (
     <main className="work-page">
-      {/* Page hero */}
-      <div className="work-hero">
-        <div ref={heroRef}>
-          <p className="work-hero__eyebrow">Work &amp; Explorations</p>
-          <h1 className="work-hero__title">
-            Selected<br />
-            <em>Projects</em>
+      {/* Floating poster for cursor hover on unopened rows */}
+      <FloatingPoster hoveredProject={hoveredProject} />
+
+      {/* Page Hero */}
+      <section ref={heroRef} className="work-hero">
+        <div className="work-hero__meta">
+          <span>CATALOG — 2024 / 2026</span>
+          <span>{String(allProjects.length).padStart(2, '0')} PRODUCTIONS</span>
+        </div>
+
+        <div className="work-hero__title-box">
+          <h1
+            ref={titleRef}
+            className="work-hero__display-title"
+            aria-label={catalogTitle}
+          >
+            <span className="work-hero__title-line" aria-hidden="true">
+              {[...catalogTitle].map((char, i) => (
+                <span
+                  key={i}
+                  className="ch"
+                  style={{ display: 'inline-block', whiteSpace: char === ' ' ? 'pre' : 'normal' }}
+                >
+                  {char}
+                </span>
+              ))}
+            </span>
           </h1>
-          <p className="work-hero__sub">
-            {String(all.length).padStart(2, '0')} Projects — 2024 / 2026
+
+          <p className="work-hero__hint">
+            Comprehensive index of <em>production builds</em>, full-stack systems &amp; client-side engineering.
           </p>
         </div>
-      </div>
+      </section>
 
-      {/* Project list */}
-      <div className="work-list" role="list" aria-label="All projects">
-        {all.map((project, index) => (
-          <div key={project.id} role="listitem">
-            <WorkItem project={project} index={index} />
-          </div>
-        ))}
-      </div>
+      {/* Full Projects Catalog Accordion List */}
+      <section className="work-list-section" aria-label="Projects catalog list">
+        <div className="work-list" role="list">
+          {allProjects.map((project, index) => (
+            <div key={project.id} role="listitem">
+              <ProjectPreview
+                project={project}
+                index={index}
+                isOpen={expandedId === project.id}
+                onToggle={() => handleToggle(project.id)}
+                onHover={handleHover}
+              />
+            </div>
+          ))}
+        </div>
+      </section>
     </main>
   );
 }
-
-export default Work;
-
