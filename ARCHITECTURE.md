@@ -44,6 +44,9 @@ index.html
 /journey                   → pages/Journey.jsx
 /contact                   → pages/Contact.jsx
 *                          → pages/NotFound.jsx
+
+Server (Vercel Serverless):
+POST /api/ask-vighnesh     → api/ask-vighnesh.js
 ```
 
 ---
@@ -57,6 +60,9 @@ src/
 │
 ├── layouts/
 │   └── RootLayout.jsx        — menu state, renders Header + MenuOverlay + Outlet
+│
+├── hooks/
+│   └── usePageTitle.js       — dynamic document.title synchronization on route/page mount
 │
 ├── components/
 │   ├── layout/
@@ -91,16 +97,19 @@ src/
 │   │   └── SkillsSection.jsx — Developer DNA section: two-column list + click-to-detail panel
 │   ├── about/
 │   │   ├── about.css         — scoped styles: centered vertical manifesto, progressive text illumination
-│   │   └── AboutSection.jsx  — SC. 06 homepage section: editorial italic serif title, scroll-scrubbed word reveal
+│   │   └── AboutSection.jsx  — SC. 05 homepage section: editorial italic serif title, scroll-scrubbed word reveal
 │   ├── journey/
 │   │   ├── journey.css       — scoped styles: sticky indicator, sequential phase stream, focus cards
-│   │   └── JourneySection.jsx — SC. 07 homepage section: 6-phase developer growth progression with sticky dossier
-│   └── contact/
-│       ├── contact.css       — scoped styles: bold display title, direct channels, availability dossier
-│       └── ContactSection.jsx — SC. 08 homepage section: editorial CTA with direct email and social connectors
+│   │   └── JourneySection.jsx — SC. 06 homepage section: 6-phase developer growth progression with sticky dossier
+│   ├── contact/
+│   │   ├── contact.css       — scoped styles: bold display title, direct channels, availability dossier
+│   │   └── ContactSection.jsx — SC. 07 homepage section: editorial CTA with direct email and social connectors
+│   └── askVighnesh/
+│       ├── askVighnesh.css   — scoped styles: editorial form, loading dots, answer reveal, fallback nav
+│       └── AskVighnesh.jsx  — SC. 08 AI Portfolio Guide: prompt input, suggested questions, Gemini-powered answer
 │
 ├── pages/                    — one file per route, composes sections
-│   ├── Home.jsx              — OpeningSequence → Hero → Marquee → SelectedWork → AiLearningSection → SkillsSection → AboutSection → JourneySection → ContactSection → Footer
+│   ├── Home.jsx              — OpeningSequence → Hero → Marquee → SelectedWork → AiLearningSection → SkillsSection → AboutSection → JourneySection → ContactSection → AskVighnesh → Footer
 │   ├── Work.jsx              — /work: hero + all projects list with scroll-trigger rows
 │   ├── ProjectDetail.jsx     — /work/:slug: conditional case-study layout
 │   ├── About.jsx             — /about: editorial dossier, PRD Section 18 manifesto, 4 narrative chapters, stack matrix
@@ -122,6 +131,10 @@ src/
 │   │   ├── season1.js        — Season 1: Foundations of AI & LLMs (notes, projects, concepts)
 │   │   └── season2.js        — Season 2: Generative AI & Tool Calling (notes, projects, concepts)
 │   └── transitionColors.js   — route → panel color map
+│
+├── api/                      — Vercel Serverless Functions (server-only, never bundled into frontend)
+│   ├── _context.js           — server-side authoritative context builder (reads verified data sources)
+│   └── ask-vighnesh.js       — POST /api/ask-vighnesh: reads GEMINI_API_KEY from process.env, calls Gemini REST API
 │
 ├── main.jsx                  — React DOM root, RouterProvider
 └── index.css                 — Tailwind + global design system + all component CSS
@@ -159,10 +172,11 @@ Initial Load (Browser Entry / Hard Refresh)
 → SelectedWork (scroll-scale title, drawer expansion, bespoke interactive live demos)
 → AiLearningSection (split character title entrance, tactile 3D season cards, CTA bar)
 → SkillsSection (hollow outline SKILLS title, two-column numbered list, sticky click-to-detail panel)
-→ AboutSection (SC. 06 — ABOUT, italic serif title, centered vertical display manifesto, scroll-scrubbed word illumination, CTA to /about)
-→ JourneySection (SC. 07 — JOURNEY, 6-phase growth stream, sticky progress counter, CTA to /journey)
-→ ContactSection (SC. 08 — GET IN TOUCH, bold display typography, verified GitHub channel, conditional links)
-→ Footer (SC. 09 — minimal editorial colophon, availability indicator, native back-to-top)
+→ AboutSection (SC. 05 — ABOUT, italic serif title, centered vertical display manifesto, scroll-scrubbed word illumination, CTA to /about)
+→ JourneySection (SC. 06 — JOURNEY, 6-phase growth stream, sticky progress counter, CTA to /journey)
+→ ContactSection (SC. 07 — GET IN TOUCH, bold display typography, verified GitHub channel, conditional links)
+→ AskVighnesh (SC. 08 — AI PORTFOLIO GUIDE, editorial form, suggested questions, Gemini-powered factual answers, fallback nav)
+→ Footer (minimal editorial colophon, availability indicator, native back-to-top)
 ```
 
 - **Replay Prevention:** In-memory session flag prevents OpeningSequence from replaying on internal SPA navigation (Home → Work → Home).
@@ -232,7 +246,7 @@ src/data/
 
 src/sections/contact/
   ├── contact.css           — scoped styles: bold display heading, mailto hover underline, availability dossier
-  └── ContactSection.jsx    — homepage SC. 08 section with coordinated GSAP ScrollTrigger entrance
+  └── ContactSection.jsx    — homepage SC. 07 section with coordinated GSAP ScrollTrigger entrance
 
 src/components/layout/
   └── Footer.jsx            — minimal editorial footer: copyright, availability, native back-to-top
@@ -253,4 +267,62 @@ src/pages/
 - No smooth-scroll libraries. Native browser scroll only.
 - Animations use GSAP (transform + opacity only). All ScrollTrigger instances are cleaned up on component unmount.
 - Page transitions use full-height vertical color panels (not grids or tiles).
-- Gemini AI assistant will require a server-side API route (Phase 3+).
+- Gemini AI assistant implemented in Phase 3 via Vercel serverless API route.
+
+---
+
+## Ask Vighnesh AI Guide Architecture
+
+```
+Visitor types question in AskVighnesh.jsx (SC. 08)
+↓
+Browser → POST /api/ask-vighnesh
+  body: { prompt: string }    ← BROWSER SENDS ONLY PROMPT
+↓
+api/ask-vighnesh.js (Vercel Serverless — server-only)
+  ├── Server loads authoritative portfolio context from api/_context.js
+  │     (client-supplied context is completely ignored)
+  ├── Reads GEMINI_API_KEY from process.env (never exposed to browser)
+  ├── Validates: POST only, payload <= 4KB, prompt string, 1–500 chars
+  ├── Builds system instruction with strict grounding separation + portfolio context
+  ├── Calls Gemini REST API (native fetch, no SDK)
+  │     model: gemini-2.0-flash-exp (configurable via GEMINI_MODEL env var)
+  │     temperature: 0.2 (low — factual grounding)
+  │     maxOutputTokens: 512 (concise, free-tier friendly)
+  │     responseMimeType: 'application/json'
+  └── Returns: { answer: string, links: [{label, path}] }
+        └── links validated against ALLOWED_PATHS whitelist
+↓
+AskVighnesh.jsx renders answer as plain text + TransitionLink pills
+```
+
+**Security & Grounding Separation:**
+- `GEMINI_API_KEY` read via `process.env` in server only — never `VITE_*`
+- Context generated SERVER-SIDE (`api/_context.js`) from authoritative portfolio data
+- Browser sends ONLY `{ prompt }`; client tampering via `req.body.context` is completely ignored
+- Key never logged, never returned in responses, not in dist/
+- System instruction enforces absolute separation between authoritative context and untrusted user questions
+- User cannot override grounding rules, identity, or fabricate facts (e.g. false employment claims rejected)
+- Input trimmed, length-capped at 500 chars, body size capped at 4KB before forwarding to Gemini
+
+**Grounding:**
+- System instruction is authoritative — portfolio context is the only source of truth
+- Gemini instructed to say "I don't have that information" for missing facts
+- No fabrication of employment, metrics, certifications, or contact details
+- Link recommendations validated server-side against known internal routes
+
+**Fallback:**
+- Missing key → HTTP 503 → graceful "AI guide temporarily unavailable" message
+- Network failure → same fallback message
+- Fallback nav offers: View Work / AI Learning / Journey / About
+
+**Key file to edit after implementation:**
+```
+.env.local   ← paste your GEMINI_API_KEY= value here
+```
+
+**Local development:**
+Plain `npm run dev` serves the frontend only. To test the AI endpoint locally,
+use `vercel dev` (requires Vercel CLI: `npm i -g vercel`). Without a local
+serverless runtime, the endpoint returns the unavailable fallback — the rest
+of the portfolio works normally.

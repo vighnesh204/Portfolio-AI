@@ -1,6 +1,7 @@
 # Vighnesh — Developer Portfolio
 
 A premium, handcrafted developer portfolio built with React, Vite, Tailwind CSS, GSAP, and React Router.
+Features an integrated AI portfolio guide powered by the Gemini API (server-side, free tier).
 
 ---
 
@@ -10,6 +11,7 @@ A premium, handcrafted developer portfolio built with React, Vite, Tailwind CSS,
 - **Tailwind CSS v4**
 - **React Router v7**
 - **GSAP 3** + ScrollTrigger
+- **Gemini API** (free tier, server-side only via Vercel serverless)
 
 ---
 
@@ -19,7 +21,7 @@ A premium, handcrafted developer portfolio built with React, Vite, Tailwind CSS,
 # Install dependencies
 npm install
 
-# Start dev server
+# Start dev server (frontend only)
 npm run dev
 
 # Production build
@@ -28,6 +30,53 @@ npm run build
 # Preview production build
 npm run preview
 ```
+
+---
+
+## AI Portfolio Guide Setup
+
+The Ask Vighnesh section requires a free Gemini API key.
+
+**1. Copy the example environment file:**
+
+```bash
+cp .env.example .env.local
+```
+
+**2. Paste your Gemini Free Tier API key:**
+
+```
+GEMINI_API_KEY=your_key_here
+```
+
+Get a free key at: https://aistudio.google.com/apikey
+
+**3. Optionally override the model (default: `gemini-2.0-flash-exp`):**
+
+```
+GEMINI_MODEL=gemini-2.0-flash-exp
+```
+
+**4. Local development with AI endpoint:**
+
+Plain `npm run dev` runs the frontend only.
+To test the serverless endpoint locally, install the Vercel CLI:
+
+```bash
+npm i -g vercel
+vercel dev
+```
+
+Without the Vercel CLI, the AI guide displays a graceful "unavailable" fallback.
+The rest of the portfolio works normally.
+
+**5. Deploy to Vercel:**
+
+Push to GitHub. Vercel auto-detects Vite + `api/` serverless functions.
+Add `GEMINI_API_KEY` as an environment variable in your Vercel project settings.
+
+> **Security:** Never commit `.env.local`. The key is read server-side only.
+> It is never exposed to the browser, never in `VITE_*` variables, and never in the bundle.
 
 ---
 
@@ -45,7 +94,7 @@ See [AGENTS.md](./AGENTS.md) for the permanent engineering rules that govern thi
 
 ## Status
 
-**Phase 1 — Foundation complete.**
+**Phase 3 — Ask Vighnesh AI complete.**
 
-All routes are wired. Pages are placeholder stubs.
-Design and animations will be implemented in Phase 2.
+All homepage sections implemented:
+Opening → Hero → Marquee → Projects → Namaste AI → Skills → About → Journey → Contact → Ask Vighnesh → Footer

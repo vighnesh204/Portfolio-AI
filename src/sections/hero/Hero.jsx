@@ -23,7 +23,6 @@ const splitLetters = (word, accentIndex = -1) => {
       <span
         key={i}
         className={`hero-char ${charClass}`}
-        data-cursor="hover"
       >
         {char}
       </span>
@@ -153,7 +152,7 @@ export default function Hero() {
               <TransitionLink
                 to="/work"
                 className="btn btn--primary"
-                data-cursor="go"
+                data-cursor="view"
               >
                 <span className="btn__text">See the work</span>
                 <span className="btn__arrow" aria-hidden="true">↓</span>
@@ -162,7 +161,7 @@ export default function Hero() {
               <TransitionLink
                 to="/contact"
                 className="btn btn--ghost"
-                data-cursor="go"
+                data-cursor="open"
               >
                 <span className="btn__text">Get in touch</span>
                 <span className="btn__arrow" aria-hidden="true">→</span>

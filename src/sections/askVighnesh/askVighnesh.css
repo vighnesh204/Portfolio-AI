@@ -1,0 +1,435 @@
+/* ============================================================
+   ASK VIGHNESH — AI Portfolio Guide Section
+   Section identifier: SC. 08
+   Editorial, premium, portfolio-consistent.
+   No purple AI gradients. No glassmorphism. No chat bubbles.
+   Typography, whitespace, and restrained motion only.
+   ============================================================ */
+
+/* ─── 1. SECTION WRAPPER ─────────────────────────────────── */
+
+.ask-vighnesh {
+  position: relative;
+  width: 100%;
+  padding: clamp(90px, 12vw, 160px) var(--pad) clamp(60px, 8vw, 110px);
+  max-width: var(--container-max);
+  margin: 0 auto;
+  background-color: var(--bg);
+  z-index: 2;
+}
+
+/* Entrance hairline */
+.ask-vighnesh__top-line {
+  position: absolute;
+  top: 0;
+  left: var(--pad);
+  right: var(--pad);
+  height: 1px;
+  background: var(--line2);
+  transform-origin: left center;
+  transform: scaleX(0);
+}
+
+/* ─── 2. METADATA ROW ────────────────────────────────────── */
+
+.ask-vighnesh__meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-family: var(--mono);
+  font-size: clamp(10px, 1.1vw, 12px);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--mut);
+  margin-bottom: clamp(24px, 3.5vw, 44px);
+}
+
+.ask-vighnesh__meta b {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.ask-vighnesh__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--ink);
+}
+
+.ask-vighnesh__status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0.85;
+}
+
+/* ─── 3. DISPLAY TITLE ───────────────────────────────────── */
+
+.ask-vighnesh__heading-wrap {
+  margin-bottom: clamp(32px, 5vw, 60px);
+  overflow: hidden;
+}
+
+.ask-vighnesh__title {
+  margin: 0;
+  font-family: var(--disp);
+  font-weight: 900;
+  font-size: clamp(52px, 10vw, 148px);
+  line-height: 0.88;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  color: var(--ink);
+  user-select: none;
+}
+
+.ask-vighnesh__title em {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.ask-vighnesh__subtitle {
+  margin-top: clamp(14px, 2vw, 24px);
+  font-family: var(--sans);
+  font-size: clamp(13px, 1.4vw, 16px);
+  color: var(--mut);
+  line-height: 1.5;
+  max-width: 52ch;
+}
+
+/* ─── 4. INPUT FORM ──────────────────────────────────────── */
+
+.ask-vighnesh__form {
+  display: flex;
+  gap: 0;
+  border: 1px solid var(--line2);
+  background: var(--bg2);
+  transition: border-color 220ms ease;
+  margin-bottom: clamp(24px, 3vw, 36px);
+}
+
+.ask-vighnesh__form:focus-within {
+  border-color: rgba(239, 232, 220, 0.45);
+}
+
+.ask-vighnesh__input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: clamp(14px, 2vw, 20px) clamp(16px, 2.5vw, 28px);
+  font-family: var(--sans);
+  font-size: clamp(14px, 1.4vw, 16px);
+  color: var(--ink);
+  caret-color: var(--accent);
+  cursor: text; /* Input retains default text cursor — no custom cursor override */
+  min-width: 0;
+}
+
+.ask-vighnesh__input::placeholder {
+  color: var(--faint);
+  font-style: italic;
+}
+
+.ask-vighnesh__input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.ask-vighnesh__submit {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: clamp(14px, 2vw, 20px) clamp(20px, 3vw, 36px);
+  background: transparent;
+  border: none;
+  border-left: 1px solid var(--line2);
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: clamp(10px, 1.1vw, 12px);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 200ms ease, color 200ms ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.ask-vighnesh__submit:hover:not(:disabled) {
+  background: var(--accent);
+  color: var(--bg);
+  border-left-color: var(--accent);
+}
+
+.ask-vighnesh__submit:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.ask-vighnesh__submit:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+.ask-vighnesh__submit-arrow {
+  font-size: 1rem;
+  line-height: 1;
+  transition: transform 200ms ease;
+}
+
+.ask-vighnesh__submit:hover:not(:disabled) .ask-vighnesh__submit-arrow {
+  transform: translateX(4px);
+}
+
+/* ─── 5. SUGGESTED QUESTIONS ─────────────────────────────── */
+
+.ask-vighnesh__suggestions-label {
+  display: block;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin-bottom: 10px;
+}
+
+.ask-vighnesh__suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: clamp(40px, 6vw, 72px);
+}
+
+.ask-vighnesh__suggestion {
+  display: inline-flex;
+  padding: 7px 14px;
+  border: 1px solid var(--line2);
+  background: transparent;
+  color: var(--mut);
+  font-family: var(--sans);
+  font-size: clamp(11px, 1.1vw, 13px);
+  cursor: pointer;
+  transition: border-color 180ms ease, color 180ms ease, background 180ms ease;
+  text-align: left;
+  line-height: 1.4;
+}
+
+.ask-vighnesh__suggestion:hover {
+  border-color: rgba(239, 232, 220, 0.4);
+  color: var(--ink);
+  background: var(--bg2);
+}
+
+.ask-vighnesh__suggestion:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ─── 6. LOADING STATE ───────────────────────────────────── */
+
+.ask-vighnesh__thinking {
+  padding: clamp(20px, 3vw, 36px) 0;
+  font-family: var(--mono);
+  font-size: clamp(11px, 1.1vw, 13px);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--mut);
+}
+
+.ask-vighnesh__thinking-label {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--accent);
+}
+
+.ask-vighnesh__thinking-dots {
+  display: inline-flex;
+  gap: 5px;
+}
+
+.ask-vighnesh__thinking-dots span {
+  display: inline-block;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--mut);
+  animation: av-dot-pulse 1.4s ease-in-out infinite;
+}
+
+.ask-vighnesh__thinking-dots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.ask-vighnesh__thinking-dots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes av-dot-pulse {
+  0%, 60%, 100% { opacity: 0.2; transform: scale(0.85); }
+  30%           { opacity: 1;   transform: scale(1.15); }
+}
+
+/* ─── 7. ANSWER AREA ─────────────────────────────────────── */
+
+.ask-vighnesh__answer-wrap {
+  border-top: 1px solid var(--line2);
+  padding-top: clamp(24px, 3.5vw, 48px);
+  animation: av-answer-in 380ms ease both;
+}
+
+@keyframes av-answer-in {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @keyframes av-answer-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+}
+
+.ask-vighnesh__answer-kicker {
+  display: block;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin-bottom: clamp(12px, 1.5vw, 18px);
+}
+
+.ask-vighnesh__answer-text {
+  font-family: var(--sans);
+  font-size: clamp(14px, 1.5vw, 17px);
+  color: var(--ink);
+  line-height: 1.7;
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-width: 72ch;
+}
+
+/* ─── 8. RECOMMENDED LINKS ───────────────────────────────── */
+
+.ask-vighnesh__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: clamp(20px, 3vw, 32px);
+}
+
+.ask-vighnesh__link-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  border: 1px solid var(--line2);
+  background: transparent;
+  color: var(--mut);
+  font-family: var(--mono);
+  font-size: clamp(10px, 1.1vw, 12px);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: border-color 180ms ease, color 180ms ease, background 180ms ease;
+}
+
+.ask-vighnesh__link-pill:hover {
+  border-color: var(--ink);
+  color: var(--ink);
+  background: var(--bg2);
+}
+
+.ask-vighnesh__link-arrow {
+  font-size: 0.75rem;
+  transition: transform 200ms ease;
+}
+
+.ask-vighnesh__link-pill:hover .ask-vighnesh__link-arrow {
+  transform: translateX(3px);
+}
+
+/* ─── 9. FALLBACK / ERROR STATE ──────────────────────────── */
+
+.ask-vighnesh__fallback {
+  padding: clamp(24px, 3.5vw, 48px) 0;
+  border-top: 1px solid var(--line2);
+}
+
+.ask-vighnesh__fallback-msg {
+  font-family: var(--mono);
+  font-size: clamp(11px, 1.1vw, 13px);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mut);
+  margin-bottom: clamp(18px, 2.5vw, 28px);
+}
+
+.ask-vighnesh__fallback-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.ask-vighnesh__fallback-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 20px;
+  border: 1px solid var(--line2);
+  color: var(--mut);
+  font-family: var(--mono);
+  font-size: clamp(10px, 1.1vw, 12px);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: border-color 180ms ease, color 180ms ease;
+}
+
+.ask-vighnesh__fallback-link:hover {
+  border-color: var(--ink);
+  color: var(--ink);
+}
+
+.ask-vighnesh__fallback-link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ─── 10. RESPONSIVE ─────────────────────────────────────── */
+
+@media (max-width: 768px) {
+  .ask-vighnesh__form {
+    flex-direction: column;
+  }
+
+  .ask-vighnesh__submit {
+    border-left: none;
+    border-top: 1px solid var(--line2);
+    justify-content: center;
+  }
+
+  .ask-vighnesh__suggestion {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 430px) {
+  .ask-vighnesh__title {
+    font-size: clamp(44px, 14vw, 72px);
+  }
+
+  .ask-vighnesh__suggestions {
+    gap: 6px;
+  }
+
+  .ask-vighnesh__suggestion {
+    padding: 8px 12px;
+  }
+}

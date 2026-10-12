@@ -61,10 +61,10 @@
 .sw-display-title {
   margin: 0;
   font-family: var(--disp);
-  font-size: clamp(42px, 7.2vw, 104px);
+  font-size: clamp(48px, 8.5vw, 128px);
   font-weight: 900;
-  line-height: 0.92;
-  letter-spacing: -0.02em;
+  line-height: 0.9;
+  letter-spacing: -0.035em;
   text-transform: uppercase;
   color: var(--ink);
   white-space: nowrap;

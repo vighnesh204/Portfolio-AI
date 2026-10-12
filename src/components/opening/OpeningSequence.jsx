@@ -26,7 +26,15 @@ export default function OpeningSequence({ onComplete }) {
   // isFirstLoad: true → cover the screen with shutters before effects fire
   const isFirstLoad = !hasPlayedInSession;
 
-  const [shouldPlay, setShouldPlay] = useState(false);
+  const [shouldPlay] = useState(() => {
+    if (hasPlayedInSession) return false;
+    if (typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches) {
+      hasPlayedInSession = true;
+      return false;
+    }
+    return true;
+  });
+
   const containerRef = useRef(null);
   const leaderRef = useRef(null);
   const nameRef = useRef(null);
@@ -36,22 +44,10 @@ export default function OpeningSequence({ onComplete }) {
   const botPanelRef = useRef(null);
 
   useEffect(() => {
-    // Already played this session (SPA navigation back to Home)
-    if (hasPlayedInSession) {
+    if (!shouldPlay) {
       onComplete?.();
-      return;
     }
-
-    // Reduced-motion: skip sequence entirely
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReduced) {
-      hasPlayedInSession = true;
-      onComplete?.();
-      return;
-    }
-
-    setShouldPlay(true);
-  }, [onComplete]);
+  }, [shouldPlay, onComplete]);
 
   useEffect(() => {
     if (!shouldPlay) return;

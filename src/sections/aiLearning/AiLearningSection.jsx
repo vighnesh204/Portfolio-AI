@@ -295,7 +295,7 @@ export default function AiLearningSection() {
             <div className="ai-section-sidebar">
               <div className="ai-section-eyebrow">
                 <span className="ai-section-eyebrow__dot" />
-                <span>[ 04 / AI LEARNING ]</span>
+                <span><b>SC. 03</b> — NAMASTE AI</span>
               </div>
 
               <h2 ref={titleRef} className="ai-section-title" aria-label="NAMASTE AI">

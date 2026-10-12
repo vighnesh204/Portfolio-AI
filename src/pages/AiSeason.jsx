@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { getSeasonBySlug, getAllSeasons } from '../data/aiLearning';
 import TransitionLink from '../components/ui/TransitionLink';
+import { usePageTitle } from '../hooks/usePageTitle';
 import '../sections/aiLearning/aiLearning.css';
 
 // ─── AiSeason Page ──────────────────────────────────────────────────────────
@@ -14,6 +15,8 @@ export default function AiSeason() {
   const { season: seasonSlug } = useParams();
   const season = getSeasonBySlug(seasonSlug);
   const allSeasons = getAllSeasons();
+
+  usePageTitle(season ? `Season ${season.seasonNumber} — AI Learning` : 'AI Learning');
 
   useEffect(() => {
     window.scrollTo(0, 0);

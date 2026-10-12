@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { getAllSeasons, getAllNotes } from '../data/aiLearning';
 import SeasonCard from '../sections/aiLearning/SeasonCard';
 import TransitionLink from '../components/ui/TransitionLink';
+import { usePageTitle } from '../hooks/usePageTitle';
 import '../sections/aiLearning/aiLearning.css';
 
 // ─── AiLearning Page ────────────────────────────────────────────────────────
@@ -10,6 +11,7 @@ import '../sections/aiLearning/aiLearning.css';
 // ─────────────────────────────────────────────────────────────────────────────
 
 export default function AiLearning() {
+  usePageTitle('AI Learning');
   const seasons = getAllSeasons();
   const allNotes = getAllNotes();
 

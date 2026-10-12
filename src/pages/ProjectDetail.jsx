@@ -4,6 +4,7 @@ import { gsap } from 'gsap';
 import '../sections/projects/projects.css';
 import { getProjectBySlug, getAllProjects } from '../data/projects';
 import TransitionLink from '../components/ui/TransitionLink';
+import { usePageTitle } from '../hooks/usePageTitle';
 
 // ─── ProjectDetail (/work/:slug) ──────────────────────────────────────────
 // Conditional case-study layout.
@@ -23,6 +24,8 @@ function ProjectDetail() {
   const { slug } = useParams();
   const project   = getProjectBySlug(slug);
   const next      = project ? getNextProject(slug) : null;
+
+  usePageTitle(project ? project.title : 'Project Not Found');
 
   const heroRef = useRef(null);
 

@@ -1,8 +1,8 @@
-import season1 from './season1';
-import season2 from './season2';
-import season3 from './season3';
-import season4 from './season4';
-import season5 from './season5';
+import season1 from './season1.js';
+import season2 from './season2.js';
+import season3 from './season3.js';
+import season4 from './season4.js';
+import season5 from './season5.js';
 
 const seasons = [season1, season2, season3, season4, season5];
 

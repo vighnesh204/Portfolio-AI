@@ -49,7 +49,7 @@ const SKILL_TECH_SYNONYMS = {
   dsa: ['DSA', 'Data Structures & Algorithms', 'LocalStorage API'],
 };
 
-export function getProjectsForSkill(skill) {
+function getProjectsForSkill(skill) {
   if (!skill) return [];
   const projects = getAllProjects();
   const synonyms = SKILL_TECH_SYNONYMS[skill.id] || [skill.name];
@@ -375,7 +375,7 @@ export default function SkillsSection() {
       {/* SC. label row */}
       <div className="skills-meta-row">
         <span className="skills-meta-kicker">
-          <b>SC. 05</b> — DEVELOPER DNA
+          <b>SC. 04</b> — DEVELOPER DNA
         </span>
         <span className="skills-meta-count">{String(TOTAL).padStart(2, '0')} TOOLS</span>
       </div>

@@ -2,19 +2,66 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+
+    <!-- Favicon: custom VB monogram -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Viewport & Mobile -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vighnesh — Frontend Developer</title>
+    <meta name="theme-color" content="#0a0a0a" />
+
+    <!-- Primary SEO -->
+    <title>Vighnesh Borhade — Frontend Developer</title>
     <meta
       name="description"
-      content="Vighnesh is a frontend-focused full stack developer building interfaces, systems, and AI-powered tools for the web."
+      content="Vighnesh Borhade is a frontend-focused full-stack developer building React interfaces, MERN applications, and AI-powered tools. Based in Pune, India."
     />
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="Vighnesh Borhade" />
 
-    <!-- Fonts: Archivo (editorial display) + Instrument Serif (editorial italic) + DM Sans (body) + DM Mono (technical details) -->
+    <!-- Open Graph — social sharing -->
+    <meta property="og:type"        content="website" />
+    <meta property="og:title"       content="Vighnesh Borhade — Frontend Developer" />
+    <meta property="og:description" content="Frontend-focused full-stack developer building React interfaces, MERN applications, and AI-powered tools. Based in Pune, India." />
+    <!-- og:url — add your deployed URL here when known:
+    <meta property="og:url" content="https://your-deployed-url.vercel.app" />
+    -->
+    <!-- og:image — add a 1200×630 OG image asset when available:
+    <meta property="og:image" content="https://your-deployed-url.vercel.app/og-image.png" />
+    -->
+
+    <!-- Twitter / X card -->
+    <meta name="twitter:card"        content="summary_large_image" />
+    <meta name="twitter:title"       content="Vighnesh Borhade — Frontend Developer" />
+    <meta name="twitter:description" content="Frontend-focused full-stack developer building React interfaces, MERN applications, and AI-powered tools." />
+
+    <!-- Structured Data (Person) — only verified real values -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Vighnesh Borhade",
+      "url": "https://github.com/vighnesh204",
+      "sameAs": [
+        "https://github.com/vighnesh204"
+      ]
+    }
+    </script>
+
+    <!-- Fonts: Archivo (editorial display) + Instrument Serif (italic accent) + DM Sans (body) + DM Mono (technical) -->
+    <!-- preconnect reduces DNS + TLS time for Google Fonts CDN -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!--
+      Font load strategy:
+      - Archivo: variable font (wdth + wght axes) — covers all weights in one request
+      - Instrument Serif: regular + italic only — used for editorial italic accent text
+      - DM Sans: 400 + 500 + 700 optical sizes 9-40 — body text and UI labels
+      - DM Mono: 400 + 500, regular + italic — technical mono details
+      display=swap prevents invisible text during load (FOIT avoidance)
+    -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=DM+Mono:ital,wght@0,400;0,500;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,900&family=Instrument+Serif:ital@0;1&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=DM+Mono:ital,wght@0,400;0,500;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700&family=Instrument+Serif:ital@0;1&display=swap"
       rel="stylesheet"
     />
   </head>

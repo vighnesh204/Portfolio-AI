@@ -8,7 +8,7 @@ import './contact.css';
 gsap.registerPlugin(ScrollTrigger);
 
 // ─── ContactSection ─────────────────────────────────────────────────────────
-// SC. 08 — GET IN TOUCH homepage section.
+// SC. 07 — GET IN TOUCH homepage section.
 // Concludes the homepage with a bold editorial call-to-action.
 //
 // Performance & UX principles:
@@ -111,7 +111,7 @@ export default function ContactSection() {
       {/* Metadata Row */}
       <div className="contact-meta-row">
         <span className="contact-meta-kicker">
-          <b>SC. 08</b> — GET IN TOUCH
+          <b>SC. 07</b> — GET IN TOUCH
         </span>
         <span className="contact-meta-status">
           <span className="contact-meta-dot" aria-hidden="true" />
@@ -208,7 +208,7 @@ export default function ContactSection() {
           </div>
 
           <div className="contact-dossier-box">
-            <span className="contact-dossier-tag">[ FULL CONTACT DOSSIER ]</span>
+            <span className="contact-dossier-tag">[ DIRECT CHANNELS ]</span>
             <p className="contact-dossier-text">
               Detailed availability parameters, preferred tech stacks, and direct channels.
             </p>

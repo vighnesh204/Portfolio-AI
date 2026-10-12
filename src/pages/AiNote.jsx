@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { getSeasonBySlug, getNoteBySlug } from '../data/aiLearning';
 import TransitionLink from '../components/ui/TransitionLink';
+import { usePageTitle } from '../hooks/usePageTitle';
 import '../sections/aiLearning/aiLearning.css';
 
 // ─── AiNote Page ────────────────────────────────────────────────────────────
@@ -13,6 +14,8 @@ export default function AiNote() {
   const { season: seasonSlug, note: noteSlug } = useParams();
   const season = getSeasonBySlug(seasonSlug);
   const note = getNoteBySlug(seasonSlug, noteSlug);
+
+  usePageTitle(note ? note.title : 'AI Learning');
 
   useEffect(() => {
     window.scrollTo(0, 0);

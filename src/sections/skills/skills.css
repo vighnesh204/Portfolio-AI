@@ -69,10 +69,10 @@
 .skills-display-title {
   margin: 0;
   font-family: var(--disp);
-  font-size: clamp(54px, 8.2vw, 120px);
+  font-size: clamp(48px, 8.5vw, 128px);
   font-weight: 900;
   line-height: 0.90;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.035em;
   text-transform: uppercase;
   color: transparent;
   -webkit-text-stroke: 1.25px rgba(239, 232, 220, 0.85);

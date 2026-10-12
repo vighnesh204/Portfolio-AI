@@ -157,7 +157,7 @@ export default function AboutSection() {
       {/* Metadata Row */}
       <div className="about-meta-row">
         <span className="about-meta-kicker">
-          <b>SC. 06</b> — ABOUT
+          <b>SC. 05</b> — ABOUT
         </span>
         <span className="about-meta-location">PUNE, IN</span>
       </div>

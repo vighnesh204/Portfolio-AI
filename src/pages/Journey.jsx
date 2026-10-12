@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { getAllPhases } from '../data/journey';
 import TransitionLink from '../components/ui/TransitionLink';
+import { usePageTitle } from '../hooks/usePageTitle';
 import '../sections/journey/journey.css';
 
 // ─── Journey Page (/journey) ────────────────────────────────────────────────
@@ -35,6 +36,7 @@ const CURRENT_FOCUS = [
 ];
 
 export default function Journey() {
+  usePageTitle('Journey');
   const containerRef = useRef(null);
 
   useEffect(() => {

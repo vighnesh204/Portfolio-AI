@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import TransitionLink from '../components/ui/TransitionLink';
+import { usePageTitle } from '../hooks/usePageTitle';
 import '../sections/about/about.css';
 
 // ─── Narrative Chapters ─────────────────────────────────────────────────────
@@ -67,6 +68,7 @@ const STACK_MATRIX = [
 ];
 
 export default function About() {
+  usePageTitle('About');
   const containerRef = useRef(null);
 
   useEffect(() => {

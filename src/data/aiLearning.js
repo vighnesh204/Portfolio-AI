@@ -6,7 +6,7 @@ import seasons, {
   getSeasonBySlug,
   getNoteBySlug,
   getAllNotes,
-} from './aiLearning/index';
+} from './aiLearning/index.js';
 
 export { getAllSeasons, getSeasonBySlug, getNoteBySlug, getAllNotes };
 export default seasons;

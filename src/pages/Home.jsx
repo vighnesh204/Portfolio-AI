@@ -7,9 +7,12 @@ import SkillsSection from '../sections/skills/SkillsSection';
 import AboutSection from '../sections/about/AboutSection';
 import JourneySection from '../sections/journey/JourneySection';
 import ContactSection from '../sections/contact/ContactSection';
+import AskVighnesh from '../sections/askVighnesh/AskVighnesh';
 import Footer from '../components/layout/Footer';
+import { usePageTitle } from '../hooks/usePageTitle';
 
 function Home() {
+  usePageTitle();
   return (
     <main className="home-page">
       <OpeningSequence />
@@ -21,6 +24,7 @@ function Home() {
       <AboutSection />
       <JourneySection />
       <ContactSection />
+      <AskVighnesh />
       <Footer />
     </main>
   );

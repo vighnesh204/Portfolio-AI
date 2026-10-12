@@ -8,7 +8,7 @@ import './journey.css';
 gsap.registerPlugin(ScrollTrigger);
 
 // ─── JourneySection ─────────────────────────────────────────────────────────
-// SC. 07 — JOURNEY homepage section.
+// SC. 06 — JOURNEY homepage section.
 // Communicates authentic developer progression (growth & intellectual depth),
 // rather than a fake employment timeline or company dates.
 //
@@ -146,7 +146,7 @@ export default function JourneySection() {
       {/* Metadata Row */}
       <div className="journey-meta-row">
         <span className="journey-meta-kicker">
-          <b>SC. 07</b> — JOURNEY
+          <b>SC. 06</b> — JOURNEY
         </span>
         <span className="journey-meta-count">
           {String(TOTAL_PHASES).padStart(2, '0')} PHASES
@@ -161,9 +161,9 @@ export default function JourneySection() {
         </p>
       </div>
 
-      {/* Body: Sticky Dossier Panel + Phase Stream */}
+      {/* Body: Sticky Progression Panel + Phase Stream */}
       <div className="journey-body">
-        {/* Sticky Left Dossier */}
+        {/* Sticky Left Progression Panel */}
         <aside className="journey-sticky-panel" aria-label="Progression Status">
           <div className="journey-active-counter">
             <div className="journey-active-num-wrap">
@@ -189,9 +189,9 @@ export default function JourneySection() {
             to="/journey"
             className="journey-side-cta"
             data-cursor="explore"
-            aria-label="Explore detailed journey dossier"
+            aria-label="Explore full journey progression"
           >
-            <span>FULL JOURNEY DOSSIER</span>
+            <span>EXPLORE FULL JOURNEY</span>
             <span className="arrow" aria-hidden="true">
               →
             </span>

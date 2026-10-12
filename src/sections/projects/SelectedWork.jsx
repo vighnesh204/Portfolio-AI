@@ -137,10 +137,10 @@ export default function SelectedWork() {
       <header className="sw-header">
         <div className="sw-meta-row">
           <span className="sw-meta-kicker">
-            <b>FEATURED BUILDS</b> — 2024 / 2026
+            <b>SC. 02</b> — SELECTED WORK
           </span>
           <span className="sw-meta-count">
-            {String(featured.length).padStart(2, '0')} TITLES
+            {String(featured.length).padStart(2, '0')} PROJECTS
           </span>
         </div>
 
@@ -190,10 +190,10 @@ export default function SelectedWork() {
         <TransitionLink
           to="/work"
           className="sw-view-all-cta"
-          aria-label="View all projects archive"
+          aria-label="View all projects"
           data-cursor="view"
         >
-          View Full Archive
+          View All Projects
           <span className="sw-cta-arrow" aria-hidden="true">
             →
           </span>

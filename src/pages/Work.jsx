@@ -5,6 +5,7 @@ import '../sections/projects/projects.css';
 import { getAllProjects } from '../data/projects';
 import ProjectPreview from '../sections/projects/ProjectPreview';
 import FloatingPoster from '../sections/projects/FloatingPoster';
+import { usePageTitle } from '../hooks/usePageTitle';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -16,6 +17,7 @@ gsap.registerPlugin(ScrollTrigger);
 const allProjects = getAllProjects();
 
 export default function Work() {
+  usePageTitle('Work');
   const [expandedId, setExpandedId] = useState(null);
   const [hoveredProject, setHoveredProject] = useState(null);
 

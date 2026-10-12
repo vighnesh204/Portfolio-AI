@@ -84,7 +84,7 @@ function PageTransition({ isActive, color, onCovered, onDone }) {
         },
       });
     }
-  }, [isActive]);
+  }, [isActive, onCovered, onDone]);
 
   return (
     <div

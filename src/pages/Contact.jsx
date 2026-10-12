@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import TransitionLink from '../components/ui/TransitionLink';
 import { CONTACT_INFO } from '../data/contact';
+import { usePageTitle } from '../hooks/usePageTitle';
 import '../sections/contact/contact.css';
 
 // ─── Contact Page (/contact) ────────────────────────────────────────────────
@@ -11,6 +12,7 @@ import '../sections/contact/contact.css';
 // ─────────────────────────────────────────────────────────────────────────────
 
 export default function Contact() {
+  usePageTitle('Contact');
   const containerRef = useRef(null);
 
   useEffect(() => {

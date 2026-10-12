@@ -10,7 +10,7 @@ function Header({ onMenuOpen, onNavigate }) {
         className="site-header__wordmark"
         aria-label="Vighnesh Borhade — home"
         onNavigate={onNavigate}
-        data-cursor="go"
+        data-cursor="view"
       >
         <span className="wordmark-signature">Vighnesh Borhade.</span>
       </TransitionLink>

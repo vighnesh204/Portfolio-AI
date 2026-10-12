@@ -7,7 +7,6 @@
 // Size is controlled by CSS (.skill-icon { width: 20px; height: 20px; }).
 // ─────────────────────────────────────────────────────────────────────────────
 
-/* eslint-disable react/display-name */
 
 const Icon = ({ color, children, viewBox = '0 0 24 24' }) => (
   <svg

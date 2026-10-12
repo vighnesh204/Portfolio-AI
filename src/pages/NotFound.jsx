@@ -1,8 +1,8 @@
-// 404 catch-all page.
-
 import { useOutletContext } from 'react-router-dom';
+import { usePageTitle } from '../hooks/usePageTitle';
 
 function NotFound() {
+  usePageTitle('404 Not Found');
   const { onNavigate } = useOutletContext();
 
   const handleHomeClick = (e) => {

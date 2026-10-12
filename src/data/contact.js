@@ -12,8 +12,8 @@ export const CONTACT_INFO = {
   location: 'Pune, India',
   availability: 'Available for Opportunities',
   github: 'https://github.com/vighnesh204',
-  linkedin: null, // [Pending: Add verified LinkedIn profile URL]
-  email: null,    // [Pending: Add verified contact email address]
+  linkedin: "https://linkedin.com/in/vighneshborhade", // [Pending: Add verified LinkedIn profile URL]
+  email: "borhadevighnesh05@gmail.com",    // [Pending: Add verified contact email address]
 };
 
 export default CONTACT_INFO;
