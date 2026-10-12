@@ -317,10 +317,10 @@ export default function AiLearningSection() {
 
               <div className="ai-section-subtitle-block">
                 <p className="ai-section-subtitle">
-                  A few milestones along the way.
+                  2 seasons documented · 3 coming soon.
                 </p>
                 <p className="ai-section-instruction">
-                  Click a card to turn it over.
+                  Click Season 01 or 02 to turn over.
                 </p>
               </div>
 

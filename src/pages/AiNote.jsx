@@ -22,7 +22,8 @@ export default function AiNote() {
   }, [seasonSlug, noteSlug]);
 
   // Editorial 404 Fallback
-  if (!season || !note) {
+  if (!season || season.status === 'coming-soon' || !note) {
+    const isComingSoonSeason = season && season.status === 'coming-soon';
     return (
       <main className="min-h-[80vh] flex items-center justify-center pt-32 pb-24">
         <div className="wrap text-center max-w-xl">
@@ -33,7 +34,9 @@ export default function AiNote() {
             Note Not Found
           </h1>
           <p className="text-[var(--mut)] mb-8 text-sm sm:text-base leading-relaxed">
-            The requested curriculum note does not exist in this archive.
+            {isComingSoonSeason
+              ? `Season ${season.seasonNumber} has not been documented yet. No notes are currently available.`
+              : 'The requested curriculum note does not exist in this archive.'}
           </p>
           <TransitionLink
             to={season ? `/ai-learning/${season.slug}` : '/ai-learning'}

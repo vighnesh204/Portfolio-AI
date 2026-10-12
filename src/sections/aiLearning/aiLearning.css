@@ -494,6 +494,87 @@
   border-radius: 9999px;
 }
 
+/* ─── Coming Soon Editorial Card ─── */
+.season-card--coming-soon {
+  cursor: default;
+}
+
+@media (max-width: 1024px) {
+  .season-card--coming-soon,
+  .season-card--coming-soon .season-card__tilt-wrapper,
+  .season-card--coming-soon .season-card__flipper {
+    min-height: 380px;
+  }
+}
+
+.season-card__coming-soon-body {
+  position: relative;
+  z-index: 3;
+  padding: 1.25rem 0;
+}
+
+.season-card__coming-soon-eyebrow {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--mut);
+  margin-bottom: 0.85rem;
+}
+
+.season-card__coming-soon-headline {
+  display: flex;
+  flex-direction: column;
+  line-height: 0.94;
+  margin-bottom: 1.25rem;
+}
+
+.season-card__coming-soon-main {
+  font-family: var(--disp);
+  font-size: clamp(2.4rem, 3.8vw, 3.4rem);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.season-card__coming-soon-accent {
+  font-family: var(--serif);
+  font-size: clamp(2rem, 3.2vw, 2.8rem);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--ink);
+  opacity: 0.75;
+}
+
+.season-card__coming-soon-note {
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--faint);
+  line-height: 1.4;
+}
+
+.season-card__coming-soon-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--faint);
+  font-weight: 500;
+}
+
+.season-card__coming-soon-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  opacity: 0.8;
+}
+
 /* Card Footer Row */
 .season-card__bottom-row {
   position: relative;

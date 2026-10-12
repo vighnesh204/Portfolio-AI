@@ -72,13 +72,16 @@ Topics: ${phase.topics.join(', ')}`
   // ── AI Learning (Namaste AI) ───────────────────────────────────────────────
   const aiText = seasons
     .map((season) => {
+      if (season.status === 'coming-soon') {
+        return `Season ${season.seasonNumber}: Coming Soon (No notes or curriculum documented yet)`;
+      }
       const conceptList = season.keyConcepts
         ? season.keyConcepts
             .filter((c) => !c.includes('[Placeholder'))
             .join(', ')
         : '';
       return `Season ${season.seasonNumber}: ${season.title} — Status: ${season.status}
-Key concepts: ${conceptList || '(in progress)'}`;
+Key concepts: ${conceptList || 'None'}`;
     })
     .join('\n');
 

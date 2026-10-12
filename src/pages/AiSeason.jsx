@@ -47,6 +47,48 @@ export default function AiSeason() {
     );
   }
 
+  // Editorial Coming Soon view for unpublished seasons (03–05)
+  if (season.status === 'coming-soon') {
+    return (
+      <main className="ai-season-page min-h-[75vh] flex items-center justify-center pt-32 pb-40">
+        <div className="wrap text-center max-w-xl">
+          <nav aria-label="Breadcrumbs" className="mb-8 flex justify-center">
+            <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[var(--mut)]">
+              <TransitionLink
+                to="/ai-learning"
+                className="hover:text-[var(--ink)] transition-colors"
+              >
+                AI Learning
+              </TransitionLink>
+              <span className="text-[var(--faint)]">/</span>
+              <span className="text-[var(--ink)]">Season {season.seasonNumber}</span>
+            </div>
+          </nav>
+
+          <div className="font-mono text-xs uppercase tracking-widest text-[var(--accent)] mb-4">
+            [ NAMASTE AI / SEASON {season.seasonNumber} ]
+          </div>
+
+          <h1 className="text-5xl sm:text-7xl font-extrabold uppercase tracking-tight text-[var(--ink)] mb-4 font-display">
+            COMING SOON
+          </h1>
+
+          <p className="text-sm sm:text-base text-[var(--mut)] leading-relaxed max-w-md mx-auto mb-10">
+            This learning chapter hasn&apos;t been documented yet. More notes and implementations will be added as study commences.
+          </p>
+
+          <TransitionLink
+            to="/ai-learning"
+            className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest px-8 py-3.5 border border-[var(--line2)] hover:bg-[var(--ink)] hover:text-[var(--bg)] transition-colors"
+            data-cursor="explore"
+          >
+            ← Back to AI Learning
+          </TransitionLink>
+        </div>
+      </main>
+    );
+  }
+
   // Find next season if available
   const currentIndex = allSeasons.findIndex((s) => s.slug === season.slug);
   const nextSeason =
@@ -245,7 +287,9 @@ export default function AiSeason() {
               className="inline-flex items-center gap-3 font-mono text-xs uppercase tracking-widest text-[var(--ink)] hover:text-[var(--accent)] transition-colors"
               data-cursor="explore"
             >
-              <span>Season {nextSeason.seasonNumber}: {nextSeason.title}</span>
+              <span>
+                Season {nextSeason.seasonNumber}: {nextSeason.status === 'coming-soon' ? 'Coming Soon' : nextSeason.title}
+              </span>
               <span aria-hidden="true">→</span>
             </TransitionLink>
           </footer>

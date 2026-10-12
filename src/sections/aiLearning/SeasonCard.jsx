@@ -10,15 +10,17 @@ import TransitionLink from '../../components/ui/TransitionLink';
 //   2. SeasonCardTiltWrapper (.season-card__tilt-wrapper):
 //      Controls subtle 3D pointer tilt (rotateX, rotateY) on mousemove.
 //   3. SeasonCardFlipper (.season-card__flipper):
-//      Controls 180° flip (rotateY) on click.
+//      Controls 180° flip (rotateY) on click for active seasons (Season 01–02).
+//      Coming soon seasons (Season 03–05) remain minimal without flip overhead.
 // ─────────────────────────────────────────────────────────────────────────────
 
 export default function SeasonCard({
   season,
   index = 0,
-  totalSeasons = 2,
+  totalSeasons = 5,
   motionRef,
 }) {
+  const isComingSoon = season.status === 'coming-soon';
   const [isFlipped, setIsFlipped] = useState(false);
   const cardRef = useRef(null);
   const tiltRef = useRef(null);
@@ -53,12 +55,13 @@ export default function SeasonCard({
   };
 
   const handleCardClick = (e) => {
-    // Prevent flipping if clicking the explore route button
+    if (isComingSoon) return;
     if (e.target.closest('a')) return;
     setIsFlipped((prev) => !prev);
   };
 
   const handleKeyDown = (e) => {
+    if (isComingSoon) return;
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
       setIsFlipped((prev) => !prev);
@@ -79,21 +82,25 @@ export default function SeasonCard({
   return (
     <div
       ref={motionRef}
-      className="season-card-motion"
+      className={`season-card-motion ${isComingSoon ? 'season-card-motion--coming-soon' : ''}`}
       data-season-index={index}
     >
       <div
         ref={cardRef}
-        className={`season-card ${isFlipped ? 'is-flipped' : ''}`}
+        className={`season-card ${isComingSoon ? 'season-card--coming-soon' : ''} ${isFlipped ? 'is-flipped' : ''}`}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        onClick={handleCardClick}
-        onKeyDown={handleKeyDown}
-        tabIndex={0}
-        data-cursor="flip"
-        role="button"
-        aria-expanded={isFlipped}
-        aria-label={`Namaste AI Season ${displayNumber}: ${season.title}. Click to ${isFlipped ? 'return to front' : 'turn over'}.`}
+        onClick={isComingSoon ? undefined : handleCardClick}
+        onKeyDown={isComingSoon ? undefined : handleKeyDown}
+        tabIndex={isComingSoon ? -1 : 0}
+        data-cursor={isComingSoon ? undefined : 'flip'}
+        role={isComingSoon ? 'article' : 'button'}
+        aria-expanded={isComingSoon ? undefined : isFlipped}
+        aria-label={
+          isComingSoon
+            ? `Namaste AI Season ${displayNumber}: Coming Soon`
+            : `Namaste AI Season ${displayNumber}: ${season.title}. Click to ${isFlipped ? 'return to front' : 'turn over'}.`
+        }
       >
         {/* Layer 2: Tilt Wrapper */}
         <div ref={tiltRef} className="season-card__tilt-wrapper">
@@ -128,131 +135,144 @@ export default function SeasonCard({
                 </div>
               </div>
 
-              {/* Middle: Title & Italic Serif Subtitle */}
-              <div className="season-card__body-area">
-                <h3 className="season-card__title">
-                  {season.placeholder ? `SEASON ${displayNumber}` : season.title}
-                </h3>
-                <p className="season-card__subtitle">{season.subtitle}</p>
-
-                {/* Concept Pills Preview */}
-                {season.keyConcepts && (
-                  <div className="season-card__concept-pills">
-                    {season.keyConcepts.slice(0, 3).map((concept, idx) => (
-                      <span key={idx} className="season-card__pill">
-                        {concept}
-                      </span>
-                    ))}
+              {/* Middle: Title & Subtitle or Coming Soon Layout */}
+              {isComingSoon ? (
+                <div className="season-card__coming-soon-body">
+                  <div className="season-card__coming-soon-eyebrow">
+                    SEASON {displayNumber}
                   </div>
-                )}
-              </div>
+                  <div className="season-card__coming-soon-headline">
+                    <span className="season-card__coming-soon-main">COMING</span>
+                    <span className="season-card__coming-soon-accent">SOON.</span>
+                  </div>
+                  <p className="season-card__coming-soon-note">
+                    MORE NOTES COMING SOON
+                  </p>
+                </div>
+              ) : (
+                <div className="season-card__body-area">
+                  <h3 className="season-card__title">
+                    {season.title}
+                  </h3>
+                  <p className="season-card__subtitle">{season.subtitle}</p>
 
-              {/* Footer Row: Metadata + TURN OVER ↻ */}
+                  {/* Concept Pills Preview */}
+                  {season.keyConcepts && (
+                    <div className="season-card__concept-pills">
+                      {season.keyConcepts.slice(0, 3).map((concept, idx) => (
+                        <span key={idx} className="season-card__pill">
+                          {concept}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Footer Row */}
               <div className="season-card__bottom-row">
                 <div className="season-card__meta-tags">
                   <span className="season-card__tag-item">
-                    {season.placeholder ? 'UPCOMING' : (season.notes?.[0]?.topic?.toUpperCase() || 'CURRICULUM')}
+                    {isComingSoon ? 'UPCOMING' : (season.notes?.[0]?.topic?.toUpperCase() || 'CURRICULUM')}
                   </span>
-                  <span className="season-card__tag-divider">•</span>
-                  <span className="season-card__tag-item">
-                    {season.placeholder ? 'PLANNED' : (isCompleted ? 'COMPLETED' : 'IN PROGRESS')}
-                  </span>
+                  {!isComingSoon && (
+                    <>
+                      <span className="season-card__tag-divider">•</span>
+                      <span className="season-card__tag-item">
+                        {isCompleted ? 'COMPLETED' : 'IN PROGRESS'}
+                      </span>
+                    </>
+                  )}
                 </div>
-                <div className="season-card__turn-trigger">
-                  <span>TURN OVER</span>
-                  <span className="season-card__turn-icon" aria-hidden="true">↻</span>
-                </div>
+                {isComingSoon ? (
+                  <div className="season-card__coming-soon-status">
+                    <span className="season-card__coming-soon-dot" style={{ backgroundColor: accentColor }} />
+                    <span>NEXT CHAPTER</span>
+                  </div>
+                ) : (
+                  <div className="season-card__turn-trigger">
+                    <span>TURN OVER</span>
+                    <span className="season-card__turn-icon" aria-hidden="true">↻</span>
+                  </div>
+                )}
               </div>
             </div>
 
             {/* ═══════════════ BACK FACE (INVERTED ACCENT) ═══════════════ */}
-            <div
-              className="season-card__face season-card__face--back"
-              style={{ backgroundColor: accentColor }}
-            >
-              {/* Top Row: Dark Circular Badge + CURRICULUM */}
-              <div className="season-card__top-row season-card__top-row--back">
-                <div className="season-card__circle-badge season-card__circle-badge--dark">
-                  <span>{displayNumber}</span>
-                </div>
-                <div className="season-card__counter-label season-card__counter-label--back">
-                  {season.placeholder ? 'UPCOMING MILESTONE' : 'CURRICULUM BREAKDOWN'}
-                </div>
-              </div>
-
-              {/* Middle: Title, Notes Breakdown & Action */}
-              <div className="season-card__body-area season-card__body-area--back">
-                <h3 className="season-card__title season-card__title--back">
-                  {season.placeholder ? `SEASON ${displayNumber}` : season.title}
-                </h3>
-                <p className="season-card__subtitle season-card__subtitle--back">
-                  {season.subtitle}
-                </p>
-
-                {season.placeholder ? (
-                  <div className="season-card__back-placeholder-box">
-                    <p className="season-card__back-placeholder-text">
-                      Content will be added as learning progresses. Notes, key takeaways, and code implementations will be documented here.
-                    </p>
+            {!isComingSoon && (
+              <div
+                className="season-card__face season-card__face--back"
+                style={{ backgroundColor: accentColor }}
+              >
+                {/* Top Row: Dark Circular Badge + CURRICULUM */}
+                <div className="season-card__top-row season-card__top-row--back">
+                  <div className="season-card__circle-badge season-card__circle-badge--dark">
+                    <span>{displayNumber}</span>
                   </div>
-                ) : (
-                  <>
-                    {/* Notes List Preview */}
-                    <div className="season-card__back-notes">
-                      {previewNotes.map((note) => (
-                        <div key={note.id} className="season-card__back-note-line">
-                          <span className="season-card__back-note-ep">{note.episode}</span>
-                          <span className="season-card__back-note-txt">{note.title}</span>
-                        </div>
-                      ))}
-                    </div>
+                  <div className="season-card__counter-label season-card__counter-label--back">
+                    CURRICULUM BREAKDOWN
+                  </div>
+                </div>
 
-                    {/* Learning Project Highlight */}
-                    {highlightProject && (
-                      <div className="season-card__back-project-box">
-                        <span className="season-card__back-project-sub">LEARNING PROJECT</span>
-                        <span className="season-card__back-project-title">
-                          {highlightProject.title}
-                        </span>
+                {/* Middle: Title, Notes Breakdown & Action */}
+                <div className="season-card__body-area season-card__body-area--back">
+                  <h3 className="season-card__title season-card__title--back">
+                    {season.title}
+                  </h3>
+                  <p className="season-card__subtitle season-card__subtitle--back">
+                    {season.subtitle}
+                  </p>
+
+                  {/* Notes List Preview */}
+                  <div className="season-card__back-notes">
+                    {previewNotes.map((note) => (
+                      <div key={note.id} className="season-card__back-note-line">
+                        <span className="season-card__back-note-ep">{note.episode}</span>
+                        <span className="season-card__back-note-txt">{note.title}</span>
                       </div>
-                    )}
-                  </>
-                )}
+                    ))}
+                  </div>
 
-                {/* Action Button: Explore Full Season */}
-                <TransitionLink
-                  to={season.placeholder ? '/ai-learning' : `/ai-learning/${season.slug}`}
-                  className="season-card__explore-btn"
-                  data-cursor="explore"
-                  aria-label={`Explore details for Season ${displayNumber}`}
-                >
-                  <span>{season.placeholder ? 'EXPLORE AI LEARNING' : 'EXPLORE FULL SEASON'}</span>
-                  <span aria-hidden="true">→</span>
-                </TransitionLink>
-              </div>
-
-              {/* Footer Row: Counts + CLICK TO RETURN ↻ */}
-              <div className="season-card__bottom-row season-card__bottom-row--back">
-                <div className="season-card__meta-tags season-card__meta-tags--back">
-                  {season.placeholder ? (
-                    <span>PLANNED MILESTONE</span>
-                  ) : (
-                    <>
-                      <span>{notesCount} NOTES</span>
-                      <span>•</span>
-                      <span>{projectsCount} PROJECT{projectsCount !== 1 ? 'S' : ''}</span>
-                    </>
+                  {/* Learning Project Highlight */}
+                  {highlightProject && (
+                    <div className="season-card__back-project-box">
+                      <span className="season-card__back-project-sub">LEARNING PROJECT</span>
+                      <span className="season-card__back-project-title">
+                        {highlightProject.title}
+                      </span>
+                    </div>
                   )}
+
+                  {/* Action Button: Explore Full Season */}
+                  <TransitionLink
+                    to={`/ai-learning/${season.slug}`}
+                    className="season-card__explore-btn"
+                    data-cursor="explore"
+                    aria-label={`Explore details for Season ${displayNumber}`}
+                  >
+                    <span>EXPLORE FULL SEASON</span>
+                    <span aria-hidden="true">→</span>
+                  </TransitionLink>
                 </div>
-                <div className="season-card__turn-trigger season-card__turn-trigger--back">
-                  <span>CLICK TO RETURN</span>
-                  <span className="season-card__turn-icon" aria-hidden="true">↻</span>
+
+                {/* Footer Row: Counts + CLICK TO RETURN ↻ */}
+                <div className="season-card__bottom-row season-card__bottom-row--back">
+                  <div className="season-card__meta-tags season-card__meta-tags--back">
+                    <span>{notesCount} NOTES</span>
+                    <span>•</span>
+                    <span>{projectsCount} PROJECT{projectsCount !== 1 ? 'S' : ''}</span>
+                  </div>
+                  <div className="season-card__turn-trigger season-card__turn-trigger--back">
+                    <span>CLICK TO RETURN</span>
+                    <span className="season-card__turn-icon" aria-hidden="true">↻</span>
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </div>
     </div>
   );
 }
+
