@@ -11,7 +11,6 @@ const transitionColors = {
   '/about':       '#d4cfc9', // ABOUT         — warm neutral / off-white
   '/work':        '#b85c38', // WORK          — burnt orange
   '/ai-learning': '#3a6ea5', // AI LEARNING   — restrained steel blue
-  '/lab':         '#2c4a7c', // LAB           — cobalt
   '/journey':     '#6a8c3a', // JOURNEY       — muted olive-lime
   '/contact':     '#8c3a3a', // CONTACT       — restrained crimson
 };

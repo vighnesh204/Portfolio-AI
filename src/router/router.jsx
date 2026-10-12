@@ -9,7 +9,6 @@ import ProjectDetail from '../pages/ProjectDetail';
 import AiLearning from '../pages/AiLearning';
 import AiSeason from '../pages/AiSeason';
 import AiNote from '../pages/AiNote';
-import Lab from '../pages/Lab';
 import Journey from '../pages/Journey';
 import Contact from '../pages/Contact';
 import NotFound from '../pages/NotFound';
@@ -26,7 +25,6 @@ const router = createBrowserRouter([
       { path: 'ai-learning', element: <AiLearning /> },
       { path: 'ai-learning/:season', element: <AiSeason /> },
       { path: 'ai-learning/:season/:note', element: <AiNote /> },
-      { path: 'lab', element: <Lab /> },
       { path: 'journey', element: <Journey /> },
       { path: 'contact', element: <Contact /> },
       { path: '*', element: <NotFound /> },

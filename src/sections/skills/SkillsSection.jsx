@@ -239,18 +239,18 @@ export default function SkillsSection() {
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     const ctx = gsap.context(() => {
-      // 1. Top hairline draw from left
+      // 1. Top hairline draw from left (triggers when section naturally enters after Namaste AI unpins)
       if (line) {
         gsap.fromTo(
           line,
           { scaleX: 0, transformOrigin: 'left center' },
           {
             scaleX: 1,
-            duration: 1.2,
-            ease: 'power3.out',
+            duration: 1.1,
+            ease: 'power2.out',
             scrollTrigger: {
               trigger: section,
-              start: 'top 88%',
+              start: 'top 80%',
               once: true,
             },
           }
@@ -259,18 +259,18 @@ export default function SkillsSection() {
 
       if (prefersReduced) return;
 
-      // 2. Hollow title glide up
+      // 2. Hollow title glide up with calm presence and dwell
       gsap.fromTo(
         title,
-        { yPercent: 18, opacity: 0 },
+        { yPercent: 25, opacity: 0 },
         {
           yPercent: 0,
           opacity: 1,
-          duration: 1.1,
+          duration: 1.0,
           ease: 'power3.out',
           scrollTrigger: {
-            trigger: title,
-            start: 'top 90%',
+            trigger: section,
+            start: 'top 78%',
             once: true,
           },
         }
@@ -280,36 +280,59 @@ export default function SkillsSection() {
       if (subtitle) {
         gsap.fromTo(
           subtitle,
-          { opacity: 0, y: 10 },
+          { opacity: 0, y: 12 },
           {
             opacity: 1,
             y: 0,
-            duration: 0.9,
-            ease: 'power3.out',
-            delay: 0.25,
+            duration: 0.85,
+            ease: 'power2.out',
             scrollTrigger: {
-              trigger: title,
-              start: 'top 85%',
+              trigger: section,
+              start: 'top 75%',
               once: true,
             },
           }
         );
       }
 
-      // 4. Rows stagger entrance from below
-      if (rows.length > 0) {
+      // 4. Progressive row reveal:
+      // Initial in-viewport rows enter calmly after title establishes
+      // Subsequent rows reveal progressively as user scrolls through the list
+      const initialBatch = rows.slice(0, 10);
+      const remainingBatch = rows.slice(10);
+
+      if (initialBatch.length > 0) {
         gsap.fromTo(
-          rows,
-          { yPercent: 55, opacity: 0 },
+          initialBatch,
+          { y: 35, opacity: 0 },
           {
-            yPercent: 0,
+            y: 0,
             opacity: 1,
             duration: 0.65,
             ease: 'power3.out',
-            stagger: 0.04,
+            stagger: 0.05,
             scrollTrigger: {
               trigger: section.querySelector('.skills-columns'),
-              start: 'top 86%',
+              start: 'top 78%',
+              once: true,
+            },
+          }
+        );
+      }
+
+      if (remainingBatch.length > 0) {
+        gsap.fromTo(
+          remainingBatch,
+          { y: 35, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.65,
+            ease: 'power3.out',
+            stagger: 0.05,
+            scrollTrigger: {
+              trigger: section.querySelector('.skills-columns'),
+              start: 'top 55%',
               once: true,
             },
           }

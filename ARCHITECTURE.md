@@ -62,7 +62,8 @@ src/
 ├── components/
 │   ├── layout/
 │   │   ├── Header.jsx        — fixed top bar: VIGHNESH wordmark + MENU button
-│   │   └── MenuOverlay.jsx   — GSAP fullscreen panel menu with staggered nav items
+│   │   ├── MenuOverlay.jsx   — GSAP fullscreen panel menu with staggered nav items
+│   │   └── Footer.jsx        — minimal editorial footer: copyright, availability, native back-to-top
 │   ├── opening/
 │   │   └── OpeningSequence.jsx — short editorial GSAP title sequence on initial load
 │   ├── transitions/
@@ -86,27 +87,37 @@ src/
 │   │   ├── aiLearning.css    — scoped styles for 3D season cards and editorial notes table
 │   │   ├── SeasonCard.jsx    — tactile 3D perspective flip card with glint and ghost watermark
 │   │   └── AiLearningSection.jsx — homepage section placed immediately after SelectedWork
-│   └── skills/
-│       ├── skills.css        — scoped styles: hollow title, numbered rows, sticky panel
-│       └── SkillsSection.jsx — Developer DNA section: two-column list + click-to-detail panel
+│   ├── skills/
+│   │   ├── skills.css        — scoped styles: hollow title, numbered rows, sticky panel
+│   │   └── SkillsSection.jsx — Developer DNA section: two-column list + click-to-detail panel
+│   ├── about/
+│   │   ├── about.css         — scoped styles: centered vertical manifesto, progressive text illumination
+│   │   └── AboutSection.jsx  — SC. 06 homepage section: editorial italic serif title, scroll-scrubbed word reveal
+│   ├── journey/
+│   │   ├── journey.css       — scoped styles: sticky indicator, sequential phase stream, focus cards
+│   │   └── JourneySection.jsx — SC. 07 homepage section: 6-phase developer growth progression with sticky dossier
+│   └── contact/
+│       ├── contact.css       — scoped styles: bold display title, direct channels, availability dossier
+│       └── ContactSection.jsx — SC. 08 homepage section: editorial CTA with direct email and social connectors
 │
 ├── pages/                    — one file per route, composes sections
-│   ├── Home.jsx              — OpeningSequence → Hero → Marquee → SelectedWork → AiLearningSection → SkillsSection
+│   ├── Home.jsx              — OpeningSequence → Hero → Marquee → SelectedWork → AiLearningSection → SkillsSection → AboutSection → JourneySection → ContactSection → Footer
 │   ├── Work.jsx              — /work: hero + all projects list with scroll-trigger rows
 │   ├── ProjectDetail.jsx     — /work/:slug: conditional case-study layout
-│   ├── About.jsx
+│   ├── About.jsx             — /about: editorial dossier, PRD Section 18 manifesto, 4 narrative chapters, stack matrix
 │   ├── AiLearning.jsx        — /ai-learning: hub page with philosophy, seasons, and notes
 │   ├── AiSeason.jsx          — /ai-learning/:season: curriculum overview, concepts, notes, projects
 │   ├── AiNote.jsx            — /ai-learning/:season/:note: reading-first article with mental models
-│   ├── Lab.jsx
-│   ├── Journey.jsx
-│   ├── Contact.jsx
+│   ├── Journey.jsx           — /journey: developer progression dossier, mental shifts across 6 phases, current vectors
+│   ├── Contact.jsx           — /contact: dedicated contact dossier with direct channels, availability parameters, and sub-navigation
 │   └── NotFound.jsx
 │
 ├── data/                     — static data files
 │   ├── projects.js           — project objects + helpers: getAllProjects, getFeaturedProjects, getProjectBySlug
+│   ├── contact.js            — CONTACT_INFO: single source of truth for verified contact parameters
 │   ├── aiLearning.js         — re-export bridge for aiLearning data
 │   ├── skills.js             — SKILLS array: 20 tools grouped by category (Frontend, Full Stack, State, AI, Tooling, Exploring)
+│   ├── journey.js            — JOURNEY_PHASES: 6 growth phases (Foundations, JS, React, Full Stack, AI, Problem Solving)
 │   ├── aiLearning/           — season-based modular architecture
 │   │   ├── index.js          — accessors: getAllSeasons, getSeasonBySlug, getNoteBySlug, getAllNotes
 │   │   ├── season1.js        — Season 1: Foundations of AI & LLMs (notes, projects, concepts)
@@ -149,6 +160,10 @@ Initial Load (Browser Entry / Hard Refresh)
 → SelectedWork (scroll-scale title, drawer expansion, bespoke interactive live demos)
 → AiLearningSection (split character title entrance, tactile 3D season cards, CTA bar)
 → SkillsSection (hollow outline SKILLS title, two-column numbered list, sticky click-to-detail panel)
+→ AboutSection (SC. 06 — ABOUT, italic serif title, centered vertical display manifesto, scroll-scrubbed word illumination, CTA to /about)
+→ JourneySection (SC. 07 — JOURNEY, 6-phase growth stream, sticky progress counter, CTA to /journey)
+→ ContactSection (SC. 08 — GET IN TOUCH, bold display typography, verified GitHub channel, conditional links)
+→ Footer (SC. 09 — minimal editorial colophon, availability indicator, native back-to-top)
 ```
 
 - **Replay Prevention:** In-memory session flag prevents OpeningSequence from replaying on internal SPA navigation (Home → Work → Home).
@@ -207,6 +222,29 @@ src/data/projects.js                 — single source of truth
 ## Navigation: TransitionLink
 
 All internal project navigation uses `<TransitionLink>` to trigger the existing vertical color-panel page transition. `/work` and `/work/:slug` map to the burnt orange panel color (`#b85c38`) via `transitionColors.js`.
+
+---
+
+## Contact & Footer Architecture
+
+```
+src/data/
+  └── contact.js            — verified contact single source of truth (GitHub, location, availability)
+
+src/sections/contact/
+  ├── contact.css           — scoped styles: bold display heading, mailto hover underline, availability dossier
+  └── ContactSection.jsx    — homepage SC. 08 section with coordinated GSAP ScrollTrigger entrance
+
+src/components/layout/
+  └── Footer.jsx            — minimal editorial footer: copyright, availability, native back-to-top
+
+src/pages/
+  └── Contact.jsx           — dedicated /contact dossier with direct channel cards and technical availability parameters
+```
+
+- **Factual Integrity & Conditional Channels:** Single source of truth in `src/data/contact.js`. Renders verified channels (`github.com/vighnesh204`) and omits unconfirmed emails or generic URLs. Zero form bloat, no third-party email APIs.
+- **Micro-interactions:** Custom cursor states (`data-cursor="open"`), underline expansion, and native smooth scrolling to top respecting `prefers-reduced-motion`.
+- **Rhythm:** Seamless transition from Journey phase 6 directly into the Contact architectural hairline divider and display title.
 
 ---
 

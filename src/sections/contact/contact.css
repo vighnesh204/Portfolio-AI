@@ -1,0 +1,632 @@
+/* ============================================================
+   CONTACT SECTION & /contact PAGE STYLES
+   Editorial, Awwwards-inspired, Handcrafted
+   Distinct typography, large display heading, refined interaction.
+   ============================================================ */
+
+/* ─── 1. HOMEPAGE CONTACT SECTION ──────────────────────────── */
+
+.contact-section {
+  position: relative;
+  width: 100%;
+  padding: clamp(90px, 12vw, 170px) var(--pad) clamp(60px, 8vw, 110px);
+  max-width: var(--container-max);
+  margin: 0 auto;
+  background-color: var(--bg);
+  z-index: 2;
+  overflow: hidden;
+}
+
+/* Hairline entrance divider */
+.contact-top-line {
+  position: absolute;
+  top: 0;
+  left: var(--pad);
+  right: var(--pad);
+  height: 1px;
+  background: var(--line2);
+  transform-origin: left center;
+}
+
+/* Metadata row */
+.contact-meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-family: var(--mono);
+  font-size: clamp(10px, 1.1vw, 12px);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--mut);
+  margin-bottom: clamp(24px, 3.5vw, 44px);
+}
+
+.contact-meta-kicker b {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.contact-meta-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--ink);
+}
+
+.contact-meta-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #37d08f;
+  box-shadow: 0 0 0 0 rgba(55, 208, 143, 0.6);
+  animation: contact-pulse 2s infinite;
+}
+
+@keyframes contact-pulse {
+  70% { box-shadow: 0 0 0 8px rgba(55, 208, 143, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(55, 208, 143, 0); }
+}
+
+/* Main Display Title */
+.contact-heading-wrap {
+  margin-bottom: clamp(40px, 6vw, 72px);
+}
+
+.contact-display-title {
+  margin: 0;
+  font-family: var(--disp);
+  font-weight: 900;
+  font-size: clamp(48px, 9.5vw, 144px);
+  line-height: 0.88;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  color: var(--ink);
+  user-select: none;
+}
+
+.contact-title-row {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.contact-display-title em {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: -0.02em;
+  color: var(--accent);
+}
+
+/* Grid layout for message and actionable connectors */
+.contact-body-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: clamp(32px, 6vw, 84px);
+  align-items: start;
+  padding-top: clamp(20px, 3vw, 40px);
+  border-top: 1px solid var(--line);
+}
+
+/* Left side: narrative invite & large email */
+.contact-left-col {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(20px, 3vw, 32px);
+}
+
+.contact-pitch {
+  margin: 0;
+  font-family: var(--sans);
+  font-size: clamp(16px, 1.4vw, 21px);
+  line-height: 1.6;
+  color: var(--mut);
+  max-width: 580px;
+}
+
+.contact-pitch b {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.contact-email-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.contact-email-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+.contact-mail-link {
+  display: inline-block;
+  font-family: var(--disp);
+  font-size: clamp(24px, 3.4vw, 48px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  text-decoration: none;
+  width: fit-content;
+  background: linear-gradient(currentColor, currentColor) 0 100%/100% 2px no-repeat;
+  padding-bottom: 4px;
+  transition: background-size 0.5s var(--ease), color var(--duration-fast) var(--ease);
+}
+
+.contact-mail-link:hover {
+  color: var(--accent);
+  background-size: 0 2px;
+  background-position: 100% 100%;
+}
+
+.contact-location-info {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--mut);
+  margin-top: 4px;
+}
+
+/* Right side: quick links & page dossier link */
+.contact-right-col {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(20px, 2.5vw, 32px);
+  padding-top: 6px;
+}
+
+.contact-links-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+.contact-social-pills {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.contact-pill-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink);
+  text-decoration: none;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  transition: border-color var(--duration-fast) var(--ease),
+              background-color var(--duration-fast) var(--ease),
+              color var(--duration-fast) var(--ease),
+              transform var(--duration-fast) var(--ease);
+}
+
+.contact-pill-item:hover {
+  border-color: var(--ink);
+  background-color: var(--ink);
+  color: var(--bg);
+  transform: translateX(4px);
+}
+
+.contact-pill-arrow {
+  color: var(--accent);
+  transition: transform var(--duration-fast) var(--ease), color var(--duration-fast) var(--ease);
+}
+
+.contact-pill-item:hover .contact-pill-arrow {
+  color: var(--bg);
+  transform: translate(2px, -2px);
+}
+
+/* Dossier CTA */
+.contact-dossier-box {
+  margin-top: 12px;
+  padding: 20px 24px;
+  background: var(--bg2);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.contact-dossier-tag {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 8px;
+  display: block;
+}
+
+.contact-dossier-text {
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--mut);
+  margin: 0 0 16px 0;
+}
+
+.contact-dossier-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1px solid var(--ink);
+  padding-bottom: 2px;
+  transition: color var(--duration-fast) var(--ease), border-color var(--duration-fast) var(--ease);
+}
+
+.contact-dossier-btn:hover {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+/* ─── 2. FINAL MINIMAL FOOTER ──────────────────────────────── */
+
+.site-footer {
+  position: relative;
+  width: 100%;
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: clamp(28px, 4vw, 44px) var(--pad) clamp(36px, 5vw, 56px);
+  border-top: 1px solid var(--line2);
+  background-color: var(--bg);
+  z-index: 2;
+}
+
+.site-footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.site-footer-left {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.site-footer-credit {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--mut);
+}
+
+.site-footer-credit b {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.site-footer-sub {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+.site-footer-center {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--mut);
+}
+
+.site-footer-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.back-to-top-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 8px 18px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease);
+}
+
+.back-to-top-btn:hover {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--bg);
+}
+
+.back-to-top-btn span.arrow {
+  transition: transform var(--duration-fast) var(--ease);
+}
+
+.back-to-top-btn:hover span.arrow {
+  transform: translateY(-2px);
+}
+
+/* ─── 3. DEDICATED /contact PAGE ───────────────────────────── */
+
+.contact-page {
+  position: relative;
+  min-height: 100vh;
+  background-color: var(--bg);
+  color: var(--ink);
+  padding: clamp(120px, 15vw, 170px) var(--pad) clamp(80px, 10vw, 140px);
+}
+
+.contact-page-wrap {
+  max-width: min(1040px, 100%);
+  margin: 0 auto;
+}
+
+.contact-page-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--mono);
+  font-size: clamp(11px, 1.1vw, 12px);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 24px;
+}
+
+.contact-page-eyebrow__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.contact-page-title {
+  font-family: var(--disp);
+  font-size: clamp(48px, 9vw, 116px);
+  font-weight: 900;
+  line-height: 0.92;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin: 0 0 clamp(24px, 3.5vw, 40px) 0;
+}
+
+.contact-page-title em {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  text-transform: none;
+  color: var(--accent);
+}
+
+.contact-page-intro {
+  font-family: var(--sans);
+  font-size: clamp(18px, 2.2vw, 24px);
+  line-height: 1.55;
+  color: var(--mut);
+  max-width: 840px;
+  margin-bottom: clamp(56px, 8vw, 88px);
+}
+
+.contact-page-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin-bottom: clamp(64px, 8vw, 96px);
+}
+
+.contact-card {
+  padding: clamp(24px, 3.5vw, 36px);
+  background: var(--bg2);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 20px;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color var(--duration-fast) var(--ease),
+              transform var(--duration-fast) var(--ease),
+              background-color var(--duration-fast) var(--ease);
+}
+
+.contact-card:hover {
+  border-color: var(--line2);
+  background-color: var(--bg3);
+  transform: translateY(-3px);
+}
+
+.contact-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.contact-card-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.contact-card-arrow {
+  font-family: var(--mono);
+  font-size: 14px;
+  color: var(--mut);
+  transition: transform var(--duration-fast) var(--ease), color var(--duration-fast) var(--ease);
+}
+
+.contact-card:hover .contact-card-arrow {
+  color: var(--ink);
+  transform: translate(3px, -3px);
+}
+
+.contact-card-value {
+  margin: 0;
+  font-family: var(--disp);
+  font-size: clamp(20px, 2.4vw, 28px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  word-break: break-all;
+}
+
+.contact-card-desc {
+  margin: 0;
+  font-family: var(--sans);
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--mut);
+}
+
+/* Detail metadata grid */
+.contact-dossier-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px;
+  padding: 32px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: clamp(60px, 7vw, 90px);
+}
+
+.contact-dossier-item dt {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--mut);
+  margin-bottom: 8px;
+}
+
+.contact-dossier-item dd {
+  margin: 0;
+  font-family: var(--disp);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+/* Navigation footer on /contact */
+.contact-nav-footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.contact-nav-label {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--mut);
+}
+
+.contact-nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.contact-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink);
+  text-decoration: none;
+  transition: all var(--duration-fast) var(--ease);
+}
+
+.contact-nav-btn:hover {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--bg);
+}
+
+/* ─── 4. RESPONSIVE BREAKPOINTS ────────────────────────────── */
+
+@media (max-width: 900px) {
+  .contact-body-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .contact-right-col {
+    padding-top: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .site-footer-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .site-footer-right {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .contact-title-row {
+    white-space: normal;
+  }
+}
+
+@media (max-width: 480px) {
+  .contact-mail-link {
+    font-size: clamp(20px, 6vw, 28px);
+    word-break: break-all;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact-meta-dot {
+    animation: none;
+  }
+  .contact-mail-link {
+    transition: none;
+  }
+  .contact-top-line {
+    transform: none !important;
+  }
+}

@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import TransitionLink from '../../components/ui/TransitionLink';
+import { CONTACT_INFO } from '../../data/contact';
 
 // ─── Hero Section ──────────────────────────────────────────────────────────
 // Handcrafted editorial developer hero matching reference composition.
@@ -178,24 +179,30 @@ export default function Hero() {
           </a>
 
           <div className="hero-socials">
-            <a
-              href="https://github.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hero-social-link"
-              data-cursor="open"
-            >
-              GitHub ↗
-            </a>
-            <a
-              href="https://linkedin.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hero-social-link"
-              data-cursor="open"
-            >
-              LinkedIn ↗
-            </a>
+            {CONTACT_INFO.github && (
+              <a
+                href={CONTACT_INFO.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hero-social-link"
+                data-cursor="open"
+                aria-label="GitHub Profile — vighnesh204 (opens in new tab)"
+              >
+                GitHub ↗
+              </a>
+            )}
+            {CONTACT_INFO.linkedin && (
+              <a
+                href={CONTACT_INFO.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hero-social-link"
+                data-cursor="open"
+                aria-label="LinkedIn Profile (opens in new tab)"
+              >
+                LinkedIn ↗
+              </a>
+            )}
           </div>
         </div>
       </div>

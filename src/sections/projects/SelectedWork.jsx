@@ -77,7 +77,7 @@ export default function SelectedWork() {
       // 3. Scrubbed scale and letter-tracking transformation during scroll
       gsap.fromTo(
         title,
-        { scale: 1.08, transformOrigin: 'left bottom' },
+        { scale: 1.03, transformOrigin: 'left bottom' },
         {
           scale: 1,
           ease: 'none',

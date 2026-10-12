@@ -20,6 +20,8 @@
   max-width: var(--container-max);
   margin: 0 auto;
   overflow: visible;
+  background-color: var(--bg);
+  z-index: 2;
 }
 
 /* Hairline top border, scales from left via GSAP */
@@ -63,21 +65,33 @@
   position: relative;
 }
 
-/* Hollow/outlined heading — reference-exact */
+/* Hollow/outlined heading — reference-exact (120px scale with restrained tracking) */
 .skills-display-title {
   margin: 0;
   font-family: var(--disp);
-  font-size: clamp(72px, 14vw, 200px);
+  font-size: clamp(54px, 8.2vw, 120px);
   font-weight: 900;
-  line-height: 0.84;
-  letter-spacing: -0.035em;
+  line-height: 0.90;
+  letter-spacing: -0.02em;
   text-transform: uppercase;
   color: transparent;
-  -webkit-text-stroke: 1.5px rgba(239, 232, 220, 0.85);
-  text-stroke: 1.5px rgba(239, 232, 220, 0.85);
+  -webkit-text-stroke: 1.25px rgba(239, 232, 220, 0.85);
+  text-stroke: 1.25px rgba(239, 232, 220, 0.85);
   white-space: nowrap;
   will-change: transform, opacity;
   user-select: none;
+  cursor: default;
+  transition: color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              -webkit-text-stroke-color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              letter-spacing 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .skills-display-title:hover {
+    color: rgba(239, 232, 220, 0.10);
+    -webkit-text-stroke-color: rgba(239, 232, 220, 1);
+    letter-spacing: -0.026em;
+  }
 }
 
 /* Italic serif subtitle — bottom-right of heading */

@@ -1,12 +1,13 @@
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import TransitionLink from '../ui/TransitionLink';
+import { CONTACT_INFO } from '../../data/contact';
 
 // ─── MenuOverlay ──────────────────────────────────────────────────────────
 // Fullscreen editorial navigation panel matching reference interaction design.
 //
 // Features:
-//   - Oversized editorial typography (01 HOME ... 07 CONTACT).
+//   - Oversized editorial typography (01 HOME ... 06 CONTACT).
 //   - Hairline separators and subtle hover micro-interactions.
 //   - Full keyboard accessibility (Escape close, focus management).
 //   - Scroll lock while active.
@@ -18,15 +19,13 @@ const NAV_ITEMS = [
   { index: '02', label: 'ABOUT',       path: '/about'       },
   { index: '03', label: 'WORK',        path: '/work'        },
   { index: '04', label: 'AI LEARNING', path: '/ai-learning' },
-  { index: '05', label: 'LAB',         path: '/lab'         },
-  { index: '06', label: 'JOURNEY',     path: '/journey'     },
-  { index: '07', label: 'CONTACT',     path: '/contact'     },
+  { index: '05', label: 'JOURNEY',     path: '/journey'     },
+  { index: '06', label: 'CONTACT',     path: '/contact'     },
 ];
 
 const SECONDARY_LINKS = [
-  { label: 'GITHUB',   href: 'https://github.com' },
-  { label: 'LINKEDIN', href: 'https://linkedin.com' },
-  { label: 'RESUME',   href: '#' },
+  ...(CONTACT_INFO.github ? [{ label: 'GITHUB', href: CONTACT_INFO.github }] : []),
+  ...(CONTACT_INFO.linkedin ? [{ label: 'LINKEDIN', href: CONTACT_INFO.linkedin }] : []),
 ];
 
 function MenuOverlay({ isOpen, onClose, onNavigate }) {
@@ -193,15 +192,22 @@ function MenuOverlay({ isOpen, onClose, onNavigate }) {
         {/* Footer Info Area */}
         <div ref={metaRef} className="menu-footer">
           <div className="menu-footer__top">
-            <div className="menu-footer__contact">
-              <span className="menu-footer__kicker">DIRECT INQUIRY</span>
-              <a href="mailto:vighnesh@example.com" className="menu-footer__email">
-                vighnesh@portfolio.dev
-              </a>
-            </div>
+            {CONTACT_INFO.email ? (
+              <div className="menu-footer__contact">
+                <span className="menu-footer__kicker">DIRECT INQUIRY</span>
+                <a href={`mailto:${CONTACT_INFO.email}`} className="menu-footer__email">
+                  {CONTACT_INFO.email}
+                </a>
+              </div>
+            ) : (
+              <div className="menu-footer__contact">
+                <span className="menu-footer__kicker">STATUS</span>
+                <span className="menu-footer__text">{CONTACT_INFO.availability.toUpperCase()}</span>
+              </div>
+            )}
             <div className="menu-footer__location">
               <span className="menu-footer__kicker">LOCATION</span>
-              <span className="menu-footer__text">PUNE, INDIA</span>
+              <span className="menu-footer__text">{CONTACT_INFO.location.toUpperCase()}</span>
             </div>
           </div>
 

@@ -38,211 +38,233 @@ export default function AiLearningSection() {
 
     if (!section || !pinContainer) return;
 
-    const isMobile = window.matchMedia('(max-width: 1024px)').matches;
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const mm = gsap.matchMedia(sectionRef);
 
-    const ctx = gsap.context(() => {
-      // 1. Top hairline divider reveal
-      if (line) {
-        gsap.fromTo(
-          line,
-          { scaleX: 0, transformOrigin: 'left center' },
-          {
-            scaleX: 1,
-            duration: 1.1,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: section,
-              start: 'top 85%',
-              once: true,
-            },
-          }
-        );
-      }
+    mm.add(
+      {
+        isDesktop: '(min-width: 1025px) and (prefers-reduced-motion: no-preference)',
+        isMobileOrReduced: '(max-width: 1024px), (prefers-reduced-motion: reduce)',
+      },
+      (context) => {
+        const { isDesktop } = context.conditions;
 
-      // 2. Character entrance reveal for NAMASTE AI title
-      if (title) {
-        const chars = title.querySelectorAll('.char');
-        if (chars.length > 0) {
+        // 1. Top hairline divider reveal (all viewports)
+        if (line) {
           gsap.fromTo(
-            chars,
-            { yPercent: 100, opacity: 0 },
+            line,
+            { scaleX: 0, transformOrigin: 'left center' },
             {
-              yPercent: 0,
-              opacity: 1,
-              duration: 0.85,
+              scaleX: 1,
+              duration: 1.1,
               ease: 'power3.out',
-              stagger: 0.035,
               scrollTrigger: {
                 trigger: section,
-                start: 'top 80%',
+                start: 'top 85%',
                 once: true,
               },
             }
           );
         }
-      }
 
-      // Mobile or Reduced Motion: Natural vertical layout without scroll pinning
-      if (isMobile || prefersReduced) {
-        const motionCards = section.querySelectorAll('.season-card-motion');
-        gsap.fromTo(
-          motionCards,
-          { y: 40, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 0.8,
-            stagger: 0.15,
-            scrollTrigger: {
-              trigger: section,
-              start: 'top 75%',
-              once: true,
-            },
+        // 2. Character entrance reveal for NAMASTE AI title (all viewports)
+        if (title) {
+          const chars = title.querySelectorAll('.char');
+          if (chars.length > 0) {
+            gsap.fromTo(
+              chars,
+              { yPercent: 100, opacity: 0 },
+              {
+                yPercent: 0,
+                opacity: 1,
+                duration: 0.85,
+                ease: 'power3.out',
+                stagger: 0.035,
+                scrollTrigger: {
+                  trigger: section,
+                  start: 'top 80%',
+                  once: true,
+                },
+              }
+            );
           }
-        );
-        return;
-      }
-
-      // Desktop: Choreographed Scroll Sequence with Pinning for N Cards
-      const cards = gsap.utils.toArray(section.querySelectorAll('.season-card-motion'));
-      if (cards.length < 2) return;
-
-      const numCards = cards.length;
-
-      // Initial card stage setup:
-      cards.forEach((card, idx) => {
-        if (idx === 0) {
-          // Card 0 starts in prime focus (cleanly within right card stage)
-          gsap.set(card, {
-            x: 30,
-            y: 0,
-            rotateZ: 0,
-            scale: 1,
-            opacity: 1,
-            zIndex: 10,
-            transformOrigin: 'center center',
-          });
-        } else {
-          // Successive cards start offset to the right with graceful perspective stagger
-          const slot = idx; // 1 = immediate next peek, 2 = 2nd peek...
-          gsap.set(card, {
-            x: 480 + (slot - 1) * 280,
-            y: 0,
-            rotateZ: 4 + (slot - 1) * 2.5,
-            scale: Math.max(0.94 - (slot - 1) * 0.06, 0.78),
-            opacity: Math.max(0.85 - (slot - 1) * 0.35, 0),
-            zIndex: 8 - slot,
-            transformOrigin: 'center center',
-          });
         }
-      });
 
-      // Main Choreographed Scroll Timeline
-      // Uses functional pixel distance rather than trigger % to eliminate spacer feedback loops
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: section,
-          start: 'top top',
-          end: () => `+=${Math.round(window.innerHeight * (numCards - 1) * 0.85)}`,
-          pin: pinContainer,
-          pinSpacing: true,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-          scrub: 1,
-          onUpdate: (self) => {
-            const p = self.progress;
-
-            // Update counter hairline fill
-            if (counterFillRef.current) {
-              counterFillRef.current.style.transform = `scaleX(${Math.min(Math.max(p, 0), 1)})`;
-            }
-
-            // Update active number indicator (01 to 05)
-            if (activeNumRef.current) {
-              const activeIndex = Math.min(Math.floor(p * numCards), numCards - 1);
-              activeNumRef.current.textContent = String(activeIndex + 1).padStart(2, '0');
-            }
-          },
-        },
-      });
-
-      // Multi-step choreographed transitions:
-      // In each step i (from 0 to numCards - 2):
-      // - Card i glides left slightly and dissolves (stays inside stage boundary, never crosses into title)
-      // - Card i + 1 glides into prime focus at x: 30
-      // - Upcoming cards cascade one slot closer
-      for (let step = 0; step < numCards - 1; step++) {
-        const stepTime = step; // 1 unit per step
-
-        // Currently focal card transitions left slightly and dissolves
-        tl.to(
-          cards[step],
-          {
-            x: -60,
-            rotateZ: -3,
-            scale: 0.92,
-            opacity: 0,
-            zIndex: 1,
-            ease: 'power1.inOut',
-            duration: 1,
-          },
-          stepTime
-        );
-
-        // Keep earlier cards faded out
-        for (let prev = 0; prev < step; prev++) {
-          tl.to(
-            cards[prev],
+        // Mobile or Reduced Motion: Natural vertical layout without scroll pinning
+        if (!isDesktop) {
+          const motionCards = section.querySelectorAll('.season-card-motion');
+          gsap.fromTo(
+            motionCards,
+            { y: 40, opacity: 0 },
             {
-              x: -90,
-              opacity: 0,
-              zIndex: 0,
-              duration: 1,
-            },
-            stepTime
+              y: 0,
+              opacity: 1,
+              duration: 0.8,
+              stagger: 0.15,
+              scrollTrigger: {
+                trigger: section,
+                start: 'top 75%',
+                once: true,
+              },
+            }
           );
+          return;
         }
 
-        // Next card arrives into prime focus
-        tl.to(
-          cards[step + 1],
-          {
-            x: 30,
-            rotateZ: 0,
-            scale: 1,
-            opacity: 1,
-            zIndex: 10 + step + 1,
-            ease: 'power1.inOut',
-            duration: 1,
-          },
-          stepTime
-        );
+        // Desktop: Choreographed Scroll Sequence with Pinning for N Cards
+        const cards = gsap.utils.toArray(section.querySelectorAll('.season-card-motion'));
+        if (cards.length < 2) return;
 
-        // Subsequent cards (step + 2 onwards) advance one slot closer
-        for (let next = step + 2; next < numCards; next++) {
-          const slot = next - (step + 1); // 1 = immediate next peek, 2 = 2nd peek...
-          const targetX = 480 + (slot - 1) * 280;
-          const targetRot = 4 + (slot - 1) * 2.5;
-          const targetScale = Math.max(0.94 - (slot - 1) * 0.06, 0.78);
-          const targetOpacity = Math.max(0.85 - (slot - 1) * 0.35, 0);
+        const numCards = cards.length;
 
-          tl.to(
-            cards[next],
-            {
-              x: targetX,
-              rotateZ: targetRot,
-              scale: targetScale,
-              opacity: targetOpacity,
+        // Initial card stage setup:
+        cards.forEach((card, idx) => {
+          if (idx === 0) {
+            // Card 0 starts in prime focus (cleanly within right card stage)
+            gsap.set(card, {
+              x: 30,
+              y: 0,
+              rotateZ: 0,
+              scale: 1,
+              opacity: 1,
+              zIndex: 10,
+              transformOrigin: 'center center',
+            });
+          } else {
+            // Successive cards start offset to the right with graceful perspective stagger
+            const slot = idx; // 1 = immediate next peek, 2 = 2nd peek...
+            gsap.set(card, {
+              x: 480 + (slot - 1) * 280,
+              y: 0,
+              rotateZ: 4 + (slot - 1) * 2.5,
+              scale: Math.max(0.94 - (slot - 1) * 0.06, 0.78),
+              opacity: Math.max(0.85 - (slot - 1) * 0.35, 0),
               zIndex: 8 - slot,
+              transformOrigin: 'center center',
+            });
+          }
+        });
+
+        const entryDwell = 0.35;
+        const stepDuration = 1.0;
+        const exitDwell = 0.75;
+        const totalDuration = entryDwell + (numCards - 1) * stepDuration + exitDwell;
+
+        // Main Choreographed Scroll Timeline
+        // Uses functional pixel distance rather than trigger % to eliminate spacer feedback loops
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            id: 'namaste-ai-pin',
+            trigger: section,
+            start: 'top top',
+            end: () => `+=${Math.round(window.innerHeight * (numCards - 1) * 0.95)}`,
+            pin: pinContainer,
+            pinSpacing: true,
+            anticipatePin: 1,
+            invalidateOnRefresh: true,
+            scrub: 1,
+            onUpdate: (self) => {
+              const p = self.progress;
+
+              // Update counter hairline fill
+              if (counterFillRef.current) {
+                counterFillRef.current.style.transform = `scaleX(${Math.min(Math.max(p, 0), 1)})`;
+              }
+
+              // Update active number indicator (01 to 05), synchronized with transition midpoints
+              if (activeNumRef.current) {
+                const currentTime = p * totalDuration;
+                let activeIndex = 0;
+                for (let i = 0; i < numCards - 1; i++) {
+                  const threshold = entryDwell + i * stepDuration + 0.5 * stepDuration;
+                  if (currentTime >= threshold) {
+                    activeIndex = i + 1;
+                  }
+                }
+                activeNumRef.current.textContent = String(activeIndex + 1).padStart(2, '0');
+              }
+            },
+          },
+        });
+
+        // Hold initial focal card briefly upon pinning
+        tl.to({}, { duration: entryDwell }, 0);
+
+        // Multi-step choreographed transitions:
+        for (let step = 0; step < numCards - 1; step++) {
+          const stepTime = entryDwell + step * stepDuration;
+
+          // Currently focal card transitions left slightly and dissolves inside stage
+          tl.to(
+            cards[step],
+            {
+              x: -60,
+              rotateZ: -3,
+              scale: 0.92,
+              opacity: 0,
+              zIndex: 1,
               ease: 'power1.inOut',
-              duration: 1,
+              duration: stepDuration,
             },
             stepTime
           );
+
+          // Keep earlier cards faded out
+          for (let prev = 0; prev < step; prev++) {
+            tl.to(
+              cards[prev],
+              {
+                x: -90,
+                opacity: 0,
+                zIndex: 0,
+                duration: stepDuration,
+              },
+              stepTime
+            );
+          }
+
+          // Next card arrives into prime focus
+          tl.to(
+            cards[step + 1],
+            {
+              x: 30,
+              rotateZ: 0,
+              scale: 1,
+              opacity: 1,
+              zIndex: 10 + step + 1,
+              ease: 'power1.inOut',
+              duration: stepDuration,
+            },
+            stepTime
+          );
+
+          // Subsequent cards advance one slot closer
+          for (let next = step + 2; next < numCards; next++) {
+            const slot = next - (step + 1);
+            const targetX = 480 + (slot - 1) * 280;
+            const targetRot = 4 + (slot - 1) * 2.5;
+            const targetScale = Math.max(0.94 - (slot - 1) * 0.06, 0.78);
+            const targetOpacity = Math.max(0.85 - (slot - 1) * 0.35, 0);
+
+            tl.to(
+              cards[next],
+              {
+                x: targetX,
+                rotateZ: targetRot,
+                scale: targetScale,
+                opacity: targetOpacity,
+                zIndex: 8 - slot,
+                ease: 'power1.inOut',
+                duration: stepDuration,
+              },
+              stepTime
+            );
+          }
         }
+
+        // Hold final focal card (Season 05) before smooth release
+        tl.to({}, { duration: exitDwell }, entryDwell + (numCards - 1) * stepDuration);
       }
-    }, sectionRef);
+    );
 
     // Ensure layout and fonts are settled so ScrollTrigger positions are accurate
     if (document.fonts && document.fonts.ready) {
@@ -252,7 +274,7 @@ export default function AiLearningSection() {
     }
 
     return () => {
-      ctx.revert();
+      mm.revert();
     };
   }, []);
 

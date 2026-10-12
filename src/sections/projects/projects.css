@@ -57,14 +57,14 @@
   gap: clamp(10px, 1.5vw, 18px);
 }
 
-/* Oversized Display Title */
+/* Oversized Display Title — Refined to match reference HIGHLIGHTS typography scale */
 .sw-display-title {
   margin: 0;
   font-family: var(--disp);
-  font-size: clamp(48px, 9.5vw, 160px);
+  font-size: clamp(42px, 7.2vw, 104px);
   font-weight: 900;
-  line-height: 0.86;
-  letter-spacing: -0.04em;
+  line-height: 0.92;
+  letter-spacing: -0.02em;
   text-transform: uppercase;
   color: var(--ink);
   white-space: nowrap;

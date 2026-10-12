@@ -222,7 +222,8 @@ a {
 .custom-cursor.is-close,
 .custom-cursor.is-explore,
 .custom-cursor.is-read,
-.custom-cursor.is-flip {
+.custom-cursor.is-flip,
+.custom-cursor.is-mail {
   width: 72px;
   height: 72px;
   margin: -36px 0 0 -36px;
@@ -471,7 +472,7 @@ a {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: calc(64px + 1vh) 0 clamp(24px, 3vh, 48px);
+  padding: calc(56px + 1vh) 0 clamp(16px, 2.2vh, 32px);
   overflow: hidden;
   isolation: isolate;
 }
@@ -534,10 +535,10 @@ a {
 
 /* Headline: Two-line centered dominant name — VIGHNESH / BORHADE */
 .hero-headline {
-  margin: clamp(14px, 2.5vh, 28px) 0 clamp(16px, 3vh, 36px);
+  margin: clamp(10px, 1.8vh, 22px) 0 clamp(12px, 2vh, 26px);
   font-family: var(--disp);
-  /* Refined clamp: dominant but with elegant breathing room matching reference */
-  font-size: clamp(52px, 14.2vw, 208px);
+  /* Refined clamp: huge & dominant with comfortable margins matching reference */
+  font-size: clamp(48px, 11.6vw, 172px);
   font-weight: 900;
   line-height: 0.92;
   letter-spacing: -0.035em;
@@ -556,7 +557,7 @@ a {
 .hero-row--first {
   display: block;
   text-align: center;
-  margin-bottom: clamp(2px, 0.5vh, 8px);
+  margin-bottom: clamp(2px, 0.4vh, 6px);
 }
 
 .hero-row--second {
@@ -595,9 +596,9 @@ a {
 .hero-sub {
   display: grid;
   grid-template-columns: 1fr 1.15fr;
-  gap: clamp(24px, 5vw, 84px);
+  gap: clamp(20px, 4vw, 64px);
   align-items: flex-end;
-  padding-top: clamp(16px, 2.5vh, 32px);
+  padding-top: clamp(10px, 1.6vh, 22px);
 }
 
 .hero-sub__left {
@@ -770,7 +771,7 @@ a {
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  margin-top: clamp(20px, 4vh, 48px);
+  margin-top: clamp(16px, 2.8vh, 36px);
   font-family: var(--mono);
   font-size: 0.6875rem;
   letter-spacing: 0.16em;
@@ -1226,8 +1227,8 @@ a {
   }
 
   .hero-headline {
-    font-size: clamp(44px, 12.2vw, 108px);
-    line-height: 0.90;
+    font-size: clamp(40px, 11.2vw, 88px);
+    line-height: 0.92;
     letter-spacing: -0.03em;
   }
 
@@ -1245,8 +1246,8 @@ a {
 @media (max-width: 480px) {
   /* Ensure VIGHNESH / BORHADE never overflow on 375px */
   .hero-headline {
-    font-size: clamp(38px, 11.2vw, 64px);
-    line-height: 0.92;
+    font-size: clamp(34px, 10.2vw, 54px);
+    line-height: 0.93;
     letter-spacing: -0.025em;
   }
 
