@@ -41,7 +41,6 @@ index.html
 /ai-learning               → pages/AiLearning.jsx
 /ai-learning/:season       → pages/AiSeason.jsx
 /ai-learning/:season/:note → pages/AiNote.jsx
-/lab                       → pages/Lab.jsx
 /journey                   → pages/Journey.jsx
 /contact                   → pages/Contact.jsx
 *                          → pages/NotFound.jsx

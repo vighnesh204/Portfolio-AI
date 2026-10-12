@@ -88,8 +88,6 @@
 
 .contact-title-row {
   display: block;
-  overflow: hidden;
-  white-space: nowrap;
 }
 
 .contact-display-title em {

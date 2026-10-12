@@ -10,11 +10,22 @@ import { gsap } from 'gsap';
 //   - Dual shutter panels that part smoothly to reveal the Hero underneath.
 //   - In-memory session flag: runs on hard refresh / first load; skips on SPA navigation.
 //   - Respects prefers-reduced-motion: zero delay, skips immediately.
+//
+// Flash prevention:
+//   — hasPlayedInSession is checked SYNCHRONOUSLY before first paint.
+//   — On first load: the opaque shutter panels render immediately (before
+//     any effect fires), so the Hero is never exposed during hydration.
+//   — On SPA re-entry: returns null immediately (session already played).
 // ──────────────────────────────────────────────────────────────────────────
 
 let hasPlayedInSession = false;
 
 export default function OpeningSequence({ onComplete }) {
+  // shouldPlay: true  → animate the full sequence
+  // shouldPlay: false → hide everything (SPA re-entry case, already played)
+  // isFirstLoad: true → cover the screen with shutters before effects fire
+  const isFirstLoad = !hasPlayedInSession;
+
   const [shouldPlay, setShouldPlay] = useState(false);
   const containerRef = useRef(null);
   const leaderRef = useRef(null);
@@ -25,11 +36,13 @@ export default function OpeningSequence({ onComplete }) {
   const botPanelRef = useRef(null);
 
   useEffect(() => {
+    // Already played this session (SPA navigation back to Home)
     if (hasPlayedInSession) {
       onComplete?.();
       return;
     }
 
+    // Reduced-motion: skip sequence entirely
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReduced) {
       hasPlayedInSession = true;
@@ -56,11 +69,12 @@ export default function OpeningSequence({ onComplete }) {
     // Prevent body scrolling during intro
     document.body.style.overflow = 'hidden';
 
-    // Initial hidden state
+    // Initial hidden state for animated elements
     gsap.set(name, { yPercent: 105, opacity: 0 });
     gsap.set(meta, { opacity: 0, y: -6 });
     gsap.set(words, { opacity: 0, y: 8 });
     gsap.set(leader, { scale: 0.94, opacity: 0 });
+    // Panels start fully closed (covering the viewport)
     gsap.set([topPanel, botPanel], { yPercent: 0 });
 
     const tl = gsap.timeline({
@@ -129,37 +143,41 @@ export default function OpeningSequence({ onComplete }) {
     };
   }, [shouldPlay, onComplete]);
 
-  if (!shouldPlay) return null;
+  // SPA re-entry: sequence already played, render nothing
+  if (!isFirstLoad && !shouldPlay) return null;
 
   return (
     <div ref={containerRef} className="opening-screen" aria-hidden="true">
-      {/* Top and Bottom Letterbox Shutter Panels */}
+      {/* Opaque letterbox shutter panels — always rendered on first load
+          so the Hero is never visible before the animation starts. */}
       <div ref={topPanelRef} className="opening-shutter opening-shutter--top" />
       <div ref={botPanelRef} className="opening-shutter opening-shutter--bottom" />
 
-      {/* Center Leader Graphic */}
-      <div ref={leaderRef} className="opening-leader">
-        <div className="opening-crosshair opening-crosshair--h" />
-        <div className="opening-crosshair opening-crosshair--v" />
-        <div className="opening-ring opening-ring--outer" />
-        <div className="opening-ring opening-ring--inner" />
+      {/* Center Leader Graphic — only shown during active animation */}
+      {shouldPlay && (
+        <div ref={leaderRef} className="opening-leader">
+          <div className="opening-crosshair opening-crosshair--h" />
+          <div className="opening-crosshair opening-crosshair--v" />
+          <div className="opening-ring opening-ring--outer" />
+          <div className="opening-ring opening-ring--inner" />
 
-        <div className="opening-center">
-          <div ref={metaRef} className="opening-meta">
-            PORTFOLIO / 2026
-          </div>
+          <div className="opening-center">
+            <div ref={metaRef} className="opening-meta">
+              PORTFOLIO / 2026
+            </div>
 
-          <div className="opening-name-clip">
-            <h1 ref={nameRef} className="opening-name">
-              VIGHNESH
-            </h1>
-          </div>
+            <div className="opening-name-clip">
+              <h1 ref={nameRef} className="opening-name">
+                VIGHNESH
+              </h1>
+            </div>
 
-          <div ref={wordsRef} className="opening-words">
-            BUILD · LEARN · EXPERIMENT
+            <div ref={wordsRef} className="opening-words">
+              BUILD · LEARN · EXPERIMENT
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
