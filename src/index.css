@@ -240,6 +240,13 @@ a {
   }
 }
 
+/* Ensure custom cursor is strictly hidden on touch / coarse devices */
+@media (pointer: coarse), (hover: none) {
+  .custom-cursor {
+    display: none !important;
+  }
+}
+
 /* ------------------------------------------------------------
    5. SITE HEADER
    ------------------------------------------------------------ */
@@ -366,6 +373,7 @@ a {
   left: 0;
   right: 0;
   height: 50.5vh;
+  height: 50.5dvh;
   background-color: #050404;
   z-index: 10;
   pointer-events: none;
@@ -1245,11 +1253,37 @@ a {
 }
 
 @media (max-width: 480px) {
-  /* Ensure VIGHNESH / BORHADE never overflow on 375px */
+  /* Ensure VIGHNESH / BORHADE never overflow while preserving dominant presence */
   .hero-headline {
-    font-size: clamp(34px, 10.2vw, 54px);
+    font-size: clamp(32px, 9.8vw, 52px);
     line-height: 0.93;
     letter-spacing: -0.025em;
+  }
+
+  .hero-badge {
+    width: 80px;
+  }
+
+  .hero-badge text {
+    font-size: 11px;
+  }
+
+  .hero-role .role-serif {
+    font-size: clamp(22px, 5.5vw, 30px);
+  }
+
+  .hero-role .role-sans {
+    font-size: clamp(14px, 3.8vw, 18px);
+  }
+
+  .hero-lead {
+    font-size: 14px;
+    line-height: 1.55;
+  }
+
+  .hero-actions .btn {
+    padding: 11px 20px;
+    font-size: 0.75rem;
   }
 
   .hero-foot {
@@ -1258,10 +1292,67 @@ a {
     gap: 16px;
   }
 
+  /* Marquee ribbon mobile scaling */
+  .tapes {
+    height: clamp(110px, 16vw, 140px);
+  }
+
+  .tape {
+    padding: 10px 0;
+  }
+
+  .tape-word {
+    font-size: clamp(20px, 5.5vw, 28px);
+  }
+
+  .tape--b .tape-word {
+    font-size: clamp(18px, 5vw, 26px);
+  }
+
+  /* Fullscreen menu overlay mobile adjustments */
+  .menu-nav-item {
+    padding: clamp(10px, 1.8vh, 18px) var(--pad);
+    gap: 16px;
+  }
+
+  .menu-nav-number {
+    font-size: 0.6875rem;
+    min-width: 2ch;
+  }
+
+  .menu-nav-label {
+    font-size: clamp(24px, 6.8vw, 42px);
+    line-height: 1;
+  }
+
+  .menu-footer {
+    padding-bottom: 20px;
+  }
+
   .menu-footer__top {
     flex-direction: column;
     align-items: flex-start;
     gap: 16px;
+  }
+
+  .menu-footer__email {
+    font-size: 18px;
+    word-break: break-all;
+  }
+}
+
+@media (max-width: 360px) {
+  .hero-headline {
+    font-size: clamp(28px, 9.2vw, 36px);
+  }
+
+  .hero-actions {
+    width: 100%;
+  }
+
+  .hero-actions .btn {
+    width: 100%;
+    justify-content: center;
   }
 }
 

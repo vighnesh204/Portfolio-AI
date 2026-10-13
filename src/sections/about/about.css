@@ -476,3 +476,73 @@
   background: var(--ink);
   color: var(--bg);
 }
+
+/* ─── 3. RESPONSIVE BREAKPOINTS ──────────────────────────── */
+
+@media (max-width: 768px) {
+  .about-title {
+    font-size: clamp(40px, 9vw, 68px);
+  }
+
+  .about-page-title {
+    font-size: clamp(36px, 8.5vw, 56px);
+  }
+}
+
+@media (max-width: 480px) {
+  .about-title {
+    font-size: clamp(34px, 10vw, 48px);
+  }
+
+  .about-statement {
+    font-size: clamp(19px, 5.2vw, 26px);
+  }
+
+  .about-statement--manifesto {
+    font-size: clamp(17px, 4.6vw, 22px);
+  }
+
+  .about-pillars {
+    gap: 8px;
+  }
+
+  .about-pillar-tag {
+    font-size: 10px;
+    padding: 5px 10px;
+  }
+
+  .about-page-title {
+    font-size: clamp(28px, 8.5vw, 42px);
+  }
+
+  .about-page-intro {
+    font-size: 16px;
+  }
+
+  .about-page-manifesto {
+    padding: 20px 16px;
+  }
+
+  .about-page-manifesto-quote {
+    font-size: 20px;
+  }
+
+  .about-stack-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .about-nav-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .about-nav-links {
+    width: 100%;
+  }
+
+  .about-nav-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}

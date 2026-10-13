@@ -661,3 +661,72 @@
   background: var(--ink);
   color: var(--bg);
 }
+
+/* ─── 4. RESPONSIVE BREAKPOINTS ──────────────────────────── */
+
+@media (max-width: 768px) {
+  .journey-display-title {
+    font-size: clamp(36px, 9vw, 64px);
+    white-space: normal;
+    line-height: 0.92;
+  }
+
+  .journey-page-title {
+    font-size: clamp(34px, 8.5vw, 54px);
+  }
+}
+
+@media (max-width: 480px) {
+  .journey-display-title {
+    font-size: clamp(28px, 9vw, 44px);
+  }
+
+  .journey-subtitle {
+    font-size: 14px;
+  }
+
+  .journey-page-title {
+    font-size: clamp(28px, 8.5vw, 40px);
+  }
+
+  .journey-page-intro {
+    font-size: 15px;
+  }
+
+  .journey-sticky-panel {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .journey-active-num {
+    font-size: clamp(48px, 12vw, 64px);
+  }
+
+  .journey-focus-section {
+    padding: 20px 16px;
+  }
+
+  .journey-focus-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .journey-feed-breakthrough {
+    padding: 12px 14px;
+  }
+
+  .journey-nav-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .journey-nav-links {
+    width: 100%;
+  }
+
+  .journey-nav-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}

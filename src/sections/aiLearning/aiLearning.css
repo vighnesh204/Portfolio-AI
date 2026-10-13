@@ -886,6 +886,68 @@
   }
 }
 
+@media (max-width: 480px) {
+  .ai-section-title {
+    font-size: clamp(2rem, 9.2vw, 3rem);
+  }
+
+  .ai-title-line {
+    white-space: normal;
+  }
+
+  .season-card {
+    min-height: 460px;
+    border-radius: 18px;
+  }
+
+  .season-card__tilt-wrapper {
+    min-height: 460px;
+    border-radius: 18px;
+  }
+
+  .season-card__flipper {
+    min-height: 460px;
+    border-radius: 18px;
+  }
+
+  .season-card__face {
+    padding: 20px 16px;
+    border-radius: 18px;
+  }
+
+  .season-card__title {
+    font-size: clamp(1.4rem, 5.5vw, 1.85rem);
+  }
+
+  .season-card__subtitle {
+    font-size: 15px;
+  }
+
+  .season-card--coming-soon,
+  .season-card--coming-soon .season-card__tilt-wrapper,
+  .season-card--coming-soon .season-card__flipper {
+    min-height: 320px;
+  }
+
+  .season-card__coming-soon-main {
+    font-size: clamp(1.8rem, 7.5vw, 2.5rem);
+  }
+
+  .season-card__coming-soon-accent {
+    font-size: clamp(1.5rem, 6vw, 2rem);
+  }
+
+  .editorial-note-row {
+    grid-template-columns: 36px 1fr 30px;
+    gap: 8px;
+    padding: 12px 4px;
+  }
+
+  .editorial-note-row__title {
+    font-size: 14px;
+  }
+}
+
 /* ------------------------------------------------------------
    7. REDUCED MOTION OVERRIDES
    ------------------------------------------------------------ */
