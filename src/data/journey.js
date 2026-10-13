@@ -36,13 +36,13 @@ export const JOURNEY_PHASES = [
     id: 'react',
     number: '03',
     title: 'React & UI Architecture',
-    shortTitle: 'React 19 · GSAP',
-    tagline: 'Declarative components and purposeful motion',
+    shortTitle: 'React · Redux · UI Design',
+    tagline: 'Understanding React beyond just building components',
     description:
-      'Adopting declarative UI paradigms: component modularity, state isolation, hook mechanics, reconciliation lifecycles, and pairing React with GSAP for high-frame-rate interaction design.',
-    topics: ['Component Modularity', 'State & Hooks', 'Virtual DOM Reconciliation', 'GSAP & ScrollTrigger', 'Tailwind CSS'],
+      'Strengthening React fundamentals and advanced concepts through practical projects — component design, props and state, hooks, reconciliation, routing, reusable UI patterns, and shared state management with Redux Toolkit. Alongside React, beginning to explore frontend low-level design through component architecture, config-driven interfaces, reusable abstractions, and loading experiences such as shimmer UI.',
+    topics: ['React Fundamentals', 'Hooks & State', 'Redux Toolkit', 'Component Design', 'Config-Driven UI', 'Shimmer UI'],
     breakthrough:
-      'Building interfaces as predictable state machines rather than entangled imperative scripts.',
+      'Good React code is not only about making the UI work — it is about understanding state, designing reusable components, and keeping the application easy to reason about.',
   },
   {
     id: 'fullstack',
@@ -72,13 +72,13 @@ export const JOURNEY_PHASES = [
     id: 'problem-solving',
     number: '06',
     title: 'Problem Solving & DSA',
-    shortTitle: 'DSA · Algorithms',
-    tagline: 'Discipline over framework trends',
+    shortTitle: 'DSA · In Progress',
+    tagline: 'Building consistency one pattern at a time',
     description:
-      'Cultivating computational thinking through continuous practice of Data Structures and Algorithms. Honing analytical intuition for time/space complexity, recursion, pointers, and algorithmic trade-offs.',
-    topics: ['Time & Space Complexity', 'Arrays & Pointers', 'Recursion & Backtracking', 'Trees & Graphs', 'Algorithmic Intuition'],
+      'Currently strengthening problem-solving fundamentals through Arrays, Strings, and Recursion. Focus is on understanding problem patterns, writing cleaner solutions, and improving time and space complexity thinking while gradually progressing into the next DSA topics.',
+    topics: ['Arrays', 'Strings', 'Recursion', 'Time & Space Complexity', 'Problem-Solving Patterns'],
     breakthrough:
-      'Understanding that frameworks come and go, but algorithmic problem solving is permanent.',
+      'The goal is not to rush through every DSA topic, but to understand each pattern deeply and build strong problem-solving habits.',
   },
 ];
 

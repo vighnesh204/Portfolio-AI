@@ -1,9 +1,9 @@
 import { CONTACT_INFO } from '../../data/contact';
+import '../../sections/contact/contact.css';
 
 // ─── Footer ─────────────────────────────────────────────────────────────────
-// SC. 09 / End-of-page — Minimal editorial footer.
-// Handcrafted, understated, accessible.
-// No cinema/movie credits terminology, no oversized complexity.
+// SC. 09 / End-of-page — Editorial closing footer.
+// Handcrafted, Awwwards-inspired, authentic to Vighnesh Borhade.
 // ─────────────────────────────────────────────────────────────────────────────
 
 export default function Footer() {
@@ -17,24 +17,82 @@ export default function Footer() {
 
   return (
     <footer className="site-footer" aria-label="Site footer">
-      <div className="site-footer-inner">
-        {/* Left: Name and year */}
-        <div className="site-footer-left">
-          <span className="site-footer-credit">
-            <b>{CONTACT_INFO.name.toUpperCase()}</b> · PORTFOLIO 2026
+      {/* 1. Large expressive editorial wordmark & content band */}
+      <div className="footer-wordmark-band">
+        <h2 className="footer-wordmark" aria-label="Vighnesh Borhade">
+          <span className="footer-wordmark-line">VIGHNESH</span>
+          <span className="footer-wordmark-line">
+            <em>BORHADE</em>
+            <span className="footer-dot" aria-hidden="true">.</span>
           </span>
-          <span className="site-footer-sub">
-            REACT & GSAP · {CONTACT_INFO.location.toUpperCase()}
-          </span>
+        </h2>
+
+        {/* Content row: narrative tagline & direct channels */}
+        <div className="footer-content-row">
+          <div className="footer-tagline">
+            <span className="ft-accent">BUILD · LEARN · EXPERIMENT · REPEAT</span>
+            <span>PORTFOLIO 2026 · {CONTACT_INFO.location.toUpperCase()}</span>
+            {CONTACT_INFO.availability && (
+              <span className="ft-status">
+                <span className="ft-status-dot" aria-hidden="true" />
+                {CONTACT_INFO.availability.toUpperCase()}
+              </span>
+            )}
+          </div>
+
+          <nav className="footer-links-col" aria-label="Direct contact channels">
+            {CONTACT_INFO.email && (
+              <a
+                href={`mailto:${CONTACT_INFO.email}`}
+                className="footer-link"
+                data-cursor="mail"
+                aria-label={`Send direct email to ${CONTACT_INFO.email}`}
+              >
+                <span>EMAIL</span>
+                <span className="fl-arrow" aria-hidden="true">↗</span>
+              </a>
+            )}
+
+            {CONTACT_INFO.linkedin && (
+              <a
+                href={CONTACT_INFO.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="footer-link"
+                data-cursor="open"
+                aria-label="Inspect LinkedIn profile (opens in new tab)"
+              >
+                <span>LINKEDIN</span>
+                <span className="fl-arrow" aria-hidden="true">↗</span>
+              </a>
+            )}
+
+            {CONTACT_INFO.github && (
+              <a
+                href={CONTACT_INFO.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="footer-link"
+                data-cursor="open"
+                aria-label="Inspect GitHub repository profile (opens in new tab)"
+              >
+                <span>GITHUB</span>
+                <span className="fl-arrow" aria-hidden="true">↗</span>
+              </a>
+            )}
+          </nav>
+        </div>
+      </div>
+
+      {/* 2. Sub-bar: Legal, Location, Back to Top */}
+      <div className="footer-bottom-bar">
+        <div className="footer-bottom-left">
+          <span>© 2026 {CONTACT_INFO.name.toUpperCase()} · ALL RIGHTS RESERVED</span>
         </div>
 
-        {/* Center: Factual availability */}
-        <div className="site-footer-center" aria-label="Availability">
-          <span>{CONTACT_INFO.availability.toUpperCase()}</span>
-        </div>
+        <div className="footer-bottom-right">
+          <span className="footer-location">{CONTACT_INFO.location.toUpperCase()}</span>
 
-        {/* Right: Quick external links + Back to Top */}
-        <div className="site-footer-right">
           <button
             type="button"
             onClick={handleBackToTop}
@@ -43,7 +101,7 @@ export default function Footer() {
             data-cursor="view"
           >
             <span>BACK TO TOP</span>
-            <span className="arrow" aria-hidden="true">↑</span>
+            <span className="btn-arrow" aria-hidden="true">↑</span>
           </button>
         </div>
       </div>
