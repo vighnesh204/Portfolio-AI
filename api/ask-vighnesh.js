@@ -29,9 +29,9 @@ import { PORTFOLIO_CONTEXT } from './_context.js';
 
 const GEMINI_API_BASE = 'https://generativelanguage.googleapis.com/v1beta/models';
 
-// Default model: gemini-3.8-flash is the current generation high-speed Gemini model.
+// Default model: gemini-3.5-flash-lite provides fast, stable responses on the free tier.
 // Override via GEMINI_MODEL environment variable if needed.
-const MODEL = process.env.GEMINI_MODEL || 'gemini-3.8-flash';
+const DEFAULT_MODEL = 'gemini-3.5-flash-lite';
 
 // ── System instruction builder ───────────────────────────────────────────────
 // Enforces clear architectural separation between authoritative portfolio context
@@ -162,8 +162,11 @@ export default async function handler(req, res) {
   // Build grounded system instruction using SERVER-SIDE authoritative context
   const systemInstruction = buildSystemInstruction(PORTFOLIO_CONTEXT);
 
-  // Gemini REST API call
-  const url = `${GEMINI_API_BASE}/${MODEL}:generateContent?key=${apiKey}`;
+  // Candidate models: configured model first, followed by stable fallbacks to absorb temporary 503 demand spikes
+  const configuredModel = process.env.GEMINI_MODEL?.trim();
+  const candidateModels = Array.from(
+    new Set([configuredModel, DEFAULT_MODEL, 'gemini-3.6-flash', 'gemini-flash-latest', 'gemini-3.8-flash'].filter(Boolean))
+  );
 
   const geminiBody = {
     system_instruction: {
@@ -182,58 +185,78 @@ export default async function handler(req, res) {
     },
   };
 
-  try {
-    const geminiResponse = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(geminiBody),
-    });
+  let lastError = null;
 
-    if (!geminiResponse.ok) {
-      // Do NOT expose raw Gemini error or status to browser
-      console.error('[ask-vighnesh] Gemini API status:', geminiResponse.status);
-      return res.status(503).json({
-        error: 'unavailable',
-        message: 'AI guide is temporarily unavailable.',
-      });
-    }
+  for (const model of candidateModels) {
+    const url = `${GEMINI_API_BASE}/${model}:generateContent?key=${apiKey}`;
 
-    const geminiData = await geminiResponse.json();
-
-    // Extract the generated text
-    const rawText =
-      geminiData?.candidates?.[0]?.content?.parts?.[0]?.text;
-
-    if (!rawText) {
-      return res.status(503).json({
-        error: 'unavailable',
-        message: 'AI guide is temporarily unavailable.',
-      });
-    }
-
-    // Parse structured JSON response from Gemini
-    let parsed;
     try {
-      parsed = JSON.parse(rawText);
-    } catch {
-      // If Gemini returned plain text despite JSON mode, wrap it safely
-      parsed = { answer: rawText, links: [] };
+      const geminiResponse = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(geminiBody),
+        signal: AbortSignal.timeout(15000), // 15s timeout protection
+      });
+
+      if (!geminiResponse.ok) {
+        let errSnippet = '';
+        try {
+          const errJson = await geminiResponse.json();
+          errSnippet = errJson?.error?.message || '';
+        } catch {
+          // ignore parsing error
+        }
+        console.warn(`[ask-vighnesh] Model ${model} returned HTTP ${geminiResponse.status}: ${errSnippet}`);
+
+        // If upstream is experiencing high demand (503) or rate-limited (429), try next fallback model
+        if (geminiResponse.status === 503 || geminiResponse.status === 429) {
+          lastError = `upstream status ${geminiResponse.status} (${errSnippet})`;
+          continue;
+        }
+
+        // For other non-retryable errors (e.g. invalid arguments), break
+        lastError = `upstream status ${geminiResponse.status} (${errSnippet})`;
+        break;
+      }
+
+      const geminiData = await geminiResponse.json();
+
+      // Extract the generated text
+      const rawText =
+        geminiData?.candidates?.[0]?.content?.parts?.[0]?.text;
+
+      if (!rawText) {
+        lastError = 'empty candidate text';
+        continue;
+      }
+
+      // Parse structured JSON response from Gemini
+      let parsed;
+      try {
+        parsed = JSON.parse(rawText);
+      } catch {
+        // If Gemini returned plain text despite JSON mode, wrap it safely
+        parsed = { answer: rawText, links: [] };
+      }
+
+      const answer =
+        typeof parsed.answer === 'string'
+          ? parsed.answer.trim()
+          : 'I was unable to generate a response. Please try again.';
+
+      const links = validateLinks(parsed.links);
+
+      return res.status(200).json({ answer, links });
+    } catch (err) {
+      console.warn(`[ask-vighnesh] Model ${model} request error:`, err?.message || err);
+      lastError = err?.message || err;
     }
-
-    const answer =
-      typeof parsed.answer === 'string'
-        ? parsed.answer.trim()
-        : 'I was unable to generate a response. Please try again.';
-
-    const links = validateLinks(parsed.links);
-
-    return res.status(200).json({ answer, links });
-  } catch (err) {
-    // Network error or unexpected failure — never expose internals
-    console.error('[ask-vighnesh] Unexpected error:', err?.message || err);
-    return res.status(503).json({
-      error: 'unavailable',
-      message: 'AI guide is temporarily unavailable.',
-    });
   }
+
+  // All attempts exhausted
+  console.error('[ask-vighnesh] All Gemini candidate models failed. Last error:', lastError);
+  return res.status(503).json({
+    error: 'unavailable',
+    message: 'AI guide is temporarily unavailable.',
+  });
 }

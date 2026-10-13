@@ -51,10 +51,10 @@ GEMINI_API_KEY=your_key_here
 
 Get a free key at: https://aistudio.google.com/apikey
 
-**3. Optionally override the model (default: `gemini-2.0-flash-exp`):**
+**3. Optionally override the model (default: `gemini-3.5-flash-lite`):**
 
 ```
-GEMINI_MODEL=gemini-2.0-flash-exp
+GEMINI_MODEL=gemini-3.5-flash-lite
 ```
 
 **4. Local development with AI endpoint:**
