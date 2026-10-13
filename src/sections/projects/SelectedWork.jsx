@@ -17,7 +17,7 @@ gsap.registerPlugin(ScrollTrigger);
 const featured = getFeaturedProjects();
 
 export default function SelectedWork() {
-  const [expandedId, setExpandedId] = useState(featured[0]?.id || null);
+  const [expandedId, setExpandedId] = useState(null);
   const [hoveredProject, setHoveredProject] = useState(null);
 
   const sectionRef = useRef(null);

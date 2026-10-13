@@ -5,6 +5,22 @@ import '../sections/projects/projects.css';
 import { getProjectBySlug, getAllProjects } from '../data/projects';
 import TransitionLink from '../components/ui/TransitionLink';
 import { usePageTitle } from '../hooks/usePageTitle';
+import { TechIcon } from '../assets/icons/skills/techIconResolver';
+
+// ─── TechItem ─────────────────────────────────────────────────────────────
+// Editorial tech stack item: branded logo + technology name.
+// Icon is resolved automatically from the technology name string.
+// ──────────────────────────────────────────────────────────────────────────
+function TechItem({ name }) {
+  return (
+    <span className="pd-tech-item">
+      <span className="pd-tech-item__icon" aria-hidden="true">
+        <TechIcon name={name} />
+      </span>
+      <span className="pd-tech-item__name">{name}</span>
+    </span>
+  );
+}
 
 // ─── ProjectDetail (/work/:slug) ──────────────────────────────────────────
 // Conditional case-study layout.
@@ -201,9 +217,7 @@ function ProjectDetail() {
             </h2>
             <div className="pd-tech-grid">
               {project.technologies.map((tech) => (
-                <span key={tech} className="project-tag">
-                  {tech}
-                </span>
+                <TechItem key={tech} name={tech} />
               ))}
             </div>
           </section>

@@ -1394,8 +1394,51 @@
 .pd-tech-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 10px;
 }
+
+/* ── Editorial tech item: logo + name ─────────────────────────────────── */
+.pd-tech-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 14px 7px 10px;
+  background: var(--bg2, rgba(255,255,255,0.03));
+  border: 1px solid var(--line, rgba(255,255,255,0.08));
+  border-radius: 3px;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.pd-tech-item:hover {
+  border-color: var(--mut, rgba(255,255,255,0.18));
+  background: var(--bg3, rgba(255,255,255,0.06));
+}
+
+.pd-tech-item__icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pd-tech-item__icon .skill-icon-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.pd-tech-item__name {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mut);
+  white-space: nowrap;
+  line-height: 1;
+}
+
 
 .pd-media {
   width: 100%;

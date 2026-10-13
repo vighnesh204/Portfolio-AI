@@ -141,7 +141,7 @@ const projects = [
     challenges:
       'Delivering a polished, functional prototype within a fixed machine coding time window while maintaining clean component boundaries and proper separation of concerns.',
     learning:
-      'Strengthened ability to decompose UI requirements quickly, make justified architectural decisions under pressure, and produce readable code rapidly.',
+      'Building this project strengthened my understanding of how a larger React application is structured beyond individual components. I worked with Redux Toolkit for shared state, dynamic routing for watch pages, reusable component patterns, and recursive rendering for N-level nested comments. It also gave me practical experience with frontend performance patterns such as search debouncing, API-result caching, polling-based live updates, and controlling high-frequency live-chat state. Implementing a Higher-Order Component also helped me understand how behavior can be extended through component composition.',
   },
   {
     id: 'hirelens-ai',
