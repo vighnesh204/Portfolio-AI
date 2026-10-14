@@ -1,0 +1,685 @@
+/* ============================================================
+   NAMASTE AI — SEASON OVERVIEW PAGE STYLES (AiSeason.css)
+   Awwwards / Editorial Journal Architecture
+   ============================================================ */
+
+/* ─── 1. PAGE ROOT & HEADER CLEARANCE ─────────────────────── */
+.ais-page {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  /* Header is 64px fixed; clamp ensures 46px–86px breathing room below header */
+  padding-top: clamp(112px, 12vw, 156px);
+  padding-bottom: clamp(80px, 10vw, 160px);
+  background-color: var(--bg);
+  color: var(--ink);
+  box-sizing: border-box;
+}
+
+.ais-page .wrap {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--pad);
+  padding-right: var(--pad);
+  box-sizing: border-box;
+}
+
+/* ─── 2. BREADCRUMB NAVIGATION ────────────────────────────── */
+.ais-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--mut);
+  margin-bottom: clamp(2rem, 4vw, 3.5rem);
+}
+
+.ais-breadcrumb__link {
+  color: var(--mut);
+  text-decoration: none;
+  transition: color var(--duration-fast) var(--ease);
+}
+
+.ais-breadcrumb__link:hover {
+  color: var(--ink);
+}
+
+.ais-breadcrumb__sep {
+  color: var(--faint);
+  user-select: none;
+}
+
+.ais-breadcrumb__current {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+/* ─── 3. SEASON HERO ──────────────────────────────────────── */
+.ais-hero {
+  position: relative;
+  max-width: 980px;
+  margin-bottom: clamp(3.5rem, 7vw, 6.5rem);
+  padding-bottom: clamp(2.5rem, 5vw, 4rem);
+  border-bottom: 1px solid var(--line);
+}
+
+.ais-hero__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--season-accent, var(--accent));
+  margin-bottom: clamp(1rem, 2vw, 1.5rem);
+}
+
+.ais-hero__source {
+  font-weight: 500;
+}
+
+.ais-hero__sep {
+  color: var(--faint);
+}
+
+.ais-hero__season-id {
+  color: var(--ink);
+}
+
+.ais-hero__title {
+  font-family: var(--disp);
+  font-size: clamp(2.35rem, 6.8vw, 5.25rem);
+  font-weight: 800;
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin-bottom: clamp(1.25rem, 2.5vw, 1.75rem);
+  word-break: break-word;
+}
+
+.ais-hero__subtitle {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1.25rem, 2.4vw, 1.85rem);
+  line-height: 1.35;
+  color: var(--ink);
+  opacity: 0.88;
+  margin-bottom: clamp(1.25rem, 2.5vw, 2rem);
+  max-width: 820px;
+}
+
+.ais-hero__description {
+  font-family: var(--sans);
+  font-size: clamp(0.9375rem, 1.25vw, 1.0625rem);
+  line-height: 1.75;
+  color: var(--mut);
+  max-width: 760px;
+  margin-bottom: clamp(2rem, 3.5vw, 2.75rem);
+}
+
+/* Hero Meta Pill Row */
+.ais-hero__meta {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 0.75rem 1.25rem;
+  background-color: var(--bg2);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+}
+
+.ais-hero__meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.ais-hero__meta-label {
+  color: var(--faint);
+}
+
+.ais-hero__meta-value {
+  color: var(--ink);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-weight: 500;
+}
+
+.ais-hero__meta-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.ais-hero__meta-divider {
+  width: 1px;
+  height: 14px;
+  background-color: var(--line2);
+}
+
+/* ─── 4. EDITORIAL SECTIONS (COMMON) ──────────────────────── */
+.ais-section {
+  margin-bottom: clamp(4rem, 8vw, 7.5rem);
+}
+
+.ais-section__header {
+  display: flex;
+  align-items: baseline;
+  gap: clamp(1rem, 2.5vw, 2rem);
+  margin-bottom: clamp(1.75rem, 3.5vw, 2.75rem);
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.ais-section__index {
+  font-family: var(--mono);
+  font-size: clamp(0.875rem, 1.5vw, 1.125rem);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+}
+
+.ais-section__heading-block {
+  flex: 1;
+}
+
+.ais-section__heading {
+  font-family: var(--disp);
+  font-size: clamp(1.35rem, 2.75vw, 2.125rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--ink);
+  line-height: 1.15;
+  margin-bottom: 0.375rem;
+}
+
+.ais-section__sub {
+  font-family: var(--sans);
+  font-size: 0.875rem;
+  color: var(--mut);
+  line-height: 1.5;
+}
+
+/* ─── 5. WHAT I'M LEARNING (CONCEPTS) ─────────────────────── */
+.ais-concepts__labels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.625rem;
+  max-width: 940px;
+}
+
+.ais-concept-label {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 0.875rem;
+  background-color: var(--bg2);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink);
+  transition: border-color var(--duration-fast) var(--ease),
+              background-color var(--duration-fast) var(--ease),
+              color var(--duration-fast) var(--ease);
+}
+
+.ais-concept-label:hover {
+  border-color: var(--line2);
+  background-color: var(--bg3);
+}
+
+/* ─── 6. LEARNING NOTES SECTION ───────────────────────────── */
+.ais-note-list {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--line);
+}
+
+.ais-note-row {
+  display: grid;
+  grid-template-columns: 56px 1fr auto;
+  align-items: baseline;
+  gap: clamp(1rem, 3vw, 2.5rem);
+  padding: clamp(1.25rem, 2.5vw, 2rem) 0.5rem;
+  border-bottom: 1px solid var(--line);
+  text-decoration: none;
+  color: var(--ink);
+  transition: background-color var(--duration-fast) var(--ease),
+              padding-left var(--duration-fast) var(--ease);
+}
+
+.ais-note-row:hover {
+  background-color: rgba(239, 232, 220, 0.02);
+  padding-left: 0.75rem;
+}
+
+.ais-note-row__num {
+  font-family: var(--mono);
+  font-size: 0.875rem;
+  letter-spacing: 0.12em;
+  color: var(--mut);
+  font-weight: 500;
+}
+
+.ais-note-row__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.ais-note-row__topic {
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--mut);
+}
+
+.ais-note-row__title {
+  font-family: var(--disp);
+  font-size: clamp(1.125rem, 2vw, 1.5rem);
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  text-transform: uppercase;
+  color: var(--ink);
+  transition: color var(--duration-fast) var(--ease);
+}
+
+.ais-note-row:hover .ais-note-row__title {
+  color: var(--season-accent, var(--accent));
+}
+
+.ais-note-row__desc {
+  font-family: var(--sans);
+  font-size: 0.875rem;
+  color: var(--mut);
+  line-height: 1.55;
+  max-width: 720px;
+}
+
+.ais-note-row__action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mut);
+  white-space: nowrap;
+  transition: color var(--duration-fast) var(--ease),
+              transform var(--duration-fast) var(--ease);
+}
+
+.ais-note-row:hover .ais-note-row__action {
+  color: var(--ink);
+  transform: translateX(3px);
+}
+
+.ais-note-row__action-arrow {
+  font-size: 0.875rem;
+  transition: transform var(--duration-fast) var(--ease);
+}
+
+.ais-note-row:hover .ais-note-row__action-arrow {
+  transform: translate(2px, -2px);
+}
+
+/* Season 2 Coming Soon / Notes In Progress block */
+.ais-notes-coming-soon {
+  padding: clamp(2rem, 4vw, 3rem) clamp(1.25rem, 3vw, 2.5rem);
+  border-bottom: 1px dashed var(--line2);
+  background-color: rgba(20, 18, 16, 0.5);
+  margin-top: 0.5rem;
+}
+
+.ais-notes-coming-soon__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-width: 680px;
+}
+
+.ais-notes-coming-soon__label {
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--season-accent, var(--accent-teal));
+}
+
+.ais-notes-coming-soon__headline {
+  font-family: var(--disp);
+  font-size: clamp(1.125rem, 2vw, 1.35rem);
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+
+.ais-notes-coming-soon__note {
+  font-family: var(--sans);
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--mut);
+}
+
+/* ─── 7. LEARNING PROJECTS SECTION ────────────────────────── */
+.ais-projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 540px), 1fr));
+  gap: clamp(1.25rem, 2.5vw, 2rem);
+}
+
+.ais-project-card {
+  padding: clamp(1.5rem, 3vw, 2.25rem);
+  background-color: var(--bg2);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.ais-project-card__concept {
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--season-accent, var(--accent));
+}
+
+.ais-project-card__title {
+  font-family: var(--disp);
+  font-size: clamp(1.25rem, 2.2vw, 1.625rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--ink);
+  line-height: 1.2;
+}
+
+.ais-project-card__desc {
+  font-family: var(--sans);
+  font-size: 0.875rem;
+  line-height: 1.65;
+  color: var(--mut);
+}
+
+.ais-project-card__learning {
+  padding: 0.875rem 1rem;
+  background-color: var(--bg3);
+  border-left: 2px solid var(--season-accent, var(--accent));
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.ais-project-card__learning-label {
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+.ais-project-card__learning-text {
+  font-family: var(--sans);
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: var(--ink);
+}
+
+.ais-project-card__footer {
+  margin-top: auto;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.875rem;
+}
+
+.ais-project-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+}
+
+.ais-project-card__tag {
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mut);
+  padding: 0.25rem 0.5rem;
+  background-color: rgba(239, 232, 220, 0.04);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+}
+
+.ais-project-card__link {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink);
+  text-decoration: none;
+  transition: color var(--duration-fast) var(--ease);
+}
+
+.ais-project-card__link:hover {
+  color: var(--season-accent, var(--accent));
+}
+
+/* ─── 8. NEXT SEASON FOOTER ───────────────────────────────── */
+.ais-season-footer {
+  margin-top: clamp(4rem, 8vw, 8rem);
+  padding-top: clamp(2rem, 4vw, 3rem);
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.ais-season-footer__label {
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+.ais-season-footer__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.25rem;
+  text-decoration: none;
+  color: var(--ink);
+  padding: 1.25rem clamp(1rem, 2vw, 1.75rem);
+  background-color: var(--bg2);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  transition: border-color var(--duration-fast) var(--ease),
+              background-color var(--duration-fast) var(--ease);
+}
+
+.ais-season-footer__link:hover {
+  border-color: var(--line2);
+  background-color: var(--bg3);
+}
+
+.ais-season-footer__next-label {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--mut);
+}
+
+.ais-season-footer__next-title {
+  font-family: var(--disp);
+  font-size: clamp(1rem, 2vw, 1.35rem);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.ais-season-footer__arrow {
+  margin-left: auto;
+  font-size: 1.125rem;
+  color: var(--mut);
+  transition: transform var(--duration-fast) var(--ease),
+              color var(--duration-fast) var(--ease);
+}
+
+.ais-season-footer__link:hover .ais-season-footer__arrow {
+  transform: translateX(4px);
+  color: var(--ink);
+}
+
+/* ─── 9. COMING SOON / 404 FALLBACK STATES ────────────────── */
+.ais-page--coming-soon .ais-cs-inner,
+.ais-page--404 .ais-404-inner {
+  max-width: 680px;
+  padding: clamp(3rem, 6vw, 5rem) 0;
+}
+
+.ais-mono-label {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--mut);
+  margin-bottom: 1rem;
+}
+
+.ais-accent-label {
+  color: var(--accent);
+}
+
+.ais-cs-title,
+.ais-404-title {
+  font-family: var(--disp);
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  color: var(--ink);
+  line-height: 1.05;
+  margin-bottom: 1rem;
+}
+
+.ais-cs-sub,
+.ais-404-sub {
+  font-family: var(--sans);
+  font-size: clamp(0.9375rem, 1.25vw, 1.0625rem);
+  line-height: 1.65;
+  color: var(--mut);
+  margin-bottom: 2rem;
+}
+
+.ais-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 0.75rem 1.25rem;
+  border: 1px solid var(--line2);
+  color: var(--ink);
+  text-decoration: none;
+  transition: background-color var(--duration-fast) var(--ease),
+              color var(--duration-fast) var(--ease);
+}
+
+.ais-back-link:hover {
+  background-color: var(--ink);
+  color: var(--bg);
+}
+
+/* ─── 10. RESPONSIVE BREAKPOINTS ──────────────────────────── */
+@media (max-width: 768px) {
+  .ais-note-row {
+    grid-template-columns: 36px 1fr;
+    gap: 0.75rem 1rem;
+    padding: 1.25rem 0.25rem;
+  }
+
+  .ais-note-row__action {
+    grid-column: 2;
+    justify-self: start;
+    margin-top: 0.25rem;
+  }
+
+  .ais-hero__meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .ais-hero__meta-divider {
+    display: none;
+  }
+
+  .ais-section__header {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .ais-page {
+    padding-top: 104px;
+  }
+
+  .ais-hero__title {
+    font-size: clamp(2rem, 8.5vw, 2.75rem);
+  }
+
+  .ais-hero__subtitle {
+    font-size: 1.125rem;
+  }
+
+  .ais-note-row {
+    grid-template-columns: 28px 1fr;
+  }
+
+  .ais-note-row__title {
+    font-size: 1.125rem;
+  }
+
+  .ais-season-footer__link {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .ais-season-footer__arrow {
+    margin-left: 0;
+  }
+}

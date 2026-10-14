@@ -109,7 +109,7 @@ function ProjectDetail() {
         )}
       </div>
 
-      {/* Media frame — [Placeholder: replace with real screenshot when available] */}
+      {/* Media frame — shown when project.image is provided; otherwise editorial number block */}
       <div className="pd-body">
         <div className="pd-media">
           {project.image ? (
@@ -121,7 +121,6 @@ function ProjectDetail() {
             />
           ) : (
             <div className="pd-media-placeholder" aria-hidden="true">
-              <span className="pd-media-placeholder__label">[Visual Placeholder]</span>
               <span className="pd-media-placeholder__title">{project.number}</span>
             </div>
           )}

@@ -3,11 +3,19 @@ import { useParams } from 'react-router-dom';
 import { getSeasonBySlug, getNoteBySlug } from '../data/aiLearning';
 import TransitionLink from '../components/ui/TransitionLink';
 import { usePageTitle } from '../hooks/usePageTitle';
-import '../sections/aiLearning/aiLearning.css';
+import './AiNote.css';
 
-// ─── AiNote Page ────────────────────────────────────────────────────────────
-// Dedicated Note reading page at /ai-learning/:season/:note.
-// Optimized for reading clarity, mental models, and first-principles understanding.
+// ─── AiNote Page (/ai-learning/:season/:note) ────────────────────────────────
+// Premium editorial reading experience for Namaste AI learning journal.
+// Structure:
+//   Header clearance → Breadcrumb → Note Hero (Premise + subtle concepts)
+//   → 01: The Question
+//   → 02: Simple Explanation
+//   → 03: How I Understand It (Mental Model)
+//   → 04: Visual Flow & Concrete Example
+//   → 05: What I Want to Remember (Key Takeaways)
+//   → Editorial Attribution
+//   → Chapter Navigation (Previous / Next)
 // ─────────────────────────────────────────────────────────────────────────────
 
 export default function AiNote() {
@@ -15,32 +23,29 @@ export default function AiNote() {
   const season = getSeasonBySlug(seasonSlug);
   const note = getNoteBySlug(seasonSlug, noteSlug);
 
-  usePageTitle(note ? note.title : 'AI Learning');
+  usePageTitle(note ? `${note.title} — Season ${season?.seasonNumber || ''}` : 'AI Learning');
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [seasonSlug, noteSlug]);
 
-  // Editorial 404 Fallback
+  // ── 404 / Undocumented Fallback ──
   if (!season || season.status === 'coming-soon' || !note) {
     const isComingSoonSeason = season && season.status === 'coming-soon';
     return (
-      <main className="min-h-[80vh] flex items-center justify-center pt-32 pb-24">
-        <div className="wrap text-center max-w-xl">
-          <div className="font-mono text-xs text-[var(--accent)] uppercase tracking-widest mb-4">
-            [ 404 — Note Undefined ]
-          </div>
-          <h1 className="font-display text-4xl sm:text-5xl font-bold uppercase text-[var(--ink)] mb-4">
-            Note Not Found
-          </h1>
-          <p className="text-[var(--mut)] mb-8 text-sm sm:text-base leading-relaxed">
+      <main className="ain-page ain-page--404">
+        <div className="wrap ain-404-inner">
+          <p className="ais-mono-label ais-accent-label">[ 404 — Note Undefined ]</p>
+          <h1 className="ain-404-title">Note Not Found</h1>
+          <p className="ain-404-sub">
             {isComingSoonSeason
-              ? `Season ${season.seasonNumber} has not been documented yet. No notes are currently available.`
-              : 'The requested curriculum note does not exist in this archive.'}
+              ? `Season ${season.seasonNumber} has not been documented yet. Notes will be added as study begins.`
+              : 'The requested learning note does not exist in this archive.'}
           </p>
           <TransitionLink
             to={season ? `/ai-learning/${season.slug}` : '/ai-learning'}
-            className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest px-6 py-3 border border-[var(--line2)] hover:bg-[var(--ink)] hover:text-[var(--bg)] transition-colors"
+            className="ais-back-link"
+            data-cursor="explore"
           >
             ← {season ? `Return to Season ${season.seasonNumber}` : 'Return to AI Learning Index'}
           </TransitionLink>
@@ -49,7 +54,7 @@ export default function AiNote() {
     );
   }
 
-  // Find adjacent notes for clean sequence navigation
+  // Adjacent notes for chapter navigation
   const notesList = season.notes || [];
   const currentIndex = notesList.findIndex((n) => n.slug === note.slug);
   const prevNote = currentIndex > 0 ? notesList[currentIndex - 1] : null;
@@ -59,176 +64,245 @@ export default function AiNote() {
       : null;
 
   return (
-    <main className="ai-note-page pt-32 pb-40">
+    <main className="ain-page" style={{ '--season-accent': season.accentColor }}>
       <div className="wrap">
-        {/* Breadcrumb Navigation */}
-        <nav aria-label="Breadcrumbs" className="mb-10">
-          <div className="flex flex-wrap items-center gap-2 font-mono text-xs uppercase tracking-widest text-[var(--mut)]">
-            <TransitionLink
-              to="/ai-learning"
-              className="hover:text-[var(--ink)] transition-colors"
-            >
-              AI Learning
-            </TransitionLink>
-            <span className="text-[var(--faint)]">/</span>
-            <TransitionLink
-              to={`/ai-learning/${season.slug}`}
-              className="hover:text-[var(--ink)] transition-colors"
-            >
-              Season {season.seasonNumber}
-            </TransitionLink>
-            <span className="text-[var(--faint)]">/</span>
-            <span className="text-[var(--ink)]">{note.episode}</span>
-          </div>
+
+        {/* ── Breadcrumb Navigation ── */}
+        <nav className="ain-breadcrumb" aria-label="Breadcrumb">
+          <TransitionLink to="/ai-learning" className="ain-breadcrumb__link">
+            AI Learning
+          </TransitionLink>
+          <span className="ain-breadcrumb__sep">/</span>
+          <TransitionLink to={`/ai-learning/${season.slug}`} className="ain-breadcrumb__link">
+            Season {season.seasonNumber}
+          </TransitionLink>
+          <span className="ain-breadcrumb__sep">/</span>
+          <span className="ain-breadcrumb__current">
+            {note.episode || `Note ${note.number}`}
+          </span>
         </nav>
 
-        {/* Note Article Header */}
-        <header className="max-w-3xl mb-16 pb-12 border-b border-[var(--line)]">
-          <div className="flex flex-wrap items-center gap-4 mb-5">
-            <span className="font-mono text-xs uppercase tracking-widest text-[var(--accent)]">
-              {note.episode}
-            </span>
-            <span className="text-[var(--faint)]">•</span>
-            <span className="font-mono text-xs uppercase tracking-wider text-[var(--mut)]">
-              {note.topic}
-            </span>
-            <span className="text-[var(--faint)]">•</span>
-            <span className="font-mono text-xs uppercase tracking-wider text-[var(--faint)]">
-              {note.readingTime}
-            </span>
+        {/* ── Note Article Header ── */}
+        <header className="ain-hero">
+          <div className="ain-hero__eyebrow">
+            <span className="ain-hero__season">Season {season.seasonNumber}</span>
+            <span className="ain-hero__sep">·</span>
+            <span className="ain-hero__num">{note.episode || `Note ${note.number}`}</span>
+            {note.topic && (
+              <>
+                <span className="ain-hero__sep">·</span>
+                <span className="ain-hero__topic">{note.topic}</span>
+              </>
+            )}
+            {note.readingTime && (
+              <>
+                <span className="ain-hero__sep">·</span>
+                <span className="ain-hero__reading-time">{note.readingTime}</span>
+              </>
+            )}
           </div>
 
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold uppercase tracking-tight text-[var(--ink)] mb-6 font-display">
-            {note.title}
-          </h1>
+          <h1 className="ain-hero__title">{note.title}</h1>
 
-          <p className="text-lg sm:text-xl font-serif italic text-[var(--ink)] opacity-85 leading-relaxed">
-            {note.shortDescription}
-          </p>
+          {note.shortDescription && (
+            <p className="ain-hero__premise">{note.shortDescription}</p>
+          )}
+
+          {/* Associated concepts moved to subtle metadata area */}
+          {note.concepts && note.concepts.length > 0 && (
+            <div className="ain-hero__concepts" aria-label="Associated concepts">
+              <span className="ain-hero__concepts-label">Concepts:</span>
+              <div className="ain-hero__concepts-list">
+                {note.concepts.map((concept, idx) => (
+                  <span key={idx} className="ain-concept-tag">
+                    {concept}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
         </header>
 
-        {/* Note Article Body */}
-        <article className="max-w-3xl mx-auto space-y-16">
-          {/* Section: What I Learned */}
-          {note.whatILearned && (
-            <section>
-              <h2 className="font-mono text-xs uppercase tracking-widest text-[var(--mut)] mb-4">
-                [ 01 / WHAT I LEARNED ]
-              </h2>
-              <div className="p-6 sm:p-8 bg-[#12100e] border border-[var(--line)] rounded-sm">
-                <p className="text-sm sm:text-base text-[var(--ink)] leading-relaxed">
-                  {note.whatILearned}
-                </p>
+        {/* ── Note Article Body (Editorial Learning Flow) ── */}
+        <article className="ain-article">
+
+          {/* Section 01: The Question */}
+          {note.question && (
+            <section className="ain-section ain-question-section" aria-label="The Question">
+              <div className="ain-section__label">
+                <span className="ain-section__index">01</span>
+                <span className="ain-section__title">The Question</span>
+              </div>
+              <blockquote className="ain-question__text">
+                &ldquo;{note.question}&rdquo;
+              </blockquote>
+            </section>
+          )}
+
+          {/* Section 02: Simple Explanation */}
+          {note.simpleExplanation && (
+            <section className="ain-section ain-explanation-section" aria-label="Simple Explanation">
+              <div className="ain-section__label">
+                <span className="ain-section__index">02</span>
+                <span className="ain-section__title">Simple Explanation</span>
+              </div>
+              <div className="ain-prose">
+                {Array.isArray(note.simpleExplanation) ? (
+                  note.simpleExplanation.map((paragraph, idx) => (
+                    <p key={idx}>{paragraph}</p>
+                  ))
+                ) : (
+                  <p>{note.simpleExplanation}</p>
+                )}
               </div>
             </section>
           )}
 
-          {/* Section: Concepts Practiced */}
-          {note.concepts && note.concepts.length > 0 && (
-            <section>
-              <h2 className="font-mono text-xs uppercase tracking-widest text-[var(--mut)] mb-4">
-                [ 02 / ASSOCIATED CONCEPTS ]
-              </h2>
-              <div className="flex flex-wrap gap-2">
-                {note.concepts.map((concept, idx) => (
-                  <span
-                    key={idx}
-                    className="px-3.5 py-1.5 border border-[var(--line)] bg-[#141210] text-[var(--ink)] font-mono text-xs uppercase tracking-wider rounded-sm"
-                  >
-                    {concept}
-                  </span>
+          {/* Section 03: How I Understand It (My Mental Model) */}
+          {note.myUnderstanding && (
+            <section className="ain-section ain-understanding-section" aria-label="How I Understand It">
+              <div className="ain-section__label">
+                <span className="ain-section__index">03</span>
+                <span className="ain-section__title">How I Understand It</span>
+                <span className="ain-section__subtitle">— Mental Model</span>
+              </div>
+              <div className="ain-mental-model">
+                <div className="ain-mental-model__content">
+                  <p>{note.myUnderstanding}</p>
+                </div>
+              </div>
+            </section>
+          )}
+
+          {/* Section 04: Visual Flow & Concrete Example */}
+          {(note.flow || note.example) && (
+            <section className="ain-section ain-flow-example-section" aria-label="Flow and Application">
+              <div className="ain-section__label">
+                <span className="ain-section__index">04</span>
+                <span className="ain-section__title">
+                  {note.flow && note.example
+                    ? 'Progression & In Practice'
+                    : note.flow
+                    ? 'Progression Flow'
+                    : 'In Practice'}
+                </span>
+              </div>
+
+              {/* Lightweight visual progression flow */}
+              {note.flow && note.flow.length > 0 && (
+                <div className="ain-flow-container">
+                  <span className="ain-flow__label">Progression Flow</span>
+                  <div className="ain-flow" role="list">
+                    {note.flow.map((step, idx) => (
+                      <div key={idx} className="ain-flow__step-wrap">
+                        <div className="ain-flow__step" role="listitem">
+                          <span className="ain-flow__step-num">0{idx + 1}</span>
+                          <span className="ain-flow__step-text">{step}</span>
+                        </div>
+                        {idx < note.flow.length - 1 && (
+                          <div className="ain-flow__arrow" aria-hidden="true">
+                            <span>↓</span>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Concrete Application / Example */}
+              {note.example && (
+                <div className="ain-example-container">
+                  <span className="ain-example__label">Concrete Application</span>
+                  <div className="ain-example__body">
+                    <p>{note.example}</p>
+                  </div>
+                </div>
+              )}
+            </section>
+          )}
+
+          {/* Section 05: What I Want to Remember (Key Takeaways) */}
+          {note.keyTakeaways && note.keyTakeaways.length > 0 && (
+            <section className="ain-section ain-takeaways-section" aria-label="What I Want to Remember">
+              <div className="ain-section__label">
+                <span className="ain-section__index">05</span>
+                <span className="ain-section__title">What I Want to Remember</span>
+              </div>
+              <div className="ain-takeaways-list" role="list">
+                {note.keyTakeaways.map((takeaway, idx) => (
+                  <div key={idx} className="ain-takeaway-item" role="listitem">
+                    <span className="ain-takeaway-num">0{idx + 1}</span>
+                    <p className="ain-takeaway-text">{takeaway}</p>
+                  </div>
                 ))}
               </div>
             </section>
           )}
 
-          {/* Section: My Understanding */}
-          {note.myUnderstanding && (
-            <section>
-              <h2 className="font-mono text-xs uppercase tracking-widest text-[var(--mut)] mb-4">
-                [ 03 / MY UNDERSTANDING & MENTAL MODEL ]
-              </h2>
-              <div className="text-sm sm:text-base text-[var(--ink)] leading-relaxed space-y-4">
-                <p>{note.myUnderstanding}</p>
-              </div>
-            </section>
-          )}
-
-          {/* Section: Examples / Demonstration */}
-          {note.examples && (
-            <section>
-              <h2 className="font-mono text-xs uppercase tracking-widest text-[var(--mut)] mb-4">
-                [ 04 / CONCRETE APPLICATION & EXAMPLES ]
-              </h2>
-              <div className="p-6 bg-[#0e0c0b] border border-[var(--line)] rounded-sm font-mono text-xs sm:text-sm text-[var(--mut)] leading-relaxed">
-                <p className="text-[var(--ink)]">{note.examples}</p>
-              </div>
-            </section>
-          )}
-
-          {/* Section: Key Takeaways */}
-          {note.keyTakeaways && note.keyTakeaways.length > 0 && (
-            <section>
-              <h2 className="font-mono text-xs uppercase tracking-widest text-[var(--mut)] mb-4">
-                [ 05 / KEY TAKEAWAYS ]
-              </h2>
-              <div className="p-6 sm:p-8 bg-[#151310] border border-[var(--line2)] rounded-sm">
-                <ul className="space-y-3">
-                  {note.keyTakeaways.map((takeaway, idx) => (
-                    <li key={idx} className="flex items-start gap-3">
-                      <span className="font-mono text-xs text-[var(--accent)] mt-1">
-                        0{idx + 1}
-                      </span>
-                      <span className="text-sm sm:text-base text-[var(--ink)] leading-relaxed">
-                        {takeaway}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </section>
-          )}
-
-          {/* Attribution Box */}
-          <div className="pt-8 border-t border-[var(--line)]">
-            <p className="font-mono text-xs text-[var(--faint)] uppercase tracking-wider">
-              {season.attribution} · Notes represent Vighnesh's personal notes & mental models.
+          {/* Editorial Attribution */}
+          <div className="ain-attribution">
+            <p className="ain-attribution__text">
+              {season.attribution} · Personal notes & mental models written by Vighnesh.
             </p>
           </div>
         </article>
 
-        {/* Note Pagination Footer */}
-        <footer className="max-w-3xl mx-auto pt-16 mt-16 border-t border-[var(--line)] flex flex-wrap items-center justify-between gap-6">
-          {prevNote ? (
-            <TransitionLink
-              to={`/ai-learning/${season.slug}/${prevNote.slug}`}
-              className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[var(--mut)] hover:text-[var(--ink)] transition-colors"
-              data-cursor="read"
-            >
-              <span aria-hidden="true">←</span>
-              <span>Previous: {prevNote.title}</span>
-            </TransitionLink>
-          ) : (
-            <TransitionLink
-              to={`/ai-learning/${season.slug}`}
-              className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[var(--mut)] hover:text-[var(--ink)] transition-colors"
-            >
-              <span aria-hidden="true">←</span>
-              <span>Back to Season {season.seasonNumber}</span>
-            </TransitionLink>
-          )}
+        {/* ── Chapter Navigation Footer ── */}
+        <footer className="ain-footer-nav" aria-label="Chapter Navigation">
+          <div className="ain-footer-nav__col ain-footer-nav__col--prev">
+            {prevNote ? (
+              <TransitionLink
+                to={`/ai-learning/${season.slug}/${prevNote.slug}`}
+                className="ain-nav-card"
+                data-cursor="read"
+                aria-label={`Previous note: ${prevNote.title}`}
+              >
+                <span className="ain-nav-card__dir">← Previous Note</span>
+                <span className="ain-nav-card__num">Note {prevNote.number} · {prevNote.topic}</span>
+                <span className="ain-nav-card__title">{prevNote.title}</span>
+              </TransitionLink>
+            ) : (
+              <TransitionLink
+                to={`/ai-learning/${season.slug}`}
+                className="ain-nav-card"
+                data-cursor="explore"
+                aria-label={`Back to Season ${season.seasonNumber}`}
+              >
+                <span className="ain-nav-card__dir">← Season Index</span>
+                <span className="ain-nav-card__num">Season {season.seasonNumber}</span>
+                <span className="ain-nav-card__title">Back to {season.title}</span>
+              </TransitionLink>
+            )}
+          </div>
 
-          {nextNote && (
-            <TransitionLink
-              to={`/ai-learning/${season.slug}/${nextNote.slug}`}
-              className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[var(--ink)] hover:text-[var(--accent)] transition-colors ml-auto"
-              data-cursor="read"
-            >
-              <span>Next: {nextNote.title}</span>
-              <span aria-hidden="true">→</span>
-            </TransitionLink>
-          )}
+          <div className="ain-footer-nav__col ain-footer-nav__col--next">
+            {nextNote ? (
+              <TransitionLink
+                to={`/ai-learning/${season.slug}/${nextNote.slug}`}
+                className="ain-nav-card ain-nav-card--next"
+                data-cursor="read"
+                aria-label={`Next note: ${nextNote.title}`}
+              >
+                <span className="ain-nav-card__dir">Next Note →</span>
+                <span className="ain-nav-card__num">Note {nextNote.number} · {nextNote.topic}</span>
+                <span className="ain-nav-card__title">{nextNote.title}</span>
+              </TransitionLink>
+            ) : (
+              <TransitionLink
+                to={`/ai-learning/${season.slug}`}
+                className="ain-nav-card ain-nav-card--next"
+                data-cursor="explore"
+                aria-label={`Return to Season ${season.seasonNumber} overview`}
+              >
+                <span className="ain-nav-card__dir">Season Overview →</span>
+                <span className="ain-nav-card__num">Season {season.seasonNumber} Completed</span>
+                <span className="ain-nav-card__title">Return to {season.title}</span>
+              </TransitionLink>
+            )}
+          </div>
         </footer>
+
       </div>
     </main>
   );

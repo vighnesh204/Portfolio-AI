@@ -4,11 +4,12 @@ import { getSeasonBySlug, getAllSeasons } from '../data/aiLearning';
 import TransitionLink from '../components/ui/TransitionLink';
 import { usePageTitle } from '../hooks/usePageTitle';
 import '../sections/aiLearning/aiLearning.css';
+import './AiSeason.css';
 
-// ─── AiSeason Page ──────────────────────────────────────────────────────────
-// Dedicated Season page at /ai-learning/:season.
-// Editorial curriculum view displaying overview, concepts, notes list, and
-// associated learning projects.
+// ─── AiSeason Page (/ai-learning/:season) ────────────────────────────────────
+// Premium editorial learning journal — Season overview.
+// Renders: hero → what I'm learning → note list → projects → next season.
+// All content data-driven from season1.js / season2.js.
 // ─────────────────────────────────────────────────────────────────────────────
 
 export default function AiSeason() {
@@ -22,66 +23,41 @@ export default function AiSeason() {
     window.scrollTo(0, 0);
   }, [seasonSlug]);
 
-  // Editorial 404 Fallback if season does not exist
+  // ── 404 fallback ──
   if (!season) {
     return (
-      <main className="min-h-[80vh] flex items-center justify-center pt-32 pb-24">
-        <div className="wrap text-center max-w-xl">
-          <div className="font-mono text-xs text-[var(--accent)] uppercase tracking-widest mb-4">
-            [ 404 — Curriculum Undefined ]
-          </div>
-          <h1 className="font-display text-4xl sm:text-5xl font-bold uppercase text-[var(--ink)] mb-4">
-            Season Not Found
-          </h1>
-          <p className="text-[var(--mut)] mb-8 text-sm sm:text-base leading-relaxed">
-            The requested Namaste AI season does not exist or has not yet been documented in this curriculum archive.
+      <main className="ais-page ais-page--404">
+        <div className="wrap ais-404-inner">
+          <p className="ais-mono-label">[ 404 — Curriculum Undefined ]</p>
+          <h1 className="ais-404-title">Season Not Found</h1>
+          <p className="ais-404-sub">
+            The requested Namaste AI season does not exist or has not been documented yet.
           </p>
-          <TransitionLink
-            to="/ai-learning"
-            className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest px-6 py-3 border border-[var(--line2)] hover:bg-[var(--ink)] hover:text-[var(--bg)] transition-colors"
-          >
-            ← Return to AI Learning Index
+          <TransitionLink to="/ai-learning" className="ais-back-link">
+            ← Return to AI Learning
           </TransitionLink>
         </div>
       </main>
     );
   }
 
-  // Editorial Coming Soon view for unpublished seasons (03–05)
+  // ── Coming soon seasons (03–05) ──
   if (season.status === 'coming-soon') {
     return (
-      <main className="ai-season-page min-h-[75vh] flex items-center justify-center pt-32 pb-40">
-        <div className="wrap text-center max-w-xl">
-          <nav aria-label="Breadcrumbs" className="mb-8 flex justify-center">
-            <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[var(--mut)]">
-              <TransitionLink
-                to="/ai-learning"
-                className="hover:text-[var(--ink)] transition-colors"
-              >
-                AI Learning
-              </TransitionLink>
-              <span className="text-[var(--faint)]">/</span>
-              <span className="text-[var(--ink)]">Season {season.seasonNumber}</span>
-            </div>
+      <main className="ais-page ais-page--coming-soon">
+        <div className="wrap ais-cs-inner">
+          <nav className="ais-breadcrumb" aria-label="Breadcrumb">
+            <TransitionLink to="/ai-learning" className="ais-breadcrumb__link">AI Learning</TransitionLink>
+            <span className="ais-breadcrumb__sep">/</span>
+            <span className="ais-breadcrumb__current">Season {season.seasonNumber}</span>
           </nav>
 
-          <div className="font-mono text-xs uppercase tracking-widest text-[var(--accent)] mb-4">
-            [ NAMASTE AI / SEASON {season.seasonNumber} ]
-          </div>
-
-          <h1 className="text-5xl sm:text-7xl font-extrabold uppercase tracking-tight text-[var(--ink)] mb-4 font-display">
-            COMING SOON
-          </h1>
-
-          <p className="text-sm sm:text-base text-[var(--mut)] leading-relaxed max-w-md mx-auto mb-10">
-            This learning chapter hasn&apos;t been documented yet. More notes and implementations will be added as study commences.
+          <p className="ais-mono-label ais-accent-label">Namaste AI · Season {season.seasonNumber}</p>
+          <h1 className="ais-cs-title">Coming Soon</h1>
+          <p className="ais-cs-sub">
+            This chapter hasn&apos;t been documented yet. Notes will be added as study begins.
           </p>
-
-          <TransitionLink
-            to="/ai-learning"
-            className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest px-8 py-3.5 border border-[var(--line2)] hover:bg-[var(--ink)] hover:text-[var(--bg)] transition-colors"
-            data-cursor="explore"
-          >
+          <TransitionLink to="/ai-learning" className="ais-back-link" data-cursor="explore">
             ← Back to AI Learning
           </TransitionLink>
         </div>
@@ -89,7 +65,6 @@ export default function AiSeason() {
     );
   }
 
-  // Find next season if available
   const currentIndex = allSeasons.findIndex((s) => s.slug === season.slug);
   const nextSeason =
     currentIndex >= 0 && currentIndex < allSeasons.length - 1
@@ -97,73 +72,83 @@ export default function AiSeason() {
       : null;
 
   const isCompleted = season.status?.toLowerCase().includes('completed');
+  const statusColor = isCompleted
+    ? 'var(--accent-teal)'
+    : season.status === 'In Progress'
+    ? '#f0c264'
+    : 'var(--mut)';
 
   return (
-    <main className="ai-season-page pt-32 pb-40">
+    <main className="ais-page" style={{ '--season-accent': season.accentColor }}>
       <div className="wrap">
-        {/* Breadcrumb Navigation */}
-        <nav aria-label="Breadcrumbs" className="mb-8">
-          <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[var(--mut)]">
-            <TransitionLink
-              to="/ai-learning"
-              className="hover:text-[var(--ink)] transition-colors"
-            >
-              AI Learning
-            </TransitionLink>
-            <span className="text-[var(--faint)]">/</span>
-            <span className="text-[var(--ink)]">Season {season.seasonNumber}</span>
-          </div>
+
+        {/* ── Breadcrumb ── */}
+        <nav className="ais-breadcrumb" aria-label="Breadcrumb">
+          <TransitionLink to="/ai-learning" className="ais-breadcrumb__link">
+            AI Learning
+          </TransitionLink>
+          <span className="ais-breadcrumb__sep">/</span>
+          <span className="ais-breadcrumb__current">Season {season.seasonNumber}</span>
         </nav>
 
-        {/* Season Hero */}
-        <header className="mb-16 pb-12 border-b border-[var(--line)]">
-          <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
-            <div className="font-mono text-xs uppercase tracking-widest text-[var(--mut)]">
-              [ NAMASTE AI / SEASON {season.seasonNumber} ]
-            </div>
-            <div
-              className={`inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider px-3 py-1 border border-[var(--line2)] rounded-full ${
-                isCompleted ? 'text-[#3fc9b9]' : 'text-[#f0c264]'
-              }`}
-            >
-              <span
-                className={`w-1.5 h-1.5 rounded-full ${
-                  isCompleted ? 'bg-[#3fc9b9]' : 'bg-[#f0c264]'
-                }`}
-              />
-              {season.status}
-            </div>
+        {/* ── Season Hero ── */}
+        <header className="ais-hero" style={{ '--season-accent': season.accentColor }}>
+          <div className="ais-hero__eyebrow">
+            <span className="ais-hero__source">Namaste AI</span>
+            <span className="ais-hero__sep">·</span>
+            <span className="ais-hero__season-id">Season {season.seasonNumber}</span>
           </div>
 
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold uppercase tracking-tight text-[var(--ink)] mb-4 font-display">
-            {season.title}
-          </h1>
+          <h1 className="ais-hero__title">{season.title}</h1>
 
-          <p className="text-xl sm:text-2xl font-serif italic text-[var(--ink)] opacity-80 max-w-2xl mb-8">
-            {season.subtitle}
-          </p>
+          <p className="ais-hero__subtitle">{season.subtitle}</p>
 
-          <p className="text-sm sm:text-base text-[var(--mut)] leading-relaxed max-w-3xl mb-8">
-            {season.description}
-          </p>
+          <p className="ais-hero__description">{season.description}</p>
 
-          <div className="font-mono text-xs uppercase tracking-widest text-[var(--faint)]">
-            {season.attribution}
+          <div className="ais-hero__meta">
+            <div className="ais-hero__meta-item">
+              <span className="ais-hero__meta-label">Status</span>
+              <span className="ais-hero__meta-value" style={{ color: statusColor }}>
+                <span
+                  className="ais-hero__meta-dot"
+                  style={{ background: statusColor }}
+                  aria-hidden="true"
+                />
+                {season.status}
+              </span>
+            </div>
+            <div className="ais-hero__meta-divider" aria-hidden="true" />
+            <div className="ais-hero__meta-item">
+              <span className="ais-hero__meta-label">Source</span>
+              <span className="ais-hero__meta-value">{season.attribution}</span>
+            </div>
+            {season.notes && season.notes.length > 0 && (
+              <>
+                <div className="ais-hero__meta-divider" aria-hidden="true" />
+                <div className="ais-hero__meta-item">
+                  <span className="ais-hero__meta-label">Notes</span>
+                  <span className="ais-hero__meta-value">{season.notes.length} published</span>
+                </div>
+              </>
+            )}
           </div>
         </header>
 
-        {/* Key Concepts Practiced */}
+        {/* ── What I'm Learning ── */}
         {season.keyConcepts && season.keyConcepts.length > 0 && (
-          <section className="mb-20" aria-label="Key Concepts Practiced">
-            <h2 className="font-mono text-xs uppercase tracking-widest text-[var(--mut)] mb-4">
-              [ 01 / CORE CONCEPTS & ARCHITECTURES ]
-            </h2>
-            <div className="flex flex-wrap gap-2">
+          <section className="ais-section ais-concepts" aria-label="Key Concepts">
+            <div className="ais-section__header">
+              <span className="ais-section__index" style={{ color: season.accentColor }}>01</span>
+              <div className="ais-section__heading-block">
+                <h2 className="ais-section__heading">What I&apos;m Learning</h2>
+                <p className="ais-section__sub">
+                  The ideas I&apos;m working to understand beneath the abstraction.
+                </p>
+              </div>
+            </div>
+            <div className="ais-concepts__labels">
               {season.keyConcepts.map((concept, idx) => (
-                <span
-                  key={idx}
-                  className="px-3.5 py-1.5 border border-[var(--line)] bg-[#12100e] text-[var(--ink)] font-mono text-xs uppercase tracking-wider rounded-sm"
-                >
+                <span key={idx} className="ais-concept-label">
                   {concept}
                 </span>
               ))}
@@ -171,104 +156,102 @@ export default function AiSeason() {
           </section>
         )}
 
-        {/* Notes List */}
+        {/* ── Learning Notes ── */}
         {season.notes && season.notes.length > 0 && (
-          <section className="mb-24" aria-label="Season Notes">
-            <div className="flex items-center justify-between pb-4 border-b border-[var(--line)]">
-              <h2 className="font-mono text-xs uppercase tracking-widest text-[var(--mut)]">
-                [ 02 / CURRICULUM NOTES & ESSAYS ]
-              </h2>
-              <span className="font-mono text-xs uppercase tracking-wider text-[var(--faint)]">
-                {season.notes.length} Notes
-              </span>
+          <section className="ais-section ais-notes-section" aria-label="Learning Notes">
+            <div className="ais-section__header">
+              <span className="ais-section__index" style={{ color: season.accentColor }}>02</span>
+              <div className="ais-section__heading-block">
+                <h2 className="ais-section__heading">Learning Notes</h2>
+                <p className="ais-section__sub">
+                  Concepts written in my own words so I actually understand what&apos;s happening.
+                </p>
+              </div>
             </div>
 
-            <div className="editorial-notes-table">
+            <div className="ais-note-list" role="list">
               {season.notes.map((note) => (
                 <TransitionLink
                   key={note.id}
                   to={`/ai-learning/${season.slug}/${note.slug}`}
-                  className="editorial-note-row"
+                  className="ais-note-row"
+                  role="listitem"
                   data-cursor="read"
-                  aria-label={`Read note: ${note.title}`}
+                  aria-label={`Read: ${note.title}`}
                 >
-                  <div className="editorial-note-row__num">{note.episode}</div>
-                  <div className="editorial-note-row__title">{note.title}</div>
-                  <div className="editorial-note-row__topic">{note.topic}</div>
-                  <div className="editorial-note-row__action">
-                    <span>Read</span>
-                    <span aria-hidden="true">→</span>
+                  <span className="ais-note-row__num">{note.number}</span>
+
+                  <div className="ais-note-row__body">
+                    <span className="ais-note-row__topic">{note.topic}</span>
+                    <span className="ais-note-row__title">{note.title}</span>
+                    <span className="ais-note-row__desc">{note.shortDescription}</span>
                   </div>
+
+                  <span className="ais-note-row__action" aria-hidden="true">
+                    <span className="ais-note-row__action-text">Read Note</span>
+                    <span className="ais-note-row__action-arrow">↗</span>
+                  </span>
                 </TransitionLink>
               ))}
+
+              {/* Coming Soon block after real notes (Season 02) */}
+              {season.comingSoon && (
+                <div className="ais-notes-coming-soon" aria-label="More notes coming soon">
+                  <div className="ais-notes-coming-soon__inner">
+                    <span className="ais-notes-coming-soon__label">More Learnings</span>
+                    <span className="ais-notes-coming-soon__headline">Coming Soon</span>
+                    {season.comingSoonNote && (
+                      <p className="ais-notes-coming-soon__note">{season.comingSoonNote}</p>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
           </section>
         )}
 
-        {/* Learning Projects */}
+        {/* ── Learning Projects ── */}
         {season.projects && season.projects.length > 0 && (
-          <section className="mb-24" aria-label="Season Learning Projects">
-            <div className="flex items-center justify-between pb-4 mb-8 border-b border-[var(--line)]">
-              <h2 className="font-mono text-xs uppercase tracking-widest text-[var(--mut)]">
-                [ 03 / EXPERIMENTS & LEARNING PROJECTS ]
-              </h2>
-              <span className="font-mono text-xs uppercase tracking-wider text-[var(--faint)]">
-                Code Prototypes
-              </span>
+          <section className="ais-section ais-projects-section" aria-label="Learning Projects">
+            <div className="ais-section__header">
+              <span className="ais-section__index" style={{ color: season.accentColor }}>03</span>
+              <div className="ais-section__heading-block">
+                <h2 className="ais-section__heading">Experiments & Projects</h2>
+                <p className="ais-section__sub">
+                  Code built while learning — applying concepts to real problems.
+                </p>
+              </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="ais-projects-grid">
               {season.projects.map((proj) => (
-                <div
-                  key={proj.id}
-                  className="p-6 sm:p-8 border border-[var(--line)] bg-[#12100e] rounded-sm flex flex-col justify-between"
-                >
-                  <div>
-                    <div className="font-mono text-xs uppercase tracking-widest text-[var(--accent)] mb-2">
-                      {proj.concept}
-                    </div>
-                    <h3 className="font-display text-xl sm:text-2xl font-bold uppercase text-[var(--ink)] mb-3">
-                      {proj.title}
-                    </h3>
-                    <p className="text-sm text-[var(--mut)] leading-relaxed mb-6">
-                      {proj.description}
-                    </p>
-                    <div className="p-4 bg-black/40 border border-[var(--line)] rounded-sm mb-6">
-                      <div className="font-mono text-[11px] uppercase tracking-wider text-[var(--mut)] mb-1">
-                        Key Engineering Lesson
-                      </div>
-                      <p className="text-xs text-[var(--ink)] leading-relaxed">
-                        {proj.learning}
-                      </p>
-                    </div>
+                <div key={proj.id} className="ais-project-card">
+                  <span className="ais-project-card__concept">{proj.concept}</span>
+                  <h3 className="ais-project-card__title">{proj.title}</h3>
+                  <p className="ais-project-card__desc">{proj.description}</p>
+
+                  <div className="ais-project-card__learning">
+                    <span className="ais-project-card__learning-label">Key lesson</span>
+                    <p className="ais-project-card__learning-text">{proj.learning}</p>
                   </div>
 
-                  <div>
-                    <div className="flex flex-wrap gap-2 mb-6">
+                  <div className="ais-project-card__footer">
+                    <div className="ais-project-card__tags">
                       {proj.technologies?.map((tech, idx) => (
-                        <span
-                          key={idx}
-                          className="font-mono text-[10px] uppercase tracking-wider px-2 py-0.5 border border-[var(--line)] text-[var(--faint)]"
-                        >
-                          {tech}
-                        </span>
+                        <span key={idx} className="ais-project-card__tag">{tech}</span>
                       ))}
                     </div>
-
-                    <div className="flex items-center gap-4">
-                      {proj.github && (
-                        <a
-                          href={proj.github}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="font-mono text-xs uppercase tracking-wider text-[var(--ink)] hover:text-[var(--accent)] transition-colors inline-flex items-center gap-1.5"
-                          data-cursor="open"
-                        >
-                          <span>Repository</span>
-                          <span aria-hidden="true">↗</span>
-                        </a>
-                      )}
-                    </div>
+                    {proj.github && (
+                      <a
+                        href={proj.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="ais-project-card__link"
+                        data-cursor="open"
+                      >
+                        Repository ↗
+                      </a>
+                    )}
                   </div>
                 </div>
               ))}
@@ -276,24 +259,26 @@ export default function AiSeason() {
           </section>
         )}
 
-        {/* Next Season Navigation Footer */}
+        {/* ── Next Season Footer ── */}
         {nextSeason && (
-          <footer className="pt-12 border-t border-[var(--line)] flex items-center justify-between">
-            <span className="font-mono text-xs uppercase tracking-widest text-[var(--mut)]">
-              Next In Curriculum
-            </span>
+          <footer className="ais-season-footer">
+            <span className="ais-season-footer__label">Next in curriculum</span>
             <TransitionLink
               to={`/ai-learning/${nextSeason.slug}`}
-              className="inline-flex items-center gap-3 font-mono text-xs uppercase tracking-widest text-[var(--ink)] hover:text-[var(--accent)] transition-colors"
+              className="ais-season-footer__link"
               data-cursor="explore"
             >
-              <span>
-                Season {nextSeason.seasonNumber}: {nextSeason.status === 'coming-soon' ? 'Coming Soon' : nextSeason.title}
+              <span className="ais-season-footer__next-label">
+                Season {nextSeason.seasonNumber}
               </span>
-              <span aria-hidden="true">→</span>
+              <span className="ais-season-footer__next-title">
+                {nextSeason.status === 'coming-soon' ? 'Coming Soon' : nextSeason.title}
+              </span>
+              <span className="ais-season-footer__arrow" aria-hidden="true">→</span>
             </TransitionLink>
           </footer>
         )}
+
       </div>
     </main>
   );

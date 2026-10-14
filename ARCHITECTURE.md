@@ -188,8 +188,8 @@ Initial Load (Browser Entry / Hard Refresh)
 
 ```
 src/data/aiLearning/ (modular season files)
-  ├── season1.js               — Season 1: Foundations of AI & LLMs (notes, projects)
-  ├── season2.js               — Season 2: Generative AI & Tool Calling (notes, projects)
+  ├── season1.js               — Season 1: Foundations of AI & LLMs (verified notes, project)
+  ├── season2.js               — Season 2: AI-Native Software Engineering (dev partner workflows, in-progress state, portfolio assistant project)
   ├── season3.js               — Season 3: Upcoming curriculum placeholder
   ├── season4.js               — Season 4: Upcoming curriculum placeholder
   ├── season5.js               — Season 5: Upcoming curriculum placeholder
@@ -205,8 +205,8 @@ src/data/aiLearning/ (modular season files)
   1. `SeasonCardMotionWrapper` (.season-card-motion): Animated by GSAP timeline for scroll position, rotation, and scale.
   2. `SeasonCardTiltWrapper` (.season-card__tilt-wrapper): Controlled by pointer moves for subtle 3D tilt.
   3. `SeasonCardFlipper` (.season-card__flipper): Controls 180° flip (rotateY) on click.
-- **Reading-First Notes:** `/ai-learning/:season/:note` prioritizes readability and mental models without intrusive sticky animations.
-- **Attribution & Integrity:** Clearly attributes Namaste AI while documenting Vighnesh's personal understanding; uncompleted topics are honestly tagged with upcoming placeholders.
+- **5-Step Learning Flow Journal (/ai-learning/:season/:note):** Structure: 01 The Question (curiosity-driven serif inquiry) → 02 Simple Explanation (accessible developer prose) → 03 How I Understand It (mental model block) → 04 Progression Flow & Concrete Application → 05 What I Want to Remember (key takeaways). Reading width constrained to 760px, header clearance maintained via `clamp(112px, 12vw, 156px)`.
+- **Attribution & Integrity:** Clearly attributes Namaste AI while documenting Vighnesh's personal understanding; uncompleted topics are honestly tagged with upcoming placeholders. Season 02 accurately reflects AI-native software engineering without fabricated RAG/agent claims.
 
 ---
 

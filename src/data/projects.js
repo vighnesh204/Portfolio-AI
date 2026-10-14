@@ -2,9 +2,10 @@
 // Source of truth for all projects across Selected Work, /work, and /work/:slug.
 //
 // Rules:
-//   - No invented metrics, companies, or fake statistics.
-//   - Data verified against each project's GitHub repository README.
-//   - Missing or pending information is explicitly marked as [Placeholder].
+//   - No invented metrics, user counts, or fabricated statistics.
+//   - Data verified against each project's GitHub repository.
+//   - live: null means no verified deployment exists — do NOT use '#'.
+//   - UI renders GitHub link as primary action when live is null.
 //   - Only sections with real data are rendered on detail pages.
 //
 // Verified sources:
@@ -24,54 +25,54 @@ const projects = [
     category: 'AI & Frontend',
     year: '2025',
     featured: true,
-    accentColor: '#a78bfa', // Soft violet — matches the project's AI aesthetic
+    accentColor: '#a78bfa',
     shortDescription:
-      'A production-ready AI code reviewer powered by Gemini 2.0 Flash. Paste any code snippet and receive a deep analysis covering bugs, security vulnerabilities, performance issues, and style improvements — streamed in real time.',
+      'An AI-assisted code review experience built in the browser. Paste or write code in a Monaco-powered editor and receive structured Gemini feedback covering bugs, security concerns, performance issues, and code quality — streamed as you wait.',
     description:
-      'DevLens was built to bring world-class AI-assisted code review directly into the browser. Using Gemini 2.0 Flash streaming, it delivers live, incremental analysis of code snippets across 15 programming languages, surfacing bugs, security vulnerabilities, performance hotspots, and style concerns in a Monaco-powered IDE environment.',
+      'DevLens puts AI-assisted code review directly in the browser. A developer pastes or writes code in a Monaco Editor instance, selects a language, and Gemini analyzes it in real time — surfacing bugs, security vulnerabilities, performance considerations, and style improvements as a structured streaming response. The goal was to make AI feedback feel immediate and developer-native rather than just a chatbot exchange.',
     technologies: [
-      'React 19',
+      'React',
       'Vite',
       'JavaScript',
-      'Gemini 2.0 Flash',
+      'Gemini API',
       'Monaco Editor',
+      'Tailwind CSS',
       'Framer Motion',
     ],
     github: 'https://github.com/vighnesh204/DevLens',
-    live: '#', // [Placeholder: Add deployment link when available]
+    live: 'https://dev-lens-navy.vercel.app/',
     problem:
-      'Code review is one of the highest-leverage engineering activities, yet developers reviewing their own code often miss subtle bugs, security leaks, or performance anti-patterns without a second pair of eyes.',
+      'Developers reviewing their own code often miss subtle bugs, security leaks, or performance anti-patterns without a second perspective. Getting that second perspective usually requires another developer or a paid tool — neither immediately available in the moment of writing.',
     approach:
-      'Integrated Gemini 2.0 Flash streaming API with a Monaco Editor instance so that review responses stream into the UI character-by-character, creating a real-time analysis feel. A 0–100 score with animated ring visualisation gives developers an at-a-glance quality signal before reading the full report.',
+      'Integrated the Gemini API with a Monaco Editor instance so review feedback streams into the UI as it is generated. A 0–100 code quality score with a visual ring gives developers an at-a-glance quality signal before reading the full analysis.',
     features: [
-      'Deep code analysis: bug detection, security audit, performance profiling, and style review.',
-      'Real-time streaming responses via Gemini 2.0 Flash for a live analysis feel.',
-      'Monaco Editor with a custom DevLens dark theme.',
-      'Support for 15 languages including JavaScript, TypeScript, Python, Go, Rust, Java, and C++.',
-      '0–100 quality score with an animated ring visualisation.',
-      'Glassmorphic UI with a Linear-meets-Apple dark zinc aesthetic.',
+      'Monaco-based code editor with syntax highlighting and multiple language support.',
+      'Gemini-powered analysis covering bugs, security concerns, performance, and style.',
+      'Streaming AI feedback — the response appears incrementally rather than after a full wait.',
+      'Code quality score visualized as a ring indicator.',
+      'Structured feedback organized into clear categories for easy scanning.',
     ],
     architecture:
-      'Single-page React 19 application built with Vite. The Gemini 2.0 Flash streaming API is consumed via the Google AI SDK. Monaco Editor is lazy-loaded to keep initial bundle size minimal.',
+      'Single-page React application built with Vite. The Gemini API is consumed via the Google AI JavaScript SDK. Monaco Editor handles the code input and syntax environment.',
     challenges:
-      'Implementing smooth incremental rendering of streaming AI text alongside the Monaco Editor re-paint cycle without causing visible flicker or layout shifts during long responses.',
+      'Rendering streaming AI text incrementally alongside Monaco Editor without causing visible layout shifts or re-paint interference during long analysis responses.',
     learning:
-      'Deepened practical understanding of LLM streaming APIs, Monaco Editor customisation, and animated data-visualisation patterns in React.',
+      'Gained practical experience integrating LLM streaming APIs, customizing Monaco Editor for a specific use case, and presenting AI-generated analysis in a structured, scannable UI.',
   },
   {
     id: 'interview-ai',
     slug: 'interview-ai',
     number: '02',
     title: 'Interview AI',
-    subtitle: 'AI-Powered Technical Interview Preparation Platform',
+    subtitle: 'AI-Powered Technical Interview Preparation',
     category: 'AI & Full Stack',
     year: '2024',
     featured: true,
-    accentColor: '#c8a96e', // Warm amber
+    accentColor: '#c8a96e',
     shortDescription:
-      'An intelligent mock interview platform that simulates frontend and full-stack technical rounds, evaluates candidate responses with Google Gemini, and delivers structured feedback.',
+      'A mock interview platform that guides developers through technical rounds, evaluates responses with Google Gemini, and provides structured feedback on clarity, correctness, and reasoning.',
     description:
-      'Interview AI was built to solve the lack of realistic, on-demand technical interview practice for frontend and junior developers. The platform guides users through live coding queries, algorithmic challenges, and conceptual questions with an adaptive AI evaluator powered by the Gemini API.',
+      'Interview AI was built to practice technical interview preparation through structured AI dialogue rather than static question banks. The platform presents interview questions, evaluates the candidate\'s written response using Gemini, and returns scored feedback across dimensions like technical accuracy, clarity, and depth of reasoning.',
     technologies: [
       'React',
       'JavaScript',
@@ -82,102 +83,114 @@ const projects = [
       'Tailwind CSS',
     ],
     github: 'https://github.com/vighnesh204/interview-ai',
-    live: '#', // [Placeholder: Add production deployment link]
+    live: null,
     problem:
-      'Technical interview preparation is often disconnected from real dialogue. Static question banks test raw algorithmic output but fail to train developers on explaining technical tradeoffs, architectural decisions, and conceptual reasoning in a conversational setting.',
+      'Technical interview preparation often relies on isolated question-answer drills that do not simulate the conversational evaluation of an actual interview. Explaining tradeoffs and reasoning matters as much as the answer itself.',
     approach:
-      'Engineered an interactive conversational session flow where the user receives dynamic questions tailored to their target stack. Server-side prompt chains via Google Gemini evaluate the clarity, accuracy, and depth of each response, returning scored feedback on time complexity, code clarity, and conceptual mastery.',
+      'Built an interactive session flow where the user receives questions and submits written responses. Gemini evaluates each response using structured prompts designed to return consistent, schema-compliant JSON feedback rather than free-form text.',
     features: [
-      'Configurable interview tracks for Frontend (React, JS), Backend (Node, APIs), and Full Stack.',
-      'Real-time response evaluation and scoring powered by structured Gemini prompts.',
-      'Interactive code editor with syntax highlighting for live challenge submissions.',
-      'Comprehensive post-interview report detailing strengths, misconceptions, and suggested study topics.',
+      'Configurable interview tracks for Frontend, Backend, and Full Stack focus areas.',
+      'Gemini-powered response evaluation returning structured feedback on accuracy, clarity, and reasoning.',
+      'Post-interview report summarizing strengths, areas for improvement, and suggested study topics.',
+      'Session state managed server-side so interview progress persists across submissions.',
     ],
     architecture:
-      'Client built with React and Vite for rapid state updates. Backend built on Node.js and Express handling authentication, interview session state, and rate-limited API calls to Google Gemini. Session histories and evaluation rubrics persisted in MongoDB.',
+      'React and Vite frontend with a Node.js/Express backend. Interview session state and evaluation history stored in MongoDB. Gemini API called server-side with schema-enforced prompts to ensure consistent JSON payloads.',
     challenges:
-      'Designing prompt constraints to ensure the Gemini API consistently returned deterministic JSON payloads rather than free-form conversational text, while handling API latency during streaming feedback.',
+      'Designing prompts that reliably produce deterministic JSON from Gemini across a range of user response styles and lengths, while handling API latency during evaluation.',
     learning:
-      'Deepened practical understanding of LLM prompt engineering, robust schema validation for AI responses, full-stack state management, and building conversational interfaces.',
+      'Learned how to design prompt schemas that constrain LLM output format, how to manage conversational state across a session, and how to present AI evaluation in a readable, useful structure.',
   },
   {
     id: 'yt-clone',
     slug: 'yt-clone',
     number: '03',
     title: 'YouTube Clone',
-    subtitle: 'Machine Coding Round — Production-Quality Frontend Build',
+    subtitle: 'Machine Coding Exercise — React Frontend Architecture',
     category: 'Frontend Engineering',
     year: '2024',
     featured: true,
-    accentColor: '#e05252', // YouTube red
+    accentColor: '#e05252',
     shortDescription:
-      'A machine coding challenge build of a YouTube-like video platform. Demonstrates component architecture, client-side routing, state management, and rapid UI delivery under interview-round constraints.',
+      'A React machine coding project replicating core YouTube frontend patterns: video feed, watch page, search with debounce and caching, N-level nested comments, and simulated live chat — all wired through Redux Toolkit.',
     description:
-      'Built as a structured machine coding exercise, practising the full interview workflow: requirement clarification, tech stack justification, implementation, and edge case handling. The result is a functional video discovery and playback UI built with React, Tailwind CSS, and React Router.',
+      'Built as a structured machine coding exercise to practise React architecture, state management, and API integration in a realistic context. The project covers a video discovery homepage, a dedicated watch page, search with debouncing and Redux-powered caching, recursively rendered nested comments, and a simulated live chat that uses polling-style periodic updates.',
     technologies: [
       'React',
       'Vite',
       'JavaScript',
       'Tailwind CSS',
       'React Router',
-      'Redux',
+      'Redux Toolkit',
       'YouTube Data API',
     ],
     github: 'https://github.com/vighnesh204/machine-coding-yt-clone',
-    live: '#', // [Placeholder: Add deployment link if available]
+    live: null,
     problem:
-      'Machine coding rounds require rapid translation of loosely-defined requirements into working, readable, and demonstrable software under a strict time limit — a fundamentally different skill from open-ended project development.',
+      'Practising React in isolation through small components does not prepare a developer for how multiple patterns — routing, shared state, API integration, debouncing, recursive rendering — work together inside one coherent application.',
     approach:
-      'Followed a structured machine coding methodology: clarify requirements, justify tech stack decisions, implement core features first, then layer in edge cases. Used Vite for fast dev server startup and Tailwind CSS for rapid utility-first UI construction.',
+      'Followed a machine coding methodology: clarify requirements, justify tech choices, implement core flows first, then add performance patterns. Each feature was chosen to practise a specific frontend concept.',
     features: [
-      'Video discovery homepage with category-based filtering.',
-      'Video playback page with related video recommendations.',
-      'Client-side routing with React Router DOM.',
-      'Search functionality with debounced API calls.',
-      'Responsive layout across screen sizes.',
+      'Dynamic video feed fetched from the YouTube Data API with category filtering.',
+      'Dedicated watch page rendered via route/query parameters with the YouTube embed player.',
+      'Search suggestions with a 200ms debounce to avoid triggering an API call on every keypress.',
+      'Redux-powered search result caching so repeated searches reuse stored results rather than making new API calls.',
+      'Recursively rendered N-level nested comments to practice tree-like UI structures.',
+      'Simulated live chat using polling-style periodic updates — generated messages added at an interval, with a stored message limit so state does not grow unbounded.',
+      'Redux Toolkit managing sidebar state, search cache, and live chat messages.',
+      'Reusable VideoCard component with a wrapper composition pattern used for the advertisement-style card variant.',
     ],
     architecture:
-      'Component-driven React app with React Router for navigation. Redux for shared application state. YouTube Data API integration for live video data fetching.',
+      'Component-driven React app with React Router for navigation and Redux Toolkit for shared application state. YouTube Data API provides live video data.',
     challenges:
-      'Delivering a polished, functional prototype within a fixed machine coding time window while maintaining clean component boundaries and proper separation of concerns.',
+      'Coordinating multiple Redux slices — sidebar, search cache, and live chat — without cross-slice interference. Implementing the recursive comment tree cleanly at arbitrary depth. Keeping the simulated chat state bounded without visual jank.',
     learning:
-      'Building this project strengthened my understanding of how a larger React application is structured beyond individual components. I worked with Redux Toolkit for shared state, dynamic routing for watch pages, reusable component patterns, and recursive rendering for N-level nested comments. It also gave me practical experience with frontend performance patterns such as search debouncing, API-result caching, polling-based live updates, and controlling high-frequency live-chat state. Implementing a Higher-Order Component also helped me understand how behavior can be extended through component composition.',
+      'Building this project helped me move beyond isolated React components and understand how multiple frontend concepts work together in one application. I practised shared state with Redux Toolkit, dynamic watch pages, reusable component design, and recursive rendering through N-level comments. Search debouncing and caching showed me how small frontend decisions can reduce unnecessary API requests, while the simulated live chat helped me understand polling-style updates and why fast-changing state needs to be controlled. Overall, the project gave me practical experience connecting React architecture, APIs, state management, and performance patterns.',
   },
   {
     id: 'hirelens-ai',
     slug: 'hirelens-ai',
     number: '04',
     title: 'HireLens AI',
-    subtitle: 'AI-Assisted Hiring Tool',
-    category: 'AI & Full Stack',
+    subtitle: 'AI-Assisted Resume Analyzer',
+    category: 'AI & Frontend',
     year: '2025',
     featured: false,
-    accentColor: '#52a8e0', // Cool blue
+    accentColor: '#52a8e0',
     shortDescription:
-      '[Placeholder: Full project description pending — repository is in active development.]',
+      'An AI-assisted resume analyzer that evaluates resume content, produces an ATS-style score, highlights keyword and skill gaps, and provides structured suggestions to make the resume clearer and more effective.',
     description:
-      'HireLens AI is a React and Vite application currently in active development. Detailed project documentation and feature descriptions will be added when the repository README and core feature set are finalised.',
+      'HireLens AI is an AI-powered resume analysis interface. A user submits their resume text, and Gemini analyzes it against a structured schema — returning an ATS-style score, category-level breakdown, keyword and skill gap identification, bullet point feedback, and a prioritized improvement roadmap. The goal is to present AI feedback in a structured dashboard rather than as raw text output.',
     technologies: [
       'React',
       'Vite',
       'JavaScript',
-      // [Placeholder: Full tech list pending repository documentation]
+      'Tailwind CSS',
+      'Gemini API',
+      'Framer Motion',
+      'Recharts',
     ],
     github: 'https://github.com/vighnesh204/HireLens-AI',
-    live: '#', // [Placeholder: Add deployment link when available]
+    live: 'https://hire-lens-ai-psi.vercel.app/',
     problem:
-      '[Placeholder: Problem statement to be documented when project description is finalised.]',
+      'Most resume feedback is either generic (template checkers) or expensive (professional review services). Developers and students looking to make their resume stronger often lack specific, structured guidance on what to improve and why.',
     approach:
-      '[Placeholder: Approach to be documented when project description is finalised.]',
+      'The resume text is sent to Gemini with a prompt that enforces a structured JSON schema. The returned analysis is mapped onto a feedback dashboard with visual score components, categorized insights, and concrete rewrite suggestions.',
     features: [
-      // [Placeholder: Feature list to be added when repository README is complete.]
+      'Gemini-powered resume analysis returning structured JSON feedback.',
+      'ATS-style overall score with category-level breakdown.',
+      'Keyword and skill gap identification — matched, missing, and weak keywords.',
+      'Project, strengths, and weaknesses review.',
+      'Concrete suggestions for rewriting weak resume bullets.',
+      'Formatting and grammar improvement notes.',
+      'Prioritized improvement roadmap based on analysis results.',
     ],
     architecture:
-      '[Placeholder: Architecture notes to be added when project is further developed.]',
+      'React and Vite single-page application. Resume text is submitted to a serverless API route that calls the Gemini API with a structured schema prompt. The structured JSON response is rendered across a feedback dashboard built with Recharts for score visualization.',
     challenges:
-      '[Placeholder: Engineering challenges to be documented after development progresses.]',
+      'Designing a Gemini prompt schema detailed enough to return all required analysis categories consistently, while keeping the UI readable and non-overwhelming — analysis this dense can easily become noise rather than signal.',
     learning:
-      '[Placeholder: Learnings to be documented after project completion.]',
+      'Working on HireLens taught me how to transform structured AI JSON output into a useful feedback dashboard rather than just displaying raw text. I thought carefully about how to present scores and analysis without overwhelming the user, how to design clear visual hierarchies for dense information, and how to make AI-generated feedback feel actionable rather than abstract.',
   },
 ];
 
